@@ -1,7 +1,7 @@
 import { api } from "./axios";
 
-export const getWorkout = async (token: string, clientId: number) => {
-    const response = await api.get(`/workout/${clientId}`, {
+export const getDietByClient = async (clientId: number, token: string) => {
+    const response = await api.get(`/diet/${clientId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

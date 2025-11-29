@@ -1,8 +1,30 @@
 import type { User } from "@/model/user";
-import { Hashtag } from "iconsax-reactjs";
+import { Hashtag, Logout } from "iconsax-reactjs";
+import {
+    AlertDialog,
+    AlertDialogTrigger,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogCancel,
+    AlertDialogAction,
+} from "./ui/alert-dialog";
 import { Avatar } from "./ui/avatar";
+import { Button } from "./ui/button";
+import { useAuthStore } from "@/store/auth";
+import { useUserStore } from "@/store/user";
 
-export const Header = ({ user }: { user: User }) => {
+export const Header = ({ user }: { user?: User }) => {
+    const { clearToken } = useAuthStore();
+    const { clearUser } = useUserStore();
+
+    const signOut = () => {
+        clearToken();
+        clearUser();
+    };
+
     return (
         <div className="flex justify-between items-center">
             <div className="flex items-center gap-x-2">
@@ -13,23 +35,54 @@ export const Header = ({ user }: { user: User }) => {
             </div>
 
             <div className="flex items-center gap-x-5">
-                <div className="flex items-center gap-x-2">
-                    <div>
-                        <h3 className="text-right font-medium">
-                            {user?.firstName} {user?.lastName}
-                        </h3>
-                        <h3 className="text-right text-sm text-foreground/80 font-medium -mt-0.5">
-                            {user?.email}
-                        </h3>
-                    </div>
+                {user && (
+                    <div className="flex items-center gap-x-2">
+                        <div>
+                            <h3 className="text-right font-medium">
+                                {user?.firstName} {user?.lastName}
+                            </h3>
+                            <h3 className="text-right text-sm text-foreground/80 font-medium -mt-0.5">
+                                {user?.email}
+                            </h3>
+                        </div>
 
-                    {user && (
                         <Avatar
-                            firstName={user?.firstName}
-                            lastName={user?.lastName}
+                            firstName={user.firstName}
+                            lastName={user.lastName}
                         />
-                    )}
-                </div>
+
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    className="flex items-center gap-x-1"
+                                >
+                                    <Logout color="red" size={20} />
+                                </Button>
+                            </AlertDialogTrigger>
+
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                        Sign Out?
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        Are you sure you want to sign out?
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>
+                                        Cancel
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction onClick={signOut}>
+                                        Yes, Sign Out
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                    </div>
+                )}
             </div>
         </div>
     );

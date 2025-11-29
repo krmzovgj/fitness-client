@@ -27,11 +27,20 @@ import { Header } from "../components/header";
 import { UserRole, type User } from "../model/user";
 import { useAuthStore } from "../store/auth";
 import { useUserStore } from "../store/user";
+import { WorkoutSection } from "@/components/workout-section";
+import { getWorkout } from "@/api/workout";
+import { getExercisesByWorkout } from "@/api/exercise";
+import { sortExercisesByDay } from "@/lib/utils";
+import type { Exercise } from "@/model/exercise";
 
 export const Home = () => {
     const { token } = useAuthStore();
     const { user } = useUserStore();
     const { clients, setClients } = useClientStore();
+
+    const [workout, setworkout] = useState<any>();
+    const [exercises, setExercises] = useState<Exercise[]>([]);
+
     const [loadingClients, setloadingClients] = useState(false);
     const [creatingClient, setcreatingClient] = useState(false);
 
@@ -94,6 +103,42 @@ export const Home = () => {
         }
     };
 
+    useEffect(() => {
+        if (!user || user.role === UserRole.TRAINER) return;
+        const fetchWorkout = async () => {
+            try {
+                const response = await getWorkout(token!, user.id);
+                setworkout(response.data);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchWorkout();
+    }, [user, token]);
+
+    useEffect(() => {
+        if (!user || !workout || user.role === UserRole.TRAINER) return;
+        const fetchExercises = async () => {
+            try {
+                const response = await getExercisesByWorkout(
+                    token!,
+                    workout.id
+                );
+                const sorted = sortExercisesByDay(response.data);
+                setExercises(sorted);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchExercises();
+    }, [workout, token]);
+
+    if(!user) {
+        return <div className="flex items-center justify-center h-screen">
+            Internal Error. Try again later
+        </div>
+    }
+
     return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
@@ -107,7 +152,7 @@ export const Home = () => {
                                     Hello {user?.firstName},
                                 </h1>
                                 {user?.role === UserRole.TRAINER ? (
-                                    <h3 className="text-md font-medium text-foreground/80 flex items-center gap-x-1 mt-1 -ml-0.5">
+                                    <h3 className="text-sm md:text-md font-medium text-foreground/80 flex items-center gap-x-1 mt-1 -ml-0.5">
                                         <Flash
                                             variant="Bold"
                                             size={18}
@@ -116,7 +161,7 @@ export const Home = () => {
                                         Track your clients and their plans
                                     </h3>
                                 ) : (
-                                    <h3 className="text-md font-medium text-foreground/80 flex items-center gap-x-1 mt-1 -ml-0.5">
+                                    <h3 className="text-sm md:text-md font-medium text-foreground/80 flex items-center gap-x-1 mt-1 -ml-0.5">
                                         <Flash
                                             variant="Bold"
                                             size={18}
@@ -126,20 +171,26 @@ export const Home = () => {
                                     </h3>
                                 )}
                             </div>
-
-                            <DialogTrigger asChild className="rounded-xl">
-                                <Button variant="default">Add Client</Button>
-                            </DialogTrigger>
                         </div>
 
                         {user?.role === UserRole.TRAINER && (
                             <div className="mt-14">
-                                <h2 className="text-2xl flex items-center gap-x-3 font-semibold text-foreground">
-                                    My Clients
-                                    {loadingClients && (
-                                        <Spinner className="size-6" />
-                                    )}
-                                </h2>
+                                <div className="flex items-center justify-between">
+                                    <h2 className="text-2xl flex items-center gap-x-3 font-semibold text-foreground">
+                                        My Clients
+                                        {loadingClients && (
+                                            <Spinner className="size-6" />
+                                        )}
+                                    </h2>
+                                    <DialogTrigger
+                                        asChild
+                                        className="rounded-xl"
+                                    >
+                                        <Button variant="default">
+                                            Add Client
+                                        </Button>
+                                    </DialogTrigger>
+                                </div>
 
                                 <div className="mt-5">
                                     {clients?.length === 0 ? (
@@ -181,6 +232,14 @@ export const Home = () => {
                                     )}
                                 </div>
                             </div>
+                        )}
+
+                        {user?.role === UserRole.CLIENT && (
+                            <WorkoutSection
+                                exercises={exercises}
+                                role={user.role}
+                                workout={workout}
+                            />
                         )}
                     </div>
 
@@ -240,11 +299,11 @@ export const Home = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
 
-                        {error !== '' && (
-                            <div className="text-red-500 mt-2 text-sm">
-                                {error}
-                            </div>
-                        )}
+                            {error !== "" && (
+                                <div className="text-red-500 mt-2 text-sm">
+                                    {error}
+                                </div>
+                            )}
                         </div>
 
                         <DialogFooter>

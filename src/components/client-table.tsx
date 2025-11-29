@@ -40,7 +40,7 @@ export function DataTable<T>({ columns, data }: DataTableProps<T>) {
 
     return (
         <div className="space-y-4">
-            <div className="overflow-auto border rounded-md">
+            <div className="overflow-auto border rounded-2xl">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (

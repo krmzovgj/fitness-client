@@ -192,6 +192,7 @@ a:hover {
         @apply border-border outline-ring/50;
     }
     body {
+        overflow-x: hidden !important;
         @apply bg-background text-foreground;
     }
 }

@@ -2,9 +2,7 @@
 
 import { type User } from "@/model/user";
 import { type ColumnDef } from "@tanstack/react-table";
-import {
-    ExportSquare
-} from "iconsax-reactjs";
+import { ExportSquare } from "iconsax-reactjs";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "./ui/avatar";
 
@@ -39,14 +37,12 @@ export const clientColumns: ColumnDef<User>[] = [
         },
     },
 
-    // AGE — add "yrs"
     {
         accessorKey: "age",
         header: "Age",
         cell: ({ row }) => <span>{row.original.age}</span>,
     },
 
-    // HEIGHT — add "cm"
     {
         accessorKey: "height",
         header: "Height",
@@ -60,7 +56,6 @@ export const clientColumns: ColumnDef<User>[] = [
         ),
     },
 
-    // WEIGHT — add "kg" + icon
     {
         accessorKey: "weight",
         header: "Weight",
@@ -76,14 +71,23 @@ export const clientColumns: ColumnDef<User>[] = [
         ),
     },
 
-    // GENDER — badge
     {
         accessorKey: "gender",
         header: "Gender",
-        cell: ({ row }) => <span>{row.original.gender}</span>,
+        cell: ({ row }) => (
+            <span
+                style={{
+                    color:
+                        row.original.gender === "FEMALE"
+                            ? "#9B5DE5"
+                            : "#66A786",
+                }}
+            >
+                {row.original.gender}
+            </span>
+        ),
     },
 
-    // ROLE — badge with colors
     {
         accessorKey: "role",
         header: "Role",
@@ -95,7 +99,7 @@ export const clientColumns: ColumnDef<User>[] = [
 
     {
         id: "actions",
-        header: "Actions",
+        header: "",
         cell: ({ row }) => {
             const navigate = useNavigate();
             const user = row.original;
