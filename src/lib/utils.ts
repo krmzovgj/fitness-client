@@ -33,3 +33,13 @@ export const mealTypes: { type: MealType; color: string }[] = [
     { type: MealType.DINNER, color: "#66A786" }, // green
     { type: MealType.SNACK, color: "#FF63C3" }, // purple
 ];
+
+export const formatDate = (date: Date | string) => {
+    const d = new Date(date);
+
+    return d.toLocaleDateString("en-US", {
+        weekday: "short",
+        day: "2-digit",
+        month: "short",
+    });
+};

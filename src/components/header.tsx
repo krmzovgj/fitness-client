@@ -37,7 +37,7 @@ export const Header = ({ user }: { user?: User }) => {
             <div className="flex items-center gap-x-5">
                 {user && (
                     <div className="flex items-center gap-x-2">
-                        <div>
+                        <div className="hidden md:block">
                             <h3 className="text-right font-medium">
                                 {user?.firstName} {user?.lastName}
                             </h3>

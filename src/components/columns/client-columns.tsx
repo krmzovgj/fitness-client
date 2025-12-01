@@ -4,11 +4,12 @@ import { type User } from "@/model/user";
 import { type ColumnDef } from "@tanstack/react-table";
 import { ExportSquare } from "iconsax-reactjs";
 import { useNavigate } from "react-router-dom";
-import { Avatar } from "./ui/avatar";
+import { Avatar } from "../ui/avatar";
+import { formatDate } from "@/lib/utils";
 
 export const clientColumns: ColumnDef<User>[] = [
     {
-        accessorFn: (row) =>    `${row.firstName} ${row.lastName}`,
+        accessorFn: (row) => `${row.firstName} ${row.lastName}`,
         id: "fullName",
         header: "Full Name",
         cell: ({ row }) => {
@@ -95,7 +96,13 @@ export const clientColumns: ColumnDef<User>[] = [
             return <span>{role}</span>;
         },
     },
-
+    {
+        accessorKey: "createdAt",
+        header: "Created At",
+        cell: ({ row }) => {
+            return <span>{formatDate(row.original.createdAt)}</span>;
+        },
+    },
     {
         id: "actions",
         header: "",

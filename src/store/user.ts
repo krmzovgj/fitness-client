@@ -1,17 +1,5 @@
 import { create } from "zustand";
-import type { UserRole } from "../model/user";
-
-type User = {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    weight: number;
-    height: number;
-    age: number;
-    gender: string;
-    role: UserRole;
-};
+import type { User, UserRole } from "../model/user";
 
 type UserStore = {
     user: User | null;

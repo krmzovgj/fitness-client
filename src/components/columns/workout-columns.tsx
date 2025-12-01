@@ -7,7 +7,7 @@ import { useUserStore } from "@/store/user";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Edit, ExportSquare } from "iconsax-reactjs";
 import { useNavigate } from "react-router-dom";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 export const workoutColumns = (
     setSelectedWorkout: (workout: Workout) => void,
@@ -38,6 +38,9 @@ export const workoutColumns = (
     {
         accessorKey: "name",
         header: "Name",
+        cell: ({ row }) => (
+            <span className="whitespace-nowrap">{row.original.name}</span>
+        ),
     },
     {
         id: "actions",

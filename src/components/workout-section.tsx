@@ -16,8 +16,9 @@ import { UserRole, type User } from "@/model/user";
 import type { Workout } from "@/model/workout";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
-import { Weight } from "iconsax-reactjs";
+import { Box1 } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
+import { workoutColumns } from "./columns/workout-columns";
 import { DataTable } from "./data-table";
 import { Button } from "./ui/button";
 import {
@@ -36,7 +37,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "./ui/select";
-import { workoutColumns } from "./workout-columns";
 import { Spinner } from "./ui/spinner";
 
 export const WorkoutSection = ({ client }: { client: User }) => {
@@ -146,7 +146,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-x-2">
                         <div className="w-1 h-5 bg-[#66A786] rounded-full"></div>
-                        <h1 className="text-2xl">
+                        <h1 className="text-xl md:text-2xl">
                             {client?.firstName}'s Workout Plan
                         </h1>
                     </div>
@@ -160,7 +160,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                         <Empty>
                             <EmptyHeader>
                                 <EmptyMedia variant="icon">
-                                    <Weight
+                                    <Box1
                                         variant="Bold"
                                         size={20}
                                         color="#000"

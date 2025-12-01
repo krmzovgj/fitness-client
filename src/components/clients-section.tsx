@@ -5,7 +5,7 @@ import { useClientStore } from "@/store/client";
 import { useUserStore } from "@/store/user";
 import { Profile2User } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
-import { clientColumns } from "./client-columns";
+import { clientColumns } from "./columns/client-columns";
 import { DataTable } from "./data-table";
 import { Button } from "./ui/button";
 import {
@@ -18,11 +18,10 @@ import {
 } from "./ui/dialog";
 import {
     Empty,
-    EmptyContent,
     EmptyDescription,
     EmptyHeader,
     EmptyMedia,
-    EmptyTitle,
+    EmptyTitle
 } from "./ui/empty";
 import { Input } from "./ui/input";
 import { Spinner } from "./ui/spinner";
@@ -135,13 +134,6 @@ export const ClientsSection = () => {
                                             first client.
                                         </EmptyDescription>
                                     </EmptyHeader>
-                                    <EmptyContent>
-                                        <div className="flex gap-2">
-                                            <Button variant="default">
-                                                Add Client
-                                            </Button>
-                                        </div>
-                                    </EmptyContent>
                                 </Empty>
                             ) : (
                                 <>

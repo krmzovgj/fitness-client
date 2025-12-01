@@ -1,11 +1,9 @@
-import type { Day } from "./day";
 
 export interface Exercise {
     id: string;
     name: string;
     sets: number;
-    reps: number;
-    day: Day;
+    reps: string;
     workoutId: string;
     createdAt: string; 
     updatedAt: string; 

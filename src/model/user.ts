@@ -13,4 +13,5 @@ export interface User {
     weight: number;
     gender: string;
     role: UserRole;
+    createdAt: string;
 }

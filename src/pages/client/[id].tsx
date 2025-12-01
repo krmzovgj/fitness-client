@@ -11,12 +11,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const Client = () => {
-    
     const navigate = useNavigate();
     const { user } = useUserStore();
     const { token } = useAuthStore();
     const { id } = useParams();
-
 
     const [client, setClient] = useState<User | null>(null);
     const [loadingClient, setLoadingClient] = useState(false);
@@ -37,10 +35,17 @@ export const Client = () => {
         fetchClient();
     }, [id, token]);
 
-
     return (
         <div className="h-full overflow-x-hidden md:h-screen overflow-y-scroll flex flex-col w-screen md:p-10 p-8">
             <Header user={user!} />
+
+            {!loadingClient && !client && (
+                <div>
+                    <div className="flex items-center justify-center h-screen">
+                        Internal Error. Try again later
+                    </div>
+                </div>
+            )}
 
             {loadingClient ? (
                 <div className="h-full flex justify-center items-center">
@@ -68,7 +73,7 @@ export const Client = () => {
 
                         <UserStats client={client!} />
                     </div>
-                    
+
                     <WorkoutSection client={client!} />
                 </div>
             )}
