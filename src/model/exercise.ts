@@ -1,12 +1,4 @@
-export enum Day {
-    MONDAY = "MONDAY",
-    TUESDAY = "TUESDAY",
-    WEDNESDAY = "WEDNESDAY",
-    THURSDAY = "THURSDAY",
-    FRIDAY = "FRIDAY",
-    SATURDAY = "SATURDAY",
-    SUNDAY = "SUNDAY"
-}
+import type { Day } from "./day";
 
 export interface Exercise {
     id: string;

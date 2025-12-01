@@ -8,6 +8,8 @@ import { useEffect } from "react";
 import { getMe } from "./api/user";
 import { useUserStore } from "./store/user";
 import { Client } from "./pages/client/[id]";
+import { Exercises } from "./pages/client/exercises";
+import { Meals } from "./pages/client/meals";
 
 function App() {
     const { token } = useAuthStore();
@@ -39,6 +41,24 @@ function App() {
                 element={
                     <ProtectedRoute>
                         <Client />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/client/:id/exercises"
+                element={
+                    <ProtectedRoute>
+                        <Exercises />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/client/:id/meals"
+                element={
+                    <ProtectedRoute>
+                        <Meals />
                     </ProtectedRoute>
                 }
             />

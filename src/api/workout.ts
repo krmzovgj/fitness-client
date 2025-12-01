@@ -1,11 +1,53 @@
+import type { Workout } from "@/model/workout";
 import { api } from "./axios";
+import type { Day } from "@/model/day";
 
-export const getWorkout = async (token: string, clientId: number) => {
-    const response = await api.get(`/workout/${clientId}`, {
+interface CreateWorkoutDto {
+    name: string;
+    day: Day;
+    clientId: number;
+}
+
+interface UpdateWorkoutDto {
+    name: string;
+    day: Day;
+    clientId: number;
+}
+
+export const getWorkoutsByClient = async (token: string, clientId: number) => {
+    const response = await api.get<Workout[]>(`/workout/${clientId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     });
+
+    return response;
+};
+
+export const createWorkout = async (token: string, dto: CreateWorkoutDto) => {
+    const response = await api.post("/workout", dto, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return response;
+};
+
+export const updateWorkout = async (
+    workoutId: string,
+    token: string,
+    dto: UpdateWorkoutDto
+) => {
+    const response = await api.put(
+        `/workout/${workoutId}`,
+        { name: dto.name, day: dto.day, clientId: dto.clientId },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
 
     return response;
 };

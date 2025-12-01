@@ -1,5 +1,5 @@
-import { Day, type Exercise } from "@/model/exercise";
-import { Type } from "@/model/meal";
+import { Day } from "@/model/day";
+import { MealType } from "@/model/meal-type";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -17,12 +17,6 @@ export const dayOrder: Day[] = [
     Day.SUNDAY,
 ];
 
-export const sortExercisesByDay = (exercises: Exercise[]): Exercise[] => {
-    return [...exercises].sort(
-        (a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day)
-    );
-};
-
 export const dayColors: { day: Day; color: string }[] = [
     { day: Day.MONDAY, color: "#FF8C00" }, // orange
     { day: Day.TUESDAY, color: "#FF6B6B" }, // red
@@ -33,9 +27,9 @@ export const dayColors: { day: Day; color: string }[] = [
     { day: Day.SUNDAY, color: "#292929" }, // purple
 ];
 
-export const mealTypes: { type: Type; color: string }[] = [
-    { type: Type.BREKFAST, color: "#FF8C00" }, // orange
-    { type: Type.LUNCH, color: "#FF6B6B" }, // red
-    { type: Type.DINNER, color: "#66A786" }, // green
-    { type: Type.SNACK, color: "#FF63C3" }, // purple
+export const mealTypes: { type: MealType; color: string }[] = [
+    { type: MealType.BREKFAST, color: "#FF8C00" }, // orange
+    { type: MealType.LUNCH, color: "#FF6B6B" }, // red
+    { type: MealType.DINNER, color: "#66A786" }, // green
+    { type: MealType.SNACK, color: "#FF63C3" }, // purple
 ];

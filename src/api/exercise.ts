@@ -1,19 +1,17 @@
-import type { Day, Exercise } from "@/model/exercise";
+import type { Exercise } from "@/model/exercise";
 import { api } from "./axios";
 
 export interface CreateExerciseDto {
     name: string;
     sets: number;
-    reps: number;
-    day: Day;
+    reps: string;
     workoutId: string;
 }
 
 export interface UpdateExerciseDto {
     name: string;
     sets: number;
-    reps: number;
-    day: Day;
+    reps: string;
 }
 
 export const getExercisesByWorkout = async (

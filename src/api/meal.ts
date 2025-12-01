@@ -1,14 +1,12 @@
-import type { Day } from "@/model/exercise";
+import type { MealType } from "@/model/meal-type";
 import { api } from "./axios";
-import type { Type } from "@/model/meal";
 
 export interface CreateMealDto {
     name: string;
     description: string;
     cal?: number;
     protein?: number;
-    day: Day;
-    type: Type;
+    type: MealType;
     dietId: string;
 }
 

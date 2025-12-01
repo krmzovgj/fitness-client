@@ -7,9 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { Avatar } from "./ui/avatar";
 
 export const clientColumns: ColumnDef<User>[] = [
-    // FULL NAME (computed)
     {
-        accessorFn: (row) => `${row.firstName} ${row.lastName}`,
+        accessorFn: (row) =>    `${row.firstName} ${row.lastName}`,
         id: "fullName",
         header: "Full Name",
         cell: ({ row }) => {

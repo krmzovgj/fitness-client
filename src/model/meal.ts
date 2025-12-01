@@ -1,11 +1,4 @@
-import type { Day } from "./exercise";
-
-export enum Type {
-    BREKFAST = 'BREKFAST',
-    LUNCH = 'LUNCH',
-    DINNER = 'DINNER',
-    SNACK = 'SNACK'
-}
+import type { MealType } from "./meal-type";
 
 export interface Meal {
     id: string;
@@ -13,8 +6,8 @@ export interface Meal {
     desctription: string;
     cal?: number;
     protein?: number;
-    day: Day;
-    type: Type,
+    type: MealType;
+    dietId: string;
     createdAt: string;
     updatedAt: string;
 }

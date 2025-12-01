@@ -9,10 +9,11 @@ import { Header } from "@/components/header";
 import { Spinner } from "@/components/ui/spinner";
 
 export const SignIn = () => {
+    const navigate = useNavigate();
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
-    const navigate = useNavigate();
     const [loading, setloading] = useState(false);
+    const [error, seterror] = useState("");
 
     const handleSignIn = async () => {
         try {
@@ -21,7 +22,14 @@ export const SignIn = () => {
             useAuthStore.getState().setToken(response.token);
 
             navigate("/");
-        } catch (error) {
+        } catch (error: any) {
+            const msg = error?.response?.data?.message;
+
+            if (Array.isArray(msg)) {
+                seterror(msg[0]);
+            } else {
+                seterror(msg);
+            }
         } finally {
             setloading(false);
         }
@@ -43,6 +51,10 @@ export const SignIn = () => {
                 </div>
 
                 <div className="mt-6 mb-3 flex flex-col gap-y-3">
+                    {error !== "" && (
+                        <div className="text-red-500 text-sm">{error.charAt(0).toUpperCase() + error.slice(1)}</div>
+                    )}
+
                     <Input
                         placeholder="Email"
                         value={email}
@@ -52,12 +64,12 @@ export const SignIn = () => {
                         placeholder="Password"
                         value={password}
                         onChange={(e: any) => setpassword(e.target.value)}
-                        security=""
+                        type="password"
                     />
                 </div>
 
                 <Button
-                    className="self-start"
+                    className="self-end"
                     variant="default"
                     onClick={handleSignIn}
                 >
