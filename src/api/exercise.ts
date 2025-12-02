@@ -12,6 +12,7 @@ export interface UpdateExerciseDto {
     name: string;
     sets: number;
     reps: string;
+    actualPerformance?: string;
 }
 
 export const getExercisesByWorkout = async (

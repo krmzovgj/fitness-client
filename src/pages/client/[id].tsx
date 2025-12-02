@@ -1,4 +1,5 @@
 import { getUserById } from "@/api/user";
+import { DietSection } from "@/components/diet-section";
 import { Header } from "@/components/header";
 import { Spinner } from "@/components/ui/spinner";
 import { UserStats } from "@/components/user-stats";
@@ -75,6 +76,8 @@ export const Client = () => {
                     </div>
 
                     <WorkoutSection client={client!} />
+
+                    <DietSection client={client!} />
                 </div>
             )}
         </div>

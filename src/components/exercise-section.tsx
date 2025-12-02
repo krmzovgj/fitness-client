@@ -1,4 +1,8 @@
-import { createExercise, getExercisesByWorkout } from "@/api/exercise";
+import {
+    createExercise,
+    getExercisesByWorkout,
+    updateExercise,
+} from "@/api/exercise";
 import type { Day } from "@/model/day";
 import type { Exercise } from "@/model/exercise";
 import { UserRole } from "@/model/user";
@@ -39,7 +43,6 @@ export const ExerciseSection = ({
     state: any;
     clientName?: string;
 }) => {
-    console.log("🚀 ~ ExerciseSection ~ state:", state);
     const { user } = useUserStore();
     const { token } = useAuthStore();
     const navigate = useNavigate();
@@ -58,7 +61,7 @@ export const ExerciseSection = ({
     );
     const [loadingExercises, setloadingExercises] = useState(true);
 
-    const handleGetWorkoutsByClient = async () => {
+    const handleGetExercisesByWorkout = async () => {
         if (!token) return;
         try {
             const response = await getExercisesByWorkout(token, workoutId);
@@ -70,7 +73,7 @@ export const ExerciseSection = ({
     };
 
     useEffect(() => {
-        handleGetWorkoutsByClient();
+        handleGetExercisesByWorkout();
     }, [workoutId, token]);
 
     const handleCreateExercise = async () => {
@@ -85,7 +88,7 @@ export const ExerciseSection = ({
 
             if (response.status === 201) {
                 setdialogOpen(false);
-                handleGetWorkoutsByClient();
+                handleGetExercisesByWorkout();
                 setname("");
                 setreps("");
                 setsets(0);
@@ -102,6 +105,49 @@ export const ExerciseSection = ({
             setcreatingExercise(false);
         }
     };
+
+    const handleUpdateExercise = async () => {
+        if (!token) return;
+
+        const payload = {
+            name,
+            sets,
+            reps,
+            actualPerformance: selectedExercise?.actualPerformance,
+        };
+
+        try {
+            setcreatingExercise(true);
+
+            const response = await updateExercise(
+                selectedExercise?.id!,
+                payload,
+                token
+            );
+
+            if (response.status === 200) {
+                setdialogOpen(false);
+                setselectedExercise(null);
+                handleGetExercisesByWorkout();
+            }
+        } catch (error: any) {
+            const msg = error.response.data.message;
+
+            if (Array.isArray(msg)) {
+                seterror(msg[0]);
+            } else {
+                seterror(msg);
+            }
+        } finally {
+            setcreatingExercise(false);
+        }
+    };
+
+    useEffect(() => {
+        setname(selectedExercise?.name!);
+        setsets(selectedExercise?.sets!);
+        setreps(selectedExercise?.reps!);
+    }, [selectedExercise]);
 
     return (
         <Dialog open={dialogOpen} onOpenChange={setdialogOpen}>
@@ -160,7 +206,11 @@ export const ExerciseSection = ({
                         ) : (
                             <DataTable
                                 data={exercises}
-                                columns={ExerciseColumns()}
+                                columns={ExerciseColumns(
+                                    setselectedExercise,
+                                    setdialogOpen,
+                                    handleGetExercisesByWorkout
+                                )}
                             />
                         )}
                     </div>
@@ -202,8 +252,15 @@ export const ExerciseSection = ({
                             {error.charAt(0).toUpperCase() + error.slice(1)}
                         </div>
                     )}
-                    <DialogFooter onClick={handleCreateExercise}>
-                        <Button className="self-end">
+                    <DialogFooter>
+                        <Button
+                            onClick={
+                                selectedExercise
+                                    ? handleUpdateExercise
+                                    : handleCreateExercise
+                            }
+                            className="self-end"
+                        >
                             {creatingExercise ? (
                                 <Spinner className="size-6" />
                             ) : (
@@ -216,6 +273,8 @@ export const ExerciseSection = ({
                     </DialogFooter>
                 </DialogContent>
             </div>
+
+            
         </Dialog>
     );
 };
