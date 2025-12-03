@@ -5,9 +5,9 @@ import { useUserStore } from "../store/user";
 import { ClientsSection } from "@/components/clients-section";
 
 export const Home = () => {
-    const { user } = useUserStore();
-    
-    if (!user) {
+    const { user, loading } = useUserStore();
+
+    if (!user && !loading) {
         return (
             <div className="flex items-center justify-center h-screen">
                 Internal Error. Try again later
@@ -40,7 +40,7 @@ export const Home = () => {
                 </div>
             </div>
 
-            {user.role === UserRole.TRAINER && <ClientsSection />}
+            {user?.role === UserRole.TRAINER && <ClientsSection />}
         </div>
     );
 };

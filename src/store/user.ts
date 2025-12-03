@@ -3,21 +3,37 @@ import type { User } from "../model/user";
 
 type UserStore = {
     user: User | null;
+    isAuthenticated: boolean;
+    loading: boolean;
     setUser: (user: User) => void;
     clearUser: () => void;
+    setLoading: (loading: boolean) => void;
 };
 
 export const useUserStore = create<UserStore>((set) => ({
     user: null,
-    setUser: (user) =>
+    isAuthenticated: false,
+    loading: true,
+
+    setUser: (user) => {
         set(() => ({
             user,
-            isAutnenticated: true,
-        })),
+            isAuthenticated: true,
+            loading: false,
+        }));
+    },
+
     clearUser: () => {
         set(() => ({
             user: null,
-            isAutneticated: false,
+            isAuthenticated: false,
+            loading: false,
+        }));
+    },
+
+    setLoading: (loading) => {
+        set(() => ({
+            loading,
         }));
     },
 }));

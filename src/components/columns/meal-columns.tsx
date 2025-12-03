@@ -43,7 +43,7 @@ export const MealColumns = (
     },
     {
         accessorKey: "description",
-        header: "Description",
+        header: "Recepie",
         cell: ({ row }) => {
             const match = mealTypes.find(
                 (type) => type.type === row.original.type
