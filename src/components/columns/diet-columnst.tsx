@@ -49,16 +49,16 @@ export const dietColumns = (
             const { user } = useUserStore();
             if (user?.role === UserRole.CLIENT) return null;
 
-            // const handleOpenEdit = () => {
-            //     setopen(true);
-            //     setSelectedWorkout(row.original);
-            // };
+            const handleOpenEdit = () => {
+                setopen(true);
+                setSelectedDiet(row.original);
+            };
 
             return (
                 <div>
                     {user?.role === UserRole.TRAINER && (
                         <div className="flex items-center gap-x-2">
-                            <Button variant="outline">
+                            <Button onClick={handleOpenEdit} variant="outline">
                                 <Edit
                                     variant="Bulk"
                                     size={18}
@@ -80,7 +80,7 @@ export const dietColumns = (
             return (
                 <div
                     onClick={() =>
-                        navigate(`/client/${row.original.id}/exercises`, {
+                        navigate(`/client/${row.original.id}/meals`, {
                             state: {
                                 name: row.original.name,
                                 day: row.original.day,

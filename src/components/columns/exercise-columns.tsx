@@ -17,7 +17,7 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger
+    AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -41,7 +41,7 @@ export const ExerciseColumns = (
         cell: ({ row }) => (
             <span className="whitespace-nowrap">
                 {row.original.sets}
-                <span className="font-bold text-xs text-foreground/60">x</span>
+                <span className="font-bold text-xs text-[#66A786]">x</span>
             </span>
         ),
     },
@@ -51,7 +51,7 @@ export const ExerciseColumns = (
         cell: ({ row }) => (
             <span className="whitespace-nowrap">
                 {row.original.reps}
-                <span className="font-bold text-xs text-foreground/60">x</span>
+                <span className="font-bold text-xs text-[#66A786]">x</span>
             </span>
         ),
     },
@@ -105,6 +105,7 @@ export const ExerciseColumns = (
                     {match ? (
                         <div className="flex items-center gap-x-3">
                             <Input
+                            maxLength={25}
                                 autoFocus={true}
                                 value={actualPerformance}
                                 onChange={(e) =>
@@ -150,7 +151,7 @@ export const ExerciseColumns = (
                                 </span>
                             ) : (
                                 <span className="whitespace-nowrap text-foreground/70 flex items-center gap-x-2">
-                                    N/A{" "}
+                                    N/A
                                     <Edit
                                         variant="Bulk"
                                         size={18}
@@ -256,8 +257,8 @@ export const ExerciseColumns = (
                                             Delete exercise
                                         </AlertDialogTitle>
                                         <AlertDialogDescription>
-                                            Are you sure you want to delete?
-                                            This action is irreversible.
+                                            Are you sure you want to delete this
+                                            meal? This action is irreversible.
                                         </AlertDialogDescription>
                                     </AlertDialogHeader>
 

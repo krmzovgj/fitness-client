@@ -26,3 +26,17 @@ export const createDiet = async (token: string, dto: CreateDietDto) => {
 
     return response;
 };
+
+export const updateDiet = async (
+    token: string,
+    dietId: string,
+    dto: CreateDietDto
+) => {
+    const response = await api.put(`/diet/${dietId}`, dto, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return response;
+};

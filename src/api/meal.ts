@@ -10,6 +10,7 @@ export interface CreateMealDto {
     dietId: string;
 }
 
+
 export const getMeals = async (token: string, dietId: string) => {
     const response = await api.get(`/diet/${dietId}/meal`, {
         headers: {
@@ -22,6 +23,30 @@ export const getMeals = async (token: string, dietId: string) => {
 
 export const createMeal = async (dto: CreateMealDto, token: string) => {
     const response = await api.post("/meal", dto, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return response;
+};
+
+export const updateMeal = async (
+    mealId: string,
+    dto: CreateMealDto,
+    token: string
+) => {
+    const response = await api.put(`/meal/${mealId}`, dto, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return response;
+};
+
+export const deleteMeal = async (mealId: string, token: string) => {
+    const response = await api.delete(`/meal/${mealId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

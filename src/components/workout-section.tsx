@@ -58,16 +58,16 @@ export const WorkoutSection = ({ client }: { client: User }) => {
     });
 
     const handleGetWorkoutsByClient = async () => {
-        if (!token || !client.id) return;
+        if (!token || !client?.id) return;
         try {
-            const response = await getWorkoutsByClient(token, client.id);
+            const response = await getWorkoutsByClient(token, client?.id);
             setworkouts(response.data);
         } catch (error) {}
     };
 
     useEffect(() => {
         handleGetWorkoutsByClient();
-    }, [token, client]);
+    }, [token, client?.id]);
 
     useEffect(() => {
         if (!selectedWorkout) return;
@@ -77,13 +77,13 @@ export const WorkoutSection = ({ client }: { client: User }) => {
     }, [selectedWorkout]);
 
     const handleCreateWorkout = async () => {
-        if (!token) return;
+        if (!token || !client?.id) return;
         try {
             setcreatingWorkout(true);
             const response = await createWorkout(token, {
                 name,
                 day,
-                clientId: client.id,
+                clientId: client?.id,
             });
             if (response.status === 201) {
                 setdialogOpen(false);
@@ -158,7 +158,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                             {client?.firstName}'s Workout Plan
                         </h1>
                     </div>
-                    <DialogTrigger>
+                    <DialogTrigger asChild>
                         <Button variant="default">Add Workout</Button>
                     </DialogTrigger>
                 </div>

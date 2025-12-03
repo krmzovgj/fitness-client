@@ -1,18 +1,15 @@
-import {
-    createExercise,
-    getExercisesByWorkout,
-    updateExercise,
-} from "@/api/exercise";
+import { createMeal, getMeals, updateMeal } from "@/api/meal";
+import { mealOrder, mealTypes } from "@/lib/utils";
 import type { Day } from "@/model/day";
-import type { Exercise } from "@/model/exercise";
+import type { Meal } from "@/model/meal";
 import { UserRole } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import { Dialog } from "@radix-ui/react-dialog";
-import { ArrowLeft, Weight } from "iconsax-reactjs";
+import { ArrowLeft, Book } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ExerciseColumns } from "./columns/exercise-columns";
+import { MealColumns } from "./columns/meal-columns";
 import { DataTable } from "./data-table";
 import { Button } from "./ui/button";
 import {
@@ -31,13 +28,22 @@ import {
 } from "./ui/empty";
 import { Input } from "./ui/input";
 import { Spinner } from "./ui/spinner";
+import { Textarea } from "./ui/textarea";
+import { MealType } from "@/model/meal-type";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "./ui/select";
 
-export const ExerciseSection = ({
-    workoutId,
+export const MealsSection = ({
+    dietId,
     dayMatch,
     state,
 }: {
-    workoutId: string;
+    dietId: string;
     dayMatch: { day: Day; color: string };
     state: any;
 }) => {
@@ -45,25 +51,29 @@ export const ExerciseSection = ({
     const { token } = useAuthStore();
     const navigate = useNavigate();
 
-    const [exercises, setexercises] = useState<Exercise[]>([]);
+    const [meals, setMeals] = useState<Meal[]>([]);
 
     const [name, setname] = useState("");
-    const [sets, setsets] = useState<number>(0);
-    const [reps, setreps] = useState("");
+    const [description, setdescription] = useState("");
+    const [cal, setcal] = useState<number>(0);
+    const [protein, setprotein] = useState<number>(0);
+    const [type, settype] = useState<MealType>(MealType.BREKFAST);
 
     const [dialogOpen, setdialogOpen] = useState(false);
     const [error, seterror] = useState("");
-    const [creatingExercise, setcreatingExercise] = useState(false);
-    const [selectedExercise, setselectedExercise] = useState<Exercise | null>(
-        null
-    );
+    const [creatingMeal, setCreatingMeal] = useState(false);
+    const [selectedMeal, setselectedMeal] = useState<Meal | null>(null);
     const [loadingExercises, setloadingExercises] = useState(true);
 
-    const handleGetExercisesByWorkout = async () => {
-        if (!token) return;
+    const sortedMeals = meals.sort((a, b) => {
+        return mealOrder.indexOf(a.type) - mealOrder.indexOf(b.type);
+    });
+
+    const handleGetMealsByDiet = async () => {
+        if (!token || !dietId) return;
         try {
-            const response = await getExercisesByWorkout(token, workoutId);
-            setexercises(response.data);
+            const response = await getMeals(token, dietId);
+            setMeals(response.data);
         } catch (error) {
         } finally {
             setloadingExercises(false);
@@ -71,22 +81,29 @@ export const ExerciseSection = ({
     };
 
     useEffect(() => {
-        handleGetExercisesByWorkout();
-    }, [workoutId, token]);
+        handleGetMealsByDiet();
+    }, [dietId, token]);
 
-    const handleCreateExercise = async () => {
+    const handleCreateMeal = async () => {
         if (!token) return;
         try {
-            setcreatingExercise(true);
+            setCreatingMeal(true);
 
-            const response = await createExercise(
-                { name, reps, sets, workoutId },
-                token
+            const response = await createMeal(
+                {
+                    name,
+                    description,
+                    cal,
+                    protein,
+                    type,
+                    dietId,
+                },
+                token!
             );
 
             if (response.status === 201) {
                 setdialogOpen(false);
-                handleGetExercisesByWorkout();
+                handleGetMealsByDiet();
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -97,32 +114,34 @@ export const ExerciseSection = ({
                 seterror(msg);
             }
         } finally {
-            setcreatingExercise(false);
+            setCreatingMeal(false);
         }
     };
 
-    const handleUpdateExercise = async () => {
+    const handleUpdateMeal = async () => {
         if (!token) return;
 
         const payload = {
             name,
-            sets,
-            reps,
-            actualPerformance: selectedExercise?.actualPerformance,
+            description,
+            cal,
+            protein,
+            type,
+            dietId,
         };
 
         try {
-            setcreatingExercise(true);
+            setCreatingMeal(true);
 
-            const response = await updateExercise(
-                selectedExercise?.id!,
+            const response = await updateMeal(
+                selectedMeal?.id!,
                 payload,
                 token
             );
 
             if (response.status === 200) {
                 setdialogOpen(false);
-                handleGetExercisesByWorkout();
+                handleGetMealsByDiet();
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -133,17 +152,18 @@ export const ExerciseSection = ({
                 seterror(msg);
             }
         } finally {
-            setcreatingExercise(false);
+            setCreatingMeal(false);
         }
     };
 
     useEffect(() => {
-        if (!selectedExercise) return;
+        if (!selectedMeal) return;
         
-        setname(selectedExercise?.name!);
-        setsets(selectedExercise?.sets!);
-        setreps(selectedExercise?.reps!);
-    }, [selectedExercise]);
+        setname(selectedMeal?.name!);
+        setdescription(selectedMeal?.description!);
+        setprotein(selectedMeal?.protein!);
+        setcal(selectedMeal?.cal!);
+    }, [selectedMeal]);
 
     return (
         <Dialog
@@ -152,10 +172,11 @@ export const ExerciseSection = ({
                 setdialogOpen(open);
 
                 if (!open) {
-                    setselectedExercise(null);
+                    setselectedMeal(null);
                     setname("");
-                    setsets(0);
-                    setreps("");
+                    setdescription("");
+                    setcal(0);
+                    setprotein(0);
                     seterror("");
                 }
             }}
@@ -183,7 +204,7 @@ export const ExerciseSection = ({
                     <h1 className="text-3xl font-bold">{state.name}</h1>
                 </div>
                 <DialogTrigger>
-                    <Button>Add Exercise</Button>
+                    <Button>Add Meal</Button>
                 </DialogTrigger>
             </div>
 
@@ -194,31 +215,31 @@ export const ExerciseSection = ({
                     </div>
                 ) : (
                     <div className="">
-                        {exercises.length === 0 ? (
+                        {meals.length === 0 ? (
                             <Empty>
                                 <EmptyHeader>
                                     <EmptyMedia variant="icon">
-                                        <Weight
+                                        <Book
                                             variant="Bold"
                                             size={20}
                                             color="#000"
                                         />
                                     </EmptyMedia>
-                                    <EmptyTitle>No Exercises Yet</EmptyTitle>
+                                    <EmptyTitle>No Meals Yet</EmptyTitle>
                                     <EmptyDescription>
                                         {user?.role === UserRole.TRAINER
-                                            ? "No exercises created yet. Once you create an exercise it will appear here"
-                                            : "No exercises yet. Once your trainer creates an exercise it will appear here"}
+                                            ? "No meals created yet. Once you create a meal it will appear here"
+                                            : "No meals yet. Once your trainer creates a meal it will appear here"}
                                     </EmptyDescription>
                                 </EmptyHeader>
                             </Empty>
                         ) : (
                             <DataTable
-                                data={exercises}
-                                columns={ExerciseColumns(
-                                    setselectedExercise,
+                                data={sortedMeals}
+                                columns={MealColumns(
+                                    setselectedMeal,
                                     setdialogOpen,
-                                    handleGetExercisesByWorkout
+                                    handleGetMealsByDiet
                                 )}
                             />
                         )}
@@ -227,34 +248,71 @@ export const ExerciseSection = ({
 
                 <DialogContent>
                     <DialogTitle>
-                        {selectedExercise ? "Update" : "Add"} New Exercise
+                        {selectedMeal ? "Update" : "Add"} New Meal
                     </DialogTitle>
                     <DialogDescription>
                         Fill the required fields to{" "}
-                        {selectedExercise ? "update" : "add"} a new exercise
+                        {selectedMeal ? "update" : "add"} a new meal
                     </DialogDescription>
 
                     <Input
                         value={name}
                         onChange={(e) => setname(e.target.value)}
-                        placeholder="Name e.g. Bench Press"
+                        placeholder="Name e.g. Oat Meal"
+                    />
+
+                    <Textarea
+                        rows={5}
+                        className="resize-none"
+                        value={description}
+                        onChange={(e) => setdescription(e.target.value)}
+                        placeholder="Description"
                     />
 
                     <Input
-                        value={sets === 0 ? "" : sets}
+                        value={cal === 0 ? "" : cal}
                         onChange={(e) => {
                             const value = e.target.value;
-                            setsets(value === "" ? 0 : Number(value));
+                            setcal(value === "" ? 0 : Number(value));
                         }}
-                        placeholder="Sets"
+                        placeholder="Calories (g)"
                         type="number"
                     />
 
                     <Input
-                        value={reps}
-                        onChange={(e) => setreps(e.target.value)}
-                        placeholder="Reps"
+                        value={protein === 0 ? "" : protein}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            setprotein(value === "" ? 0 : Number(value));
+                        }}
+                        placeholder="Protein (g)"
+                        type="number"
                     />
+
+                    <Select
+                        value={type}
+                        onValueChange={(value: MealType) => settype(value)}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Day" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {mealTypes.map((mealTypeItem) => (
+                                <SelectItem value={mealTypeItem.type}>
+                                    <div className="flex items-center gap-x-2">
+                                        <div
+                                            className="w-2 h-2 rounded-full"
+                                            style={{
+                                                backgroundColor:
+                                                    mealTypeItem.color,
+                                            }}
+                                        ></div>
+                                        <h2>{mealTypeItem.type}</h2>
+                                    </div>
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
 
                     {error !== "" && (
                         <div className="text-red-500 mt-2 text-sm">
@@ -264,19 +322,16 @@ export const ExerciseSection = ({
                     <DialogFooter>
                         <Button
                             onClick={
-                                selectedExercise
-                                    ? handleUpdateExercise
-                                    : handleCreateExercise
+                                selectedMeal
+                                    ? handleUpdateMeal
+                                    : handleCreateMeal
                             }
                             className="self-end"
                         >
-                            {creatingExercise ? (
+                            {creatingMeal ? (
                                 <Spinner className="size-6" />
                             ) : (
-                                <>
-                                    {selectedExercise ? "Update" : "Add"}{" "}
-                                    Exercise
-                                </>
+                                <>{selectedMeal ? "Update" : "Add"} Meal</>
                             )}
                         </Button>
                     </DialogFooter>

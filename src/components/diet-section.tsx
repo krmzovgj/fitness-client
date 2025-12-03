@@ -1,4 +1,4 @@
-import { createDiet, getDietByClient } from "@/api/diet";
+import { createDiet, getDietByClient, updateDiet } from "@/api/diet";
 import {
     Empty,
     EmptyDescription,
@@ -52,16 +52,16 @@ export const DietSection = ({ client }: { client: User }) => {
     });
 
     const handleGetDietsByClient = async () => {
-        if (!token || !client.id) return;
+        if (!token || !client?.id) return;
         try {
-            const response = await getDietByClient(client.id, token);
+            const response = await getDietByClient(client?.id, token);
             setmealDays(response.data);
         } catch (error) {}
     };
 
     useEffect(() => {
         handleGetDietsByClient();
-    }, [token, client]);
+    }, [token, client?.id]);
 
     useEffect(() => {
         if (!selectedDiet) return;
@@ -71,19 +71,17 @@ export const DietSection = ({ client }: { client: User }) => {
     }, [selectedDiet]);
 
     const handleCreateDiet = async () => {
-        if (!token) return;
+        if (!token || !client?.id) return;
         try {
             setcreatingDiet(true);
             const response = await createDiet(token, {
                 name,
                 day,
-                clientId: client.id,
+                clientId: client?.id,
             });
             if (response.status === 201) {
                 setdialogOpen(false);
                 handleGetDietsByClient();
-                setname("");
-                setday(Day.MONDAY);
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -98,44 +96,48 @@ export const DietSection = ({ client }: { client: User }) => {
         }
     };
 
-    // const handleUpdateDiet = async () => {
-    //     if (!token || !selectedDiet) return;
+    const handleUpdateDiet = async () => {
+        if (!token || !selectedDiet) return;
 
-    //     const payload = {
-    //         ...selectedDiet,
-    //         name,
-    //         day,
-    //     };
+        try {
+            setcreatingDiet(true);
+            const response = await updateDiet(token, selectedDiet?.id, {
+                name,
+                day,
+                clientId: client?.id,
+            });
 
-    //     try {
-    //         setcreatingDiet(true);
-    //         // const response = await updateWorkout(
-    //         //     selectedDiet?.id,
-    //         //     token,
-    //         //     payload
-    //         // );
+            if (response.status === 200) {
+                setdialogOpen(false);
+                handleGetDietsByClient();
+            }
+        } catch (error: any) {
+            const msg = error.response.data.message;
 
-    //         // if (response.status === 200) {
-    //         //     setdialogOpen(false);
-    //         //     handleGetDietsByClient();
-    //         //     setselectedDiet(null), setname("");
-    //         //     setday(Day.MONDAY);
-    //         // }
-    //     } catch (error: any) {
-    //         const msg = error.response.data.message;
-
-    //         if (Array.isArray(msg)) {
-    //             seterror(msg[0]);
-    //         } else {
-    //             seterror(msg);
-    //         }
-    //     } finally {
-    //         setcreatingDiet(false);
-    //     }
-    // };
+            if (Array.isArray(msg)) {
+                seterror(msg[0]);
+            } else {
+                seterror(msg);
+            }
+        } finally {
+            setcreatingDiet(false);
+        }
+    };
 
     return (
-        <Dialog open={dialogOpen} onOpenChange={setdialogOpen}>
+        <Dialog
+            open={dialogOpen}
+            onOpenChange={(open) => {
+                setdialogOpen(open);
+
+                if (!open) {
+                    setselectedDiet(null);
+                    setname("");
+                    setday(Day.MONDAY);
+                    seterror("");
+                }
+            }}
+        >
             <div className="mt-14">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-x-2">
@@ -223,8 +225,13 @@ export const DietSection = ({ client }: { client: User }) => {
                         {error.charAt(0).toUpperCase() + error.slice(1)}
                     </div>
                 )}
-                <DialogFooter onClick={handleCreateDiet}>
-                    <Button className="self-end">
+                <DialogFooter>
+                    <Button
+                        onClick={
+                            selectedDiet ? handleUpdateDiet : handleCreateDiet
+                        }
+                        className="self-end"
+                    >
                         {creatingDiet ? (
                             <Spinner className="size-6" />
                         ) : (
