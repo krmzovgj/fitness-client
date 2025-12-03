@@ -88,8 +88,6 @@ export const WorkoutSection = ({ client }: { client: User }) => {
             if (response.status === 201) {
                 setdialogOpen(false);
                 handleGetWorkoutsByClient();
-                setname("");
-                setday(Day.MONDAY);
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -124,8 +122,6 @@ export const WorkoutSection = ({ client }: { client: User }) => {
             if (response.status === 200) {
                 setdialogOpen(false);
                 handleGetWorkoutsByClient();
-                setselectedWorkout(null), setname("");
-                setday(Day.MONDAY);
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -141,11 +137,23 @@ export const WorkoutSection = ({ client }: { client: User }) => {
     };
 
     return (
-        <Dialog open={dialogOpen} onOpenChange={setdialogOpen}>
+        <Dialog
+            open={dialogOpen}
+            onOpenChange={(open) => {
+                setdialogOpen(open);
+
+                if (!open) {
+                    setselectedWorkout(null);
+                    setname("");
+                    setday(Day.MONDAY);
+                    seterror("");
+                }
+            }}
+        >
             <div className="mt-14">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-x-2">
-                        <div className="w-1 h-5 bg-[#66A786] rounded-full"></div>
+                        <div className="w-1 h-5 bg-foreground rounded-full"></div>
                         <h1 className="text-xl md:text-2xl">
                             {client?.firstName}'s Workout Plan
                         </h1>

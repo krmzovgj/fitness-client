@@ -10,8 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 
 export const dietColumns = (
-    setSelectedDiet?: (workout: Diet) => void,
-    setopen?: (open: boolean) => void
+    setSelectedDiet: (diet: Diet) => void,
+    setopen: (open: boolean) => void
 ): ColumnDef<Diet>[] => [
     {
         accessorKey: "day",

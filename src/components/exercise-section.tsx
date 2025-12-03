@@ -36,12 +36,10 @@ export const ExerciseSection = ({
     workoutId,
     dayMatch,
     state,
-    clientName,
 }: {
     workoutId: string;
     dayMatch: { day: Day; color: string };
     state: any;
-    clientName?: string;
 }) => {
     const { user } = useUserStore();
     const { token } = useAuthStore();
@@ -89,9 +87,6 @@ export const ExerciseSection = ({
             if (response.status === 201) {
                 setdialogOpen(false);
                 handleGetExercisesByWorkout();
-                setname("");
-                setreps("");
-                setsets(0);
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -127,7 +122,6 @@ export const ExerciseSection = ({
 
             if (response.status === 200) {
                 setdialogOpen(false);
-                setselectedExercise(null);
                 handleGetExercisesByWorkout();
             }
         } catch (error: any) {
@@ -150,7 +144,20 @@ export const ExerciseSection = ({
     }, [selectedExercise]);
 
     return (
-        <Dialog open={dialogOpen} onOpenChange={setdialogOpen}>
+        <Dialog
+            open={dialogOpen}
+            onOpenChange={(open) => {
+                setdialogOpen(open);
+
+                if (!open) {
+                    setselectedExercise(null);
+                    setname("");
+                    setsets(0);
+                    setreps("");
+                    seterror("");
+                }
+            }}
+        >
             <div className="flex items-end justify-between">
                 <div className="mt-20 mb-10 md:mb-0">
                     <div className="flex items-center gap-x-3">
@@ -273,8 +280,6 @@ export const ExerciseSection = ({
                     </DialogFooter>
                 </DialogContent>
             </div>
-
-            
         </Dialog>
     );
 };

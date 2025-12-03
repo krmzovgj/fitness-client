@@ -10,7 +10,6 @@ import { dayColors, dayOrder } from "@/lib/utils";
 import { Day } from "@/model/day";
 import type { Diet } from "@/model/diet";
 import { UserRole, type User } from "@/model/user";
-import type { Workout } from "@/model/workout";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import { Book } from "iconsax-reactjs";
@@ -46,7 +45,7 @@ export const DietSection = ({ client }: { client: User }) => {
     const [error, seterror] = useState("");
     const [creatingDiet, setcreatingDiet] = useState(false);
     const [dialogOpen, setdialogOpen] = useState(false);
-    const [selectedDiet, setselectedDiet] = useState<Workout | null>(null);
+    const [selectedDiet, setselectedDiet] = useState<Diet | null>(null);
 
     const sortedMealDays = mealDays.sort((a, b) => {
         return dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day);
@@ -140,7 +139,7 @@ export const DietSection = ({ client }: { client: User }) => {
             <div className="mt-14">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-x-2">
-                        <div className="w-1 h-5 bg-[#FF6B6B] rounded-full"></div>
+                        <div className="w-1 h-5 bg-foreground rounded-full"></div>
                         <h1 className="text-xl md:text-2xl">
                             {client?.firstName}'s Diet Plan
                         </h1>
@@ -172,7 +171,10 @@ export const DietSection = ({ client }: { client: User }) => {
                     ) : (
                         <DataTable
                             data={sortedMealDays}
-                            columns={dietColumns()}
+                            columns={dietColumns(
+                                setselectedDiet,
+                                setdialogOpen
+                            )}
                         />
                     )}
                 </div>

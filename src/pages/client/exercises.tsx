@@ -1,13 +1,11 @@
 import { ExerciseSection } from "@/components/exercise-section";
 import { Header } from "@/components/header";
 import { dayColors } from "@/lib/utils";
-import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import { useLocation, useParams } from "react-router-dom";
 
 export const Exercises = () => {
     const { user } = useUserStore();
-    const { token } = useAuthStore();
     const { id } = useParams();
     const { state } = useLocation();
 

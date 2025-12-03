@@ -9,19 +9,18 @@ import { useUserStore } from "@/store/user";
 import type { ColumnDef } from "@tanstack/react-table";
 import { CloseCircle, Edit, TickCircle, Trash } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import {
     AlertDialog,
-    AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
+    AlertDialogTrigger
 } from "../ui/alert-dialog";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 import { Spinner } from "../ui/spinner";
 
 export const ExerciseColumns = (
@@ -132,7 +131,7 @@ export const ExerciseColumns = (
                                         setEditingPerformanceId(null)
                                     }
                                     className="cursor-pointer"
-                                    variant="Bold"
+                                    variant="Bulk"
                                     size={20}
                                     color="red"
                                 />
