@@ -13,6 +13,16 @@ interface CreateClientDto {
     password: string;
 }
 
+interface UpdateClientDto {
+    firstName: string;
+    lastName: string;
+    email: string;
+    age: number | any;
+    height: number | any;
+    weight: number | any;
+    gender: string;
+}
+
 export const addClient = async (token: string, data: CreateClientDto) => {
     const response = await api.post("/user/client", data, {
         headers: {
@@ -25,6 +35,20 @@ export const addClient = async (token: string, data: CreateClientDto) => {
 
 export const getClients = async (token: string) => {
     const response = await api.get<User[]>("/user/client", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return response;
+};
+
+export const updateClient = async (
+    userId: number,
+    token: string,
+    data: UpdateClientDto
+) => {
+    const response = await api.put(`/user/${userId}`, data, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

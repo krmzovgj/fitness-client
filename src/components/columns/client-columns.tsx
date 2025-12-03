@@ -1,13 +1,33 @@
 "use client";
 
-import { type User } from "@/model/user";
+import { UserRole, type User } from "@/model/user";
 import { type ColumnDef } from "@tanstack/react-table";
-import { ExportSquare } from "iconsax-reactjs";
+import { Edit, ExportSquare, Trash } from "iconsax-reactjs";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "../ui/avatar";
 import { formatDate } from "@/lib/utils";
+import { useUserStore } from "@/store/user";
+import { useAuthStore } from "@/store/auth";
+import { useState } from "react";
+import { deleteUser } from "@/api/user";
+import { Button } from "../ui/button";
+import {
+    AlertDialog,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "../ui/alert-dialog";
+import { Spinner } from "../ui/spinner";
 
-export const clientColumns: ColumnDef<User>[] = [
+export const clientColumns = (
+    setSelectedUser: (user: User | null) => void,
+    setopen: (open: boolean) => void,
+    handleGetClients: () => void
+): ColumnDef<User>[] => [
     {
         accessorFn: (row) => `${row.firstName} ${row.lastName}`,
         id: "fullName",
@@ -105,6 +125,101 @@ export const clientColumns: ColumnDef<User>[] = [
     },
     {
         id: "actions",
+        header: "",
+        cell: ({ row }) => {
+            const { user } = useUserStore();
+            const { token } = useAuthStore();
+            const [openAlertDialog, setOpenAlertDialog] = useState(false);
+            const [deletingClient, setdeletingClient] = useState(false);
+
+            if (user?.role === UserRole.CLIENT) return null;
+
+            const handleOpenEdit = () => {
+                setopen(true);
+                setSelectedUser(row.original);
+            };
+
+            const handleDeleteClient = async () => {
+                try {
+                    setdeletingClient(true);
+
+                    const response = await deleteUser(row.original.id, token!);
+
+                    if (response.status === 200) {
+                        handleGetClients();
+                        setOpenAlertDialog(false);
+                    }
+                } finally {
+                    setdeletingClient(false);
+                }
+            };
+
+            return (
+                <div className="whitespace-nowrap">
+                    {user?.role === UserRole.TRAINER && (
+                        <div className="flex items-center gap-x-2">
+                            <Button onClick={handleOpenEdit} variant="outline">
+                                <Edit
+                                    variant="Bulk"
+                                    size={18}
+                                    color="#292929"
+                                />
+                                Edit
+                            </Button>
+
+                            <AlertDialog
+                                open={openAlertDialog}
+                                onOpenChange={setOpenAlertDialog}
+                            >
+                                <AlertDialogTrigger asChild>
+                                    <Button variant="outline">
+                                        <Trash
+                                            variant="Bulk"
+                                            size={18}
+                                            color="red"
+                                        />
+                                        Delete
+                                    </Button>
+                                </AlertDialogTrigger>
+
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>
+                                            Delete client
+                                        </AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            Are you sure you want to delete this
+                                            client? This action is irreversible.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>
+                                            Cancel
+                                        </AlertDialogCancel>
+
+                                        <Button
+                                            variant="destructive"
+                                            onClick={handleDeleteClient}
+                                        >
+                                            {deletingClient ? (
+                                                <Spinner className="size-6" />
+                                            ) : (
+                                                "Delete Client"
+                                            )}
+                                        </Button>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        </div>
+                    )}
+                </div>
+            );
+        },
+    },
+
+    {
+        id: "open",
         header: "",
         cell: ({ row }) => {
             const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import { addClient, getClients } from "@/api/client";
+import { addClient, getClients, updateClient } from "@/api/client";
 import { UserRole, type User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useClientStore } from "@/store/client";
@@ -21,7 +21,7 @@ import {
     EmptyDescription,
     EmptyHeader,
     EmptyMedia,
-    EmptyTitle
+    EmptyTitle,
 } from "./ui/empty";
 import { Input } from "./ui/input";
 import { Spinner } from "./ui/spinner";
@@ -33,7 +33,7 @@ export const ClientsSection = () => {
 
     const [loadingClients, setloadingClients] = useState(false);
     const [creatingClient, setcreatingClient] = useState(false);
-
+    const [selectedClient, setselectedClient] = useState<User | null>(null);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -99,8 +99,76 @@ export const ClientsSection = () => {
         }
     };
 
+    const handleUpdateClient = async () => {
+        if (!selectedClient) return;
+        try {
+            setcreatingClient(true);
+
+            const payload = {
+                firstName,
+                lastName,
+                email,
+                age,
+                gender,
+                weight,
+                height,
+            };
+
+            const response = await updateClient(
+                selectedClient?.id,
+                token!,
+                payload
+            );
+            if (response.status === 200) {
+                handleGetClients();
+                setOpen(false);
+            }
+        } catch (error: any) {
+            if (error.response?.data?.message) {
+                const msg = error.response.data.message;
+
+                if (Array.isArray(msg)) {
+                    seterror(msg[0]);
+                } else {
+                    seterror(msg);
+                }
+            }
+        } finally {
+            setcreatingClient(false);
+        }
+    };
+
+    useEffect(() => {
+        if (!selectedClient) return;
+
+        setFirstName(selectedClient.firstName);
+        setLastName(selectedClient.lastName);
+        setEmail(selectedClient.email);
+        setAge(selectedClient.age);
+        setWeight(selectedClient.weight);
+        setHeight(selectedClient.height);
+        setGender(selectedClient.gender);
+    }, [selectedClient]);
+
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog
+            open={open}
+            onOpenChange={(open) => {
+                setOpen(open);
+
+                if (!open) {
+                    setselectedClient(null);
+                    setFirstName("");
+                    setLastName("");
+                    setAge(0);
+                    setHeight(0);
+                    setWeight(0);
+                    setEmail("");
+                    setGender("");
+                    setPassword("");
+                }
+            }}
+        >
             <div>
                 {user?.role === UserRole.TRAINER && (
                     <div className="mt-14">
@@ -139,7 +207,11 @@ export const ClientsSection = () => {
                                 <>
                                     {!loadingClients && (
                                         <DataTable<User>
-                                            columns={clientColumns}
+                                            columns={clientColumns(
+                                                setselectedClient,
+                                                setOpen,
+                                                handleGetClients
+                                            )}
                                             data={clients || []}
                                         />
                                     )}
@@ -151,9 +223,12 @@ export const ClientsSection = () => {
             </div>
 
             <DialogContent>
-                <DialogTitle>Add New Client</DialogTitle>
+                <DialogTitle>
+                    {selectedClient ? "Update" : "Add"} New Client
+                </DialogTitle>
                 <DialogDescription>
-                    Fill the required fields to add a new client
+                    Fill the required fields to{" "}
+                    {selectedClient ? "update" : "add"} a new client
                 </DialogDescription>
 
                 <div className="grid gap-4">
@@ -174,33 +249,45 @@ export const ClientsSection = () => {
                     />
                     <Input
                         placeholder="Weight (kg)"
-                        value={weight}
                         type="number"
-                        onChange={(e) => setWeight(Number(e.target.value))}
+                        value={weight === 0 ? "" : weight}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            setWeight(value === "" ? 0 : Number(value));
+                        }}
                     />
                     <Input
                         placeholder="Height (cm)"
-                        value={height}
                         type="number"
-                        onChange={(e) => setHeight(Number(e.target.value))}
+                        value={height === 0 ? "" : height}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            setHeight(value === "" ? 0 : Number(value));
+                        }}
                     />
                     <Input
                         placeholder="Age"
-                        value={age}
                         type="number"
-                        onChange={(e) => setAge(Number(e.target.value))}
+                        value={age === 0 ? "" : age}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            setAge(value === "" ? 0 : Number(value));
+                        }}
                     />
                     <Input
                         placeholder="Gender"
                         value={gender}
                         onChange={(e) => setGender(e.target.value)}
                     />
-                    <Input
-                        placeholder="Password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
+
+                    {!selectedClient && (
+                        <Input
+                            placeholder="Password"
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    )}
 
                     {error !== "" && (
                         <div className="text-red-500 mt-2 text-sm">
@@ -210,11 +297,19 @@ export const ClientsSection = () => {
                 </div>
 
                 <DialogFooter>
-                    <Button className="self-end" onClick={handleAddClient} variant="default">
+                    <Button
+                        className="self-end"
+                        onClick={
+                            selectedClient
+                                ? handleUpdateClient
+                                : handleAddClient
+                        }
+                        variant="default"
+                    >
                         {creatingClient ? (
                             <Spinner color="#fff" />
                         ) : (
-                            <>Add Client</>
+                            <>{!selectedClient ? "Add" : "Update"} Client</>
                         )}
                     </Button>
                 </DialogFooter>
