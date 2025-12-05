@@ -38,7 +38,6 @@ import {
     SelectValue,
 } from "./ui/select";
 import { Spinner } from "./ui/spinner";
-import { Skeleton } from "./ui/skeleton";
 
 export const WorkoutSection = ({ client }: { client: User }) => {
     const { token } = useAuthStore();

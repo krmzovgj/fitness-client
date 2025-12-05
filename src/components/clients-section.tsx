@@ -25,7 +25,6 @@ import {
 } from "./ui/empty";
 import { Input } from "./ui/input";
 import { Spinner } from "./ui/spinner";
-import { Skeleton } from "./ui/skeleton";
 
 export const ClientsSection = () => {
     const { user } = useUserStore();
