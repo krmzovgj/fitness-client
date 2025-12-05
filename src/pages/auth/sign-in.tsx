@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { signIn } from "../../api/auth";
 import { useAuthStore } from "../../store/auth";
 import { Input } from "@/components/ui/input";
-import { Login, Sms } from "iconsax-reactjs";
+import { Eye, EyeSlash, Login, Sms } from "iconsax-reactjs";
 import { Header } from "@/components/header";
 import { Spinner } from "@/components/ui/spinner";
 
@@ -14,6 +14,7 @@ export const SignIn = () => {
     const [password, setpassword] = useState("");
     const [loading, setloading] = useState(false);
     const [error, seterror] = useState("");
+    const [showPassword, setshowPassword] = useState(false);
 
     const handleSignIn = async () => {
         try {
@@ -52,7 +53,9 @@ export const SignIn = () => {
 
                 <div className="mt-6 mb-3 flex flex-col gap-y-3">
                     {error !== "" && (
-                        <div className="text-red-500 text-sm">{error.charAt(0).toUpperCase() + error.slice(1)}</div>
+                        <div className="text-red-500 text-sm">
+                            {error.charAt(0).toUpperCase() + error.slice(1)}
+                        </div>
                     )}
 
                     <Input
@@ -60,12 +63,31 @@ export const SignIn = () => {
                         value={email}
                         onChange={(e: any) => setemail(e.target.value)}
                     />
-                    <Input
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e: any) => setpassword(e.target.value)}
-                        type="password"
-                    />
+                    <div className="relative">
+                        <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e: any) => setpassword(e.target.value)}
+                            className="pr-10"
+                        />
+
+                        <button
+                            type="button"
+                            onClick={() => setshowPassword(!showPassword)}
+                            className="absolute cursor-pointer right-3 top-1/2 -translate-y-1/2 text-foreground/60 hover:text-foreground"
+                        >
+                            {showPassword ? (
+                                <EyeSlash
+                                    variant="Linear"
+                                    size={20}
+                                    color="#000"
+                                />
+                            ) : (
+                                <Eye variant="Linear" size={20} color="#000" />
+                            )}
+                        </button>
+                    </div>
                 </div>
 
                 <Button

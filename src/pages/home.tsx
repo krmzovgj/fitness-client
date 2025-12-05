@@ -28,7 +28,7 @@ export const Home = () => {
     }
 
     return (
-        <div className="h-full overflow-y-scroll md:h-screen w-screen md:p-10 p-8">
+        <div className="h-full overflow-y-scroll md:h-screen w-screen md:p-10 p-6">
             <Header user={user!} />
 
             <div className="mt-20 flex md:flex-row flex-col items-start md:items-end gap-x-20">

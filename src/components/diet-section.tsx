@@ -148,7 +148,7 @@ export const DietSection = ({ client }: { client: User }) => {
                     <div className="flex items-center gap-x-2">
                         <div className="w-1 h-5 bg-foreground rounded-full"></div>
                         <h1 className="text-xl md:text-2xl flex items-center gap-x-3">
-                            {client?.firstName}'s Diet Plan
+                            Diet Plan
                             {loadingMealDays && <Spinner className="size-6" />}
                         </h1>
                     </div>

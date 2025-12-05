@@ -3,7 +3,7 @@ import { UserRole, type User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useClientStore } from "@/store/client";
 import { useUserStore } from "@/store/user";
-import { Profile2User } from "iconsax-reactjs";
+import { Eye, EyeSlash, Profile2User } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { clientColumns } from "./columns/client-columns";
 import { DataTable } from "./data-table";
@@ -42,6 +42,7 @@ export const ClientsSection = () => {
     const [age, setAge] = useState<number>();
     const [gender, setGender] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setshowPassword] = useState(false)
     const [open, setOpen] = useState(false);
     const [error, seterror] = useState("");
 
@@ -272,18 +273,43 @@ export const ClientsSection = () => {
                         }}
                     />
                     <Input
-                        placeholder="Gender"
+                        placeholder="Gender (MALE / FEMALE)"
                         value={gender}
                         onChange={(e) => setGender(e.target.value)}
                     />
 
                     {!selectedClient && (
-                        <Input
-                            placeholder="Password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
+                        <div className="relative">
+                            <Input
+                                type={showPassword ? "text" : "password"}
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e: any) =>
+                                    setPassword(e.target.value)
+                                }
+                                className="pr-10"
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() => setshowPassword(!showPassword)}
+                                className="absolute cursor-pointer right-3 top-1/2 -translate-y-1/2 text-foreground/60 hover:text-foreground"
+                            >
+                                {showPassword ? (
+                                    <EyeSlash
+                                        variant="Linear"
+                                        size={20}
+                                        color="#000"
+                                    />
+                                ) : (
+                                    <Eye
+                                        variant="Linear"
+                                        size={20}
+                                        color="#000"
+                                    />
+                                )}
+                            </button>
+                        </div>
                     )}
 
                     {error !== "" && (

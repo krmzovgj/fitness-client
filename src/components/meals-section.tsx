@@ -158,7 +158,7 @@ export const MealsSection = ({
 
     useEffect(() => {
         if (!selectedMeal) return;
-        
+
         setname(selectedMeal?.name!);
         setdescription(selectedMeal?.description!);
         setprotein(selectedMeal?.protein!);
@@ -181,8 +181,8 @@ export const MealsSection = ({
                 }
             }}
         >
-            <div className="flex items-end justify-between">
-                <div className="mt-20 mb-10 md:mb-0">
+            <div className="flex items-end mb-10 md:mb-0 justify-between">
+                <div className="mt-20 ">
                     <div className="flex items-center gap-x-3">
                         <ArrowLeft
                             className="cursor-pointer"
@@ -191,7 +191,6 @@ export const MealsSection = ({
                             size={30}
                             color="#000"
                         />
-                        {/* <h3>{clientName} <span className="text-foreground/60">/</span> {state.name}</h3> */}
                     </div>
 
                     <h3 className="mt-4 text-md font-bold flex items-center gap-x-2 ml-0.5 text-foreground/80">
@@ -203,9 +202,11 @@ export const MealsSection = ({
                     </h3>
                     <h1 className="text-3xl font-bold">{state.name}</h1>
                 </div>
-                <DialogTrigger>
-                    <Button>Add Meal</Button>
-                </DialogTrigger>
+                {user?.role === UserRole.TRAINER && (
+                    <DialogTrigger>
+                        <Button>Add Meal</Button>
+                    </DialogTrigger>
+                )}
             </div>
 
             <div className="mt-5 md:mt-14 h-full">

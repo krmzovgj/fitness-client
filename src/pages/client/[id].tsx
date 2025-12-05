@@ -37,7 +37,7 @@ export const Client = () => {
     }, [id, token]);
 
     return (
-        <div className="h-full overflow-x-hidden md:h-screen overflow-y-scroll flex flex-col w-screen md:p-10 p-8">
+        <div className="h-full overflow-x-hidden md:h-screen overflow-y-scroll flex flex-col w-screen md:p-10 p-6">
             <Header user={user!} />
 
             {!loadingClient && !client && (
@@ -49,7 +49,7 @@ export const Client = () => {
             )}
 
             {loadingClient ? (
-                <div className="h-full flex justify-center items-center">
+                <div className="h-screen flex justify-center items-center">
                     <Spinner className="size-6" />
                 </div>
             ) : (

@@ -105,7 +105,7 @@ export const ExerciseColumns = (
                     {match ? (
                         <div className="flex items-center gap-x-3">
                             <Input
-                            maxLength={25}
+                                maxLength={25}
                                 autoFocus={true}
                                 value={actualPerformance}
                                 onChange={(e) =>
@@ -115,16 +115,19 @@ export const ExerciseColumns = (
                                     if (e.key === "Enter") {
                                         handleSaveActualPerformance();
                                     }
+                                    if (e.key === "Escape") {
+                                        setEditingPerformanceId(null);
+                                    }
                                 }}
                                 className="w-44"
                                 placeholder="e.g. 70kg x 10"
                             />
-                            <div className="flex items-centerg gap-x-1">
+                            <div className="flex items-centerg gap-x-2">
                                 <TickCircle
                                     onClick={handleSaveActualPerformance}
                                     className="cursor-pointer"
                                     variant="Bold"
-                                    size={20}
+                                    size={26}
                                     color="#000"
                                 />
                                 <CloseCircle
@@ -133,7 +136,7 @@ export const ExerciseColumns = (
                                     }
                                     className="cursor-pointer"
                                     variant="Bulk"
-                                    size={20}
+                                    size={26}
                                     color="red"
                                 />
                             </div>

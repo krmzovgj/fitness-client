@@ -120,7 +120,7 @@ export const clientColumns = (
         accessorKey: "createdAt",
         header: "Created At",
         cell: ({ row }) => {
-            return <span>{formatDate(row.original.createdAt)}</span>;
+            return <span className="whitespace-nowrap">{formatDate(row.original.createdAt)}</span>;
         },
     },
     {
