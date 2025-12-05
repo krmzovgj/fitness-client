@@ -39,6 +39,7 @@ export const DietSection = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
     const { user } = useUserStore();
     const [mealDays, setmealDays] = useState<Diet[]>([]);
+    const [loadingMealDays, setloadingMealDays] = useState(false);
 
     const [name, setname] = useState("");
     const [day, setday] = useState<Day>(Day.MONDAY);
@@ -54,9 +55,13 @@ export const DietSection = ({ client }: { client: User }) => {
     const handleGetDietsByClient = async () => {
         if (!token || !client?.id) return;
         try {
+            setloadingMealDays(true);
             const response = await getDietByClient(client?.id, token);
             setmealDays(response.data);
-        } catch (error) {}
+        } catch (error) {
+        } finally {
+            setloadingMealDays(false);
+        }
     };
 
     useEffect(() => {
@@ -142,17 +147,21 @@ export const DietSection = ({ client }: { client: User }) => {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-x-2">
                         <div className="w-1 h-5 bg-foreground rounded-full"></div>
-                        <h1 className="text-xl md:text-2xl">
+                        <h1 className="text-xl md:text-2xl flex items-center gap-x-3">
                             {client?.firstName}'s Diet Plan
+                            {loadingMealDays && <Spinner className="size-6" />}
                         </h1>
                     </div>
-                    <DialogTrigger>
-                        <Button variant="default">Add Diet</Button>
-                    </DialogTrigger>
+
+                    {user?.role === UserRole.TRAINER && (
+                        <DialogTrigger>
+                            <Button variant="default">Add Diet</Button>
+                        </DialogTrigger>
+                    )}
                 </div>
 
                 <div className="mt-5">
-                    {mealDays.length === 0 ? (
+                    {mealDays.length === 0 && !loadingMealDays ? (
                         <Empty>
                             <EmptyHeader>
                                 <EmptyMedia variant="icon">

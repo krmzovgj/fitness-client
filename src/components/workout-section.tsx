@@ -38,11 +38,13 @@ import {
     SelectValue,
 } from "./ui/select";
 import { Spinner } from "./ui/spinner";
+import { Skeleton } from "./ui/skeleton";
 
 export const WorkoutSection = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
     const { user } = useUserStore();
     const [workouts, setworkouts] = useState<Workout[]>([]);
+    const [loadingWorkouts, setloadingWorkouts] = useState(false);
 
     const [name, setname] = useState("");
     const [day, setday] = useState<Day>(Day.MONDAY);
@@ -60,9 +62,13 @@ export const WorkoutSection = ({ client }: { client: User }) => {
     const handleGetWorkoutsByClient = async () => {
         if (!token || !client?.id) return;
         try {
+            setloadingWorkouts(true);
             const response = await getWorkoutsByClient(token, client?.id);
             setworkouts(response.data);
-        } catch (error) {}
+        } catch (error) {
+        } finally {
+            setloadingWorkouts(false);
+        }
     };
 
     useEffect(() => {
@@ -154,17 +160,21 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-x-2">
                         <div className="w-1 h-5 bg-foreground rounded-full"></div>
-                        <h1 className="text-xl md:text-2xl">
+                        <h1 className="text-xl md:text-2xl flex items-center gap-x-3">
                             {client?.firstName}'s Workout Plan
+                            {loadingWorkouts && <Spinner className="size-6" />}
                         </h1>
                     </div>
-                    <DialogTrigger asChild>
-                        <Button variant="default">Add Workout</Button>
-                    </DialogTrigger>
+
+                    {user?.role === UserRole.TRAINER && (
+                        <DialogTrigger asChild>
+                            <Button variant="default">Add Workout</Button>
+                        </DialogTrigger>
+                    )}
                 </div>
 
                 <div className="mt-5">
-                    {workouts.length === 0 ? (
+                    {workouts.length === 0 && !loadingWorkouts ? (
                         <Empty>
                             <EmptyHeader>
                                 <EmptyMedia variant="icon">

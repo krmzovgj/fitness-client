@@ -55,7 +55,7 @@ export const Client = () => {
             ) : (
                 <div>
                     <div className="flex md:flex-row flex-col items-start md:items-end gap-x-20">
-                        <div className="mt-20 mb-10 md:mb-0">
+                        <div className="mt-20 mb-5 md:mb-0">
                             <ArrowLeft
                                 className="cursor-pointer"
                                 onClick={() => navigate("/")}

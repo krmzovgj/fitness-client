@@ -25,6 +25,7 @@ import {
 } from "./ui/empty";
 import { Input } from "./ui/input";
 import { Spinner } from "./ui/spinner";
+import { Skeleton } from "./ui/skeleton";
 
 export const ClientsSection = () => {
     const { user } = useUserStore();
@@ -46,21 +47,22 @@ export const ClientsSection = () => {
     const [error, seterror] = useState("");
 
     const handleGetClients = async () => {
-        const response = await getClients(token!);
-
-        setClients(response.data);
-    };
-
-    useEffect(() => {
         try {
             setloadingClients(true);
-            if (user?.role === UserRole.TRAINER) {
-                handleGetClients();
-            }
+
+            if (user?.role === UserRole.CLIENT) return;
+
+            const response = await getClients(token!);
+
+            setClients(response.data);
         } catch (error) {
         } finally {
             setloadingClients(false);
         }
+    };
+
+    useEffect(() => {
+        handleGetClients();
     }, [user]);
 
     const handleAddClient = async () => {
@@ -204,18 +206,14 @@ export const ClientsSection = () => {
                                     </EmptyHeader>
                                 </Empty>
                             ) : (
-                                <>
-                                    {!loadingClients && (
-                                        <DataTable<User>
-                                            columns={clientColumns(
-                                                setselectedClient,
-                                                setOpen,
-                                                handleGetClients
-                                            )}
-                                            data={clients || []}
-                                        />
+                                <DataTable<User>
+                                    columns={clientColumns(
+                                        setselectedClient,
+                                        setOpen,
+                                        handleGetClients
                                     )}
-                                </>
+                                    data={clients || []}
+                                />
                             )}
                         </div>
                     </div>
