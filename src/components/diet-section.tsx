@@ -34,11 +34,12 @@ import {
     SelectValue,
 } from "./ui/select";
 import { Spinner } from "./ui/spinner";
+import { useDietStore } from "@/store/diet";
 
 export const DietSection = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
     const { user } = useUserStore();
-    const [mealDays, setmealDays] = useState<Diet[]>([]);
+    const { mealDays, setMealDays } = useDietStore();
     const [loadingMealDays, setloadingMealDays] = useState(false);
 
     const [name, setname] = useState("");
@@ -57,7 +58,7 @@ export const DietSection = ({ client }: { client: User }) => {
         try {
             setloadingMealDays(true);
             const response = await getDietByClient(client?.id, token);
-            setmealDays(response.data);
+            setMealDays(response.data);
         } catch (error) {
         } finally {
             setloadingMealDays(false);
@@ -66,7 +67,7 @@ export const DietSection = ({ client }: { client: User }) => {
 
     useEffect(() => {
         handleGetDietsByClient();
-    }, [token, client?.id]);
+    }, []);
 
     useEffect(() => {
         if (!selectedDiet) return;

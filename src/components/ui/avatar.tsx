@@ -14,7 +14,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   className = "",
 }) => {
   // Get initials
-  const initials = `${firstName[0] || ""}${lastName[0] || ""}`.toUpperCase();
+  const initials = `${firstName[0] || ""}${lastName[0] || ""}`.toUpperCase() || "User";
 
   return (
     <div

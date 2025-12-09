@@ -38,11 +38,12 @@ import {
     SelectValue,
 } from "./ui/select";
 import { Spinner } from "./ui/spinner";
+import { useWorkoutStore } from "@/store/workout";
 
 export const WorkoutSection = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
     const { user } = useUserStore();
-    const [workouts, setworkouts] = useState<Workout[]>([]);
+    const { workouts, setWorkouts } = useWorkoutStore();
     const [loadingWorkouts, setloadingWorkouts] = useState(false);
 
     const [name, setname] = useState("");
@@ -54,7 +55,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
         null
     );
 
-    const sortedWorkouts = workouts.sort((a, b) => {
+    const sortedWorkouts = workouts?.sort((a, b) => {
         return dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day);
     });
 
@@ -63,7 +64,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
         try {
             setloadingWorkouts(true);
             const response = await getWorkoutsByClient(token, client?.id);
-            setworkouts(response.data);
+            setWorkouts(response.data);
         } catch (error) {
         } finally {
             setloadingWorkouts(false);
@@ -72,7 +73,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
 
     useEffect(() => {
         handleGetWorkoutsByClient();
-    }, [token, client?.id]);
+    }, []);
 
     useEffect(() => {
         if (!selectedWorkout) return;
@@ -173,7 +174,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                 </div>
 
                 <div className="mt-5">
-                    {workouts.length === 0 && !loadingWorkouts ? (
+                    {workouts?.length === 0 && !loadingWorkouts ? (
                         <Empty>
                             <EmptyHeader>
                                 <EmptyMedia variant="icon">
