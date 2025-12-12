@@ -1,6 +1,6 @@
 export enum UserRole {
-    TRAINER = 'TRAINER',
-    CLIENT = 'CLIENT',
+    TRAINER = "TRAINER",
+    CLIENT = "CLIENT",
 }
 
 export interface User {
@@ -13,5 +13,6 @@ export interface User {
     weight: number;
     gender: string;
     role: UserRole;
+    tenantId: string;
     createdAt: string;
 }

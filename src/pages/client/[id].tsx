@@ -37,7 +37,7 @@ export const Client = () => {
     }, [id, token]);
 
     return (
-        <div className="h-full overflow-x-hidden md:h-screen overflow-y-scroll flex flex-col w-screen md:p-10 p-6">
+        <div className="h-full overflow-x-hidden md:h-screen overflow-y-scroll flex flex-col md:p-10 p-6">
             <Header user={user!} />
 
             {!loadingClient && !client && (

@@ -15,10 +15,12 @@ import { Avatar } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
+import { useTenantStore } from "@/store/tenant";
 
 export const Header = ({ user }: { user?: User }) => {
     const { clearToken } = useAuthStore();
     const { clearUser } = useUserStore();
+    const { tenant } = useTenantStore();
 
     const signOut = () => {
         clearToken();
@@ -27,10 +29,15 @@ export const Header = ({ user }: { user?: User }) => {
 
     return (
         <div className="flex justify-between items-center">
-            <div className="flex items-center gap-x-2">
-                <Hashtag variant="Bold" size={26} color="#66A786" />
-                <h3 className="text-xl font-black text-foreground">
-                    kalapocev
+            <div className="flex items-center gap-x-1 md:gap-x-2">
+                <h3 className="text-md md:text-xl font-extrabold text-foreground">
+                    {tenant?.subdomain}
+                </h3>
+                <Hashtag variant="Bold" size={20} color="#000" />
+                <h3 className="text-md md:text-xl font-extrabold text-foreground">
+                    my
+                    <span className="text-[#66A786] text-3xl leading-0">.</span>
+                    coach
                 </h3>
             </div>
 

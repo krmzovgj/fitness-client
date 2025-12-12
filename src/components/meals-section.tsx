@@ -209,21 +209,21 @@ export const MealsSection = ({
                 )}
             </div>
 
-            <div className="mt-5 md:mt-14 h-full">
+            <div className="mt-5 flex flex-col md:mt-14 h-full">
                 {loadingExercises ? (
                     <div className="h-full flex justify-center items-center">
                         <Spinner className="size-6" />
                     </div>
                 ) : (
-                    <div className="">
+                    <div className="flex flex-col h-full">
                         {meals.length === 0 ? (
-                            <Empty>
+                            <Empty className="h-full">
                                 <EmptyHeader>
                                     <EmptyMedia variant="icon">
                                         <Book
                                             variant="Bold"
                                             size={20}
-                                            color="#000"
+                                            color="#fff"
                                         />
                                     </EmptyMedia>
                                     <EmptyTitle>No Meals Yet</EmptyTitle>
@@ -249,11 +249,11 @@ export const MealsSection = ({
 
                 <DialogContent>
                     <DialogTitle>
-                        {selectedMeal ? "Update" : "Add"} New Meal
+                        {selectedMeal ? "Update" : "Add New"} Meal
                     </DialogTitle>
                     <DialogDescription>
                         Fill the required fields to{" "}
-                        {selectedMeal ? "update" : "add"} a new meal
+                        {selectedMeal ? "update" : "add"} a meal
                     </DialogDescription>
 
                     <Input

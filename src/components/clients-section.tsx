@@ -42,7 +42,7 @@ export const ClientsSection = () => {
     const [age, setAge] = useState<number>();
     const [gender, setGender] = useState("");
     const [password, setPassword] = useState("");
-    const [showPassword, setshowPassword] = useState(false)
+    const [showPassword, setshowPassword] = useState(false);
     const [open, setOpen] = useState(false);
     const [error, seterror] = useState("");
 
@@ -171,9 +171,9 @@ export const ClientsSection = () => {
                 }
             }}
         >
-            <div>
+            <div className="flex h-full flex-col">
                 {user?.role === UserRole.TRAINER && (
-                    <div className="mt-14">
+                    <div className="h-full flex flex-col mt-14">
                         <div className="flex items-center justify-between">
                             <h2 className="text-2xl flex items-center gap-x-3 font-semibold text-foreground">
                                 My Clients
@@ -186,15 +186,15 @@ export const ClientsSection = () => {
                             </DialogTrigger>
                         </div>
 
-                        <div className="mt-5">
+                        <div className="mt-5 flex flex-col h-full">
                             {clients?.length === 0 ? (
-                                <Empty>
+                                <Empty className="h-full">
                                     <EmptyHeader>
                                         <EmptyMedia variant="icon">
                                             <Profile2User
                                                 variant="Bold"
                                                 size={20}
-                                                color="#000"
+                                                color="#fff"
                                             />
                                         </EmptyMedia>
                                         <EmptyTitle>No Clients Yet</EmptyTitle>

@@ -46,21 +46,22 @@ export const workoutColumns = (
         id: "actions",
         header: "",
         cell: ({ row }) => {
-            const { user } = useUserStore();
-            if (user?.role === UserRole.CLIENT) return null;
+            const navigate = useNavigate();
 
+            const { user } = useUserStore();
+            
             const handleOpenEdit = () => {
                 setopen(true);
                 setSelectedWorkout(row.original);
             };
 
             return (
-                <div>
+                <div className="flex gap-x-2 items-center">
                     {user?.role === UserRole.TRAINER && (
                         <div className="flex items-center gap-x-2">
                             <Button onClick={handleOpenEdit} variant="outline">
                                 <Edit
-                                    variant="Bulk"
+                                    variant="Bold"
                                     size={18}
                                     color="#292929"
                                 />
@@ -68,29 +69,21 @@ export const workoutColumns = (
                             </Button>
                         </div>
                     )}
-                </div>
-            );
-        },
-    },
-    {
-        id: "open",
-        header: "",
-        cell: ({ row }) => {
-            const navigate = useNavigate();
-            return (
-                <div
-                    onClick={() =>
-                        navigate(`/client/${row.original.id}/exercises`, {
-                            state: {
-                                name: row.original.name,
-                                day: row.original.day,
-                            },
-                        })
-                    }
-                    className="flex hover:underline cursor-pointer gap-x-1 items-center"
-                >
-                    <h2>Open</h2>
-                    <ExportSquare variant="Bold" size={14} color="#000" />
+
+                    <Button
+                        variant="outline"
+                        onClick={() =>
+                            navigate(`/client/${row.original.id}/exercises`, {
+                                state: {
+                                    name: row.original.name,
+                                    day: row.original.day,
+                                },
+                            })
+                        }
+                    >
+                        <ExportSquare variant="Bold" size={18} color="#000" />
+                        Open
+                    </Button>
                 </div>
             );
         },

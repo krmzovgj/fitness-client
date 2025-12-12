@@ -4,13 +4,14 @@ import {
     EmptyDescription,
     EmptyHeader,
     EmptyMedia,
-    EmptyTitle,
+    EmptyTitle
 } from "@/components/ui/empty";
 import { dayColors, dayOrder } from "@/lib/utils";
 import { Day } from "@/model/day";
 import type { Diet } from "@/model/diet";
 import { UserRole, type User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
+import { useDietStore } from "@/store/diet";
 import { useUserStore } from "@/store/user";
 import { Book } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
@@ -34,7 +35,6 @@ import {
     SelectValue,
 } from "./ui/select";
 import { Spinner } from "./ui/spinner";
-import { useDietStore } from "@/store/diet";
 
 export const DietSection = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
@@ -156,7 +156,7 @@ export const DietSection = ({ client }: { client: User }) => {
 
                     {user?.role === UserRole.TRAINER && (
                         <DialogTrigger>
-                            <Button variant="default">Add Diet</Button>
+                            <Button variant="default">Add Diet Day</Button>
                         </DialogTrigger>
                     )}
                 </div>
@@ -169,7 +169,7 @@ export const DietSection = ({ client }: { client: User }) => {
                                     <Book
                                         variant="Bold"
                                         size={20}
-                                        color="#000"
+                                        color="#fff"
                                     />
                                 </EmptyMedia>
                                 <EmptyTitle>No Diet Yet</EmptyTitle>

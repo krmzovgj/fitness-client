@@ -74,7 +74,7 @@ export function DataTable<T>({ columns, data }: DataTableProps<T>) {
                     </TableHeader>
                     <TableBody>
                         {table.getRowModel().rows.map((row) => (
-                            <TableRow key={row.id}>
+                            <TableRow className={row.index % 2 === 0 ? "bg-muted/50" : "bg-transparent"} key={row.id}>
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id}>
                                         {flexRender(

@@ -8,7 +8,7 @@ export const getMe = async (token: string) => {
         },
     });
 
-    return response.data;
+    return response;
 };
 
 export const getUserById = async (id: string, token: string) => {

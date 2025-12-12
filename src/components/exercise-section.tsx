@@ -188,21 +188,21 @@ export const ExerciseSection = ({
                 )}
             </div>
 
-            <div className="mt-5 md:mt-14 h-full">
+            <div className="mt-5 flex flex-col md:mt-14 h-full">
                 {loadingExercises ? (
                     <div className="h-full flex justify-center items-center">
                         <Spinner className="size-6" />
                     </div>
                 ) : (
-                    <div className="">
+                    <div className="h-full flex flex-col">
                         {exercises.length === 0 ? (
-                            <Empty>
+                            <Empty className="h-full">
                                 <EmptyHeader>
                                     <EmptyMedia variant="icon">
                                         <Weight
                                             variant="Bold"
                                             size={20}
-                                            color="#000"
+                                            color="#fff"
                                         />
                                     </EmptyMedia>
                                     <EmptyTitle>No Exercises Yet</EmptyTitle>
@@ -228,11 +228,11 @@ export const ExerciseSection = ({
 
                 <DialogContent>
                     <DialogTitle>
-                        {selectedExercise ? "Update" : "Add"} New Exercise
+                        {selectedExercise ? "Update" : "Add New"} Exercise
                     </DialogTitle>
                     <DialogDescription>
                         Fill the required fields to{" "}
-                        {selectedExercise ? "update" : "add"} a new exercise
+                        {selectedExercise ? "update" : "add"} an exercise
                     </DialogDescription>
 
                     <Input

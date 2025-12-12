@@ -20,12 +20,12 @@
     font-family: onest;
     font-weight: 500;
     color: #181818;
-    background-color: #f8f8f8;
+    background-color: #fefefe;
 
     --radius: 0.625rem;
 
     /* Light mode palette */
-    --background: #f8f8f8;
+    --background: #fefefe;
     --foreground: #181818;
 
     --card: #ffffff;
@@ -73,25 +73,25 @@
 ------------------------------------------ */
 .dark {
     --background: #181818;
-    --foreground: #f8f8f8;
+    --foreground: #fefefe;
 
     --card: #181818;
-    --card-foreground: #f8f8f8;
+    --card-foreground: #fefefe;
 
     --popover: #181818;
-    --popover-foreground: #f8f8f8;
+    --popover-foreground: #fefefe;
 
     --primary: oklch(0.922 0 0);
     --primary-foreground: #181818;
 
     --secondary: oklch(0.269 0 0);
-    --secondary-foreground: #f8f8f8;
+    --secondary-foreground: #fefefe;
 
     --muted: oklch(0.269 0 0);
     --muted-foreground: oklch(0.708 0 0);
 
     --accent: oklch(0.269 0 0);
-    --accent-foreground: #f8f8f8;
+    --accent-foreground: #fefefe;
 
     --destructive: oklch(0.704 0.191 22.216);
 
@@ -106,11 +106,11 @@
     --chart-5: oklch(0.645 0.246 16.439);
 
     --sidebar: #181818;
-    --sidebar-foreground: #f8f8f8;
+    --sidebar-foreground: #fefefe;
     --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: #f8f8f8;
+    --sidebar-primary-foreground: #fefefe;
     --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: #f8f8f8;
+    --sidebar-accent-foreground: #fefefe;
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
 }
@@ -127,10 +127,10 @@ a:hover {
     color: #535bf2;
 }
 
-* {
-    user-select: #000;
-}
-
+::selection {
+    background-color: #292929; /* New background color (e.g., a shade of red) */
+    color: #ffffff; /* New foreground/text color (e.g., white) */
+}   
 
 /* ------------------------------------------
    Theme Tokens (shadcn)

@@ -15,9 +15,11 @@ export const Exercises = () => {
         <div className="h-full overflow-x-hidden md:h-screen overflow-y-scroll flex flex-col w-screen md:p-10 p-6">
             <Header user={user!} />
 
-            
-
-            <ExerciseSection workoutId={id!} dayMatch={dayMatch!} state={state} />
+            <ExerciseSection
+                workoutId={id!}
+                dayMatch={dayMatch!}
+                state={state}
+            />
         </div>
     );
 };

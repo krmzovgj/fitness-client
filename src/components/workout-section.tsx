@@ -8,7 +8,7 @@ import {
     EmptyDescription,
     EmptyHeader,
     EmptyMedia,
-    EmptyTitle,
+    EmptyTitle
 } from "@/components/ui/empty";
 import { dayColors, dayOrder } from "@/lib/utils";
 import { Day } from "@/model/day";
@@ -16,6 +16,7 @@ import { UserRole, type User } from "@/model/user";
 import type { Workout } from "@/model/workout";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
+import { useWorkoutStore } from "@/store/workout";
 import { Box1 } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { workoutColumns } from "./columns/workout-columns";
@@ -38,7 +39,6 @@ import {
     SelectValue,
 } from "./ui/select";
 import { Spinner } from "./ui/spinner";
-import { useWorkoutStore } from "@/store/workout";
 
 export const WorkoutSection = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
@@ -168,7 +168,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
 
                     {user?.role === UserRole.TRAINER && (
                         <DialogTrigger asChild>
-                            <Button variant="default">Add Workout</Button>
+                            <Button variant="default">Add Workout Day</Button>
                         </DialogTrigger>
                     )}
                 </div>
@@ -181,7 +181,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                                     <Box1
                                         variant="Bold"
                                         size={20}
-                                        color="#000"
+                                        color="#fff"
                                     />
                                 </EmptyMedia>
                                 <EmptyTitle>No Workouts Yet</EmptyTitle>
@@ -206,11 +206,11 @@ export const WorkoutSection = ({ client }: { client: User }) => {
 
             <DialogContent>
                 <DialogTitle>
-                    {selectedWorkout ? "Update" : "Add"} New Workout
+                    {selectedWorkout ? "Update" : "Add New"} Workout
                 </DialogTitle>
                 <DialogDescription>
                     Fill the required fields to{" "}
-                    {selectedWorkout ? "update" : "add"} a new workout
+                    {selectedWorkout ? "update" : "add"} a workout
                 </DialogDescription>
 
                 <Input

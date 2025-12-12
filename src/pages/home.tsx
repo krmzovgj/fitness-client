@@ -7,6 +7,7 @@ import { WorkoutSection } from "@/components/workout-section";
 import { DietSection } from "@/components/diet-section";
 import { UserStats } from "@/components/user-stats";
 import { Spinner } from "@/components/ui/spinner";
+import { formatDate } from "@/lib/utils";
 
 export const Home = () => {
     const { user, loading } = useUserStore();
@@ -21,19 +22,24 @@ export const Home = () => {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center w-screen h-screen">
+            <div className="flex items-center justify-center h-screen">
                 <Spinner className="size-10" />
             </div>
         );
     }
 
-    return (
-        <div className="h-full overflow-y-scroll md:h-screen w-screen md:p-10 p-6">
+    const now = new Date();
+
+    return (            
+        <div className="h-full flex flex-col overflow-y-scroll md:h-screen md:p-10 p-6">
             <Header user={user!} />
 
             <div className="mt-20 flex md:flex-row flex-col items-start md:items-end gap-x-20">
                 <div className="flex mb-5 md:mb-0 items-center justify-between">
                     <div>
+                        <h3 className="text-sm md:text-md text-foreground">
+                            {formatDate(now)}
+                        </h3>
                         <h1 className="text-3xl font-bold">
                             Hello {user?.firstName},
                         </h1>
@@ -54,7 +60,9 @@ export const Home = () => {
                 {user?.role === UserRole.CLIENT && <UserStats client={user} />}
             </div>
 
-            {user?.role === UserRole.TRAINER && <ClientsSection />}
+            <div className="flex-1 flex flex-col">
+                {user?.role === UserRole.TRAINER && <ClientsSection />}
+            </div>
 
             {user?.role === UserRole.CLIENT && (
                 <div>

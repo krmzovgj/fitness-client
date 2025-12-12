@@ -46,8 +46,8 @@ export const dietColumns = (
         id: "actions",
         header: "",
         cell: ({ row }) => {
+            const navigate = useNavigate();
             const { user } = useUserStore();
-            if (user?.role === UserRole.CLIENT) return null;
 
             const handleOpenEdit = () => {
                 setopen(true);
@@ -55,12 +55,12 @@ export const dietColumns = (
             };
 
             return (
-                <div>
+                <div className="flex items-center gap-x-2">
                     {user?.role === UserRole.TRAINER && (
                         <div className="flex items-center gap-x-2">
                             <Button onClick={handleOpenEdit} variant="outline">
                                 <Edit
-                                    variant="Bulk"
+                                    variant="Bold"
                                     size={18}
                                     color="#292929"
                                 />
@@ -68,29 +68,25 @@ export const dietColumns = (
                             </Button>
                         </div>
                     )}
-                </div>
-            );
-        },
-    },
-    {
-        id: "open",
-        header: "",
-        cell: ({ row }) => {
-            const navigate = useNavigate();
-            return (
-                <div
-                    onClick={() =>
-                        navigate(`/client/${row.original.id}/meals`, {
-                            state: {
-                                name: row.original.name,
-                                day: row.original.day,
-                            },
-                        })
-                    }
-                    className="flex hover:underline cursor-pointer gap-x-1 items-center"
-                >
-                    <h2>Open</h2>
-                    <ExportSquare variant="Bold" size={14} color="#000" />
+
+                    <Button
+                        onClick={() =>
+                            navigate(`/client/${row.original.id}/meals`, {
+                                state: {
+                                    name: row.original.name,
+                                    day: row.original.day,
+                                },
+                            })
+                        }
+                        variant="outline"
+                    >
+                        <ExportSquare
+                            variant="Bold"
+                            size={18}
+                            color="#292929"
+                        />
+                        Open
+                    </Button>
                 </div>
             );
         },

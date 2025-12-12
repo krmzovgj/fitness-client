@@ -120,7 +120,11 @@ export const clientColumns = (
         accessorKey: "createdAt",
         header: "Created At",
         cell: ({ row }) => {
-            return <span className="whitespace-nowrap">{formatDate(row.original.createdAt)}</span>;
+            return (
+                <span className="whitespace-nowrap">
+                    {formatDate(row.original.createdAt)}
+                </span>
+            );
         },
     },
     {
@@ -131,6 +135,8 @@ export const clientColumns = (
             const { token } = useAuthStore();
             const [openAlertDialog, setOpenAlertDialog] = useState(false);
             const [deletingClient, setdeletingClient] = useState(false);
+            const navigate = useNavigate();
+            const client = row.original;
 
             if (user?.role === UserRole.CLIENT) return null;
 
@@ -155,12 +161,12 @@ export const clientColumns = (
             };
 
             return (
-                <div className="whitespace-nowrap">
+                <div className="flex items-center gap-x-2 whitespace-nowrap">
                     {user?.role === UserRole.TRAINER && (
                         <div className="flex items-center gap-x-2">
                             <Button onClick={handleOpenEdit} variant="outline">
                                 <Edit
-                                    variant="Bulk"
+                                    variant="Bold"
                                     size={18}
                                     color="#292929"
                                 />
@@ -174,7 +180,7 @@ export const clientColumns = (
                                 <AlertDialogTrigger asChild>
                                     <Button variant="outline">
                                         <Trash
-                                            variant="Bulk"
+                                            variant="Bold"
                                             size={18}
                                             color="red"
                                         />
@@ -213,25 +219,14 @@ export const clientColumns = (
                             </AlertDialog>
                         </div>
                     )}
-                </div>
-            );
-        },
-    },
 
-    {
-        id: "open",
-        header: "",
-        cell: ({ row }) => {
-            const navigate = useNavigate();
-            const user = row.original;
-
-            return (
-                <div
-                    onClick={() => navigate(`/client/${user.id}`)}
-                    className="flex hover:underline cursor-pointer gap-x-1 items-center"
-                >
-                    <h2>Open</h2>
-                    <ExportSquare variant="Bold" size={14} color="#000" />
+                    <Button
+                        variant="outline"
+                        onClick={() => navigate(`/client/${client.id}`)}
+                    >
+                        <ExportSquare variant="Bold" size={18} color="#000" />
+                        Open
+                    </Button>
                 </div>
             );
         },

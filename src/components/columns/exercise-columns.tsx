@@ -135,7 +135,7 @@ export const ExerciseColumns = (
                                         setEditingPerformanceId(null)
                                     }
                                     className="cursor-pointer"
-                                    variant="Bulk"
+                                    variant="Bold"
                                     size={26}
                                     color="red"
                                 />
@@ -156,7 +156,7 @@ export const ExerciseColumns = (
                                 <span className="whitespace-nowrap text-foreground/70 flex items-center gap-x-2">
                                     N/A
                                     <Edit
-                                        variant="Bulk"
+                                        variant="Bold"
                                         size={18}
                                         color="#000"
                                     />
@@ -227,12 +227,12 @@ export const ExerciseColumns = (
             };
 
             return (
-                <div className="whitespace-nowrap">
+                <div className="flex items-center gap-x-2 whitespace-nowrap">
                     {user?.role === UserRole.TRAINER && (
                         <div className="flex items-center gap-x-2">
                             <Button onClick={handleOpenEdit} variant="outline">
                                 <Edit
-                                    variant="Bulk"
+                                    variant="Bold"
                                     size={18}
                                     color="#292929"
                                 />
@@ -246,7 +246,7 @@ export const ExerciseColumns = (
                                 <AlertDialogTrigger asChild>
                                     <Button variant="outline">
                                         <Trash
-                                            variant="Bulk"
+                                            variant="Bold"
                                             size={18}
                                             color="red"
                                         />
