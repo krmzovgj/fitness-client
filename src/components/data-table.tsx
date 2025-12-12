@@ -1,15 +1,5 @@
 "use client";
 
-import * as React from "react";
-import {
-    type ColumnDef,
-    useReactTable,
-    getCoreRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    type SortingState,
-    flexRender,
-} from "@tanstack/react-table";
 import {
     Table,
     TableBody,
@@ -18,14 +8,30 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+import {
+    type ColumnDef,
+    flexRender,
+    getCoreRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
+    type SortingState,
+    useReactTable,
+} from "@tanstack/react-table";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrangeVertical } from "iconsax-reactjs";
+import * as React from "react";
 
 interface DataTableProps<T> {
     columns: ColumnDef<T>[];
     data: T[];
+    enableSorting?: boolean;
 }
 
-export function DataTable<T>({ columns, data }: DataTableProps<T>) {
+export function DataTable<T>({
+    columns,
+    data,
+    enableSorting,
+}: DataTableProps<T>) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
 
     const table = useReactTable({
@@ -46,10 +52,14 @@ export function DataTable<T>({ columns, data }: DataTableProps<T>) {
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
-                                    <TableHead key={header.id}>
-                                        {header.isPlaceholder ? null : header.column.getCanSort() ? (
-                                            <Button
-                                                variant="ghost"
+                                    <TableHead
+                                        className="h-14 py-2 px-4  whitespace-nowrap"
+                                        key={header.id}
+                                    >
+                                        {header.isPlaceholder ? null : header.column.getCanSort() &&
+                                          enableSorting ? (
+                                            <button
+                                                className="cursor-pointer bg-transparent flex items-center gap-x-2 text-foreground hover:bg-transparent"
                                                 onClick={() =>
                                                     header.column.toggleSorting(
                                                         header.column.getIsSorted() ===
@@ -61,8 +71,12 @@ export function DataTable<T>({ columns, data }: DataTableProps<T>) {
                                                     header.column.columnDef
                                                         .header as React.ReactNode
                                                 }
-                                                {/* optional: add sort icon */}
-                                            </Button>
+                                                <ArrangeVertical
+                                                    variant="Bulk"
+                                                    size={14}
+                                                    color="#000"
+                                                />
+                                            </button>
                                         ) : (
                                             (header.column.columnDef
                                                 .header as React.ReactNode)
@@ -73,18 +87,34 @@ export function DataTable<T>({ columns, data }: DataTableProps<T>) {
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows.map((row) => (
-                            <TableRow className={row.index % 2 === 0 ? "bg-muted/50" : "bg-transparent"} key={row.id}>
-                                {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id}>
-                                        {flexRender(
-                                            cell.column.columnDef.cell,
-                                            cell.getContext()
-                                        )}{" "}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        ))}
+                        <AnimatePresence mode="popLayout" initial={false}>
+                            {table.getRowModel().rows.map((row) => (
+                                <motion.tr
+                                    layout // This is the ONLY thing you need for perfect add/delete shifts
+                                    key={row.id}
+                                    // No initial/animate/exit = no slide-in on mount or refresh
+                                    // Framer Motion's `layout` + `AnimatePresence mode="popLayout"` handles everything
+                                    className={
+                                        row.index % 2 === 0
+                                            ? "bg-muted/50"
+                                            : "bg-transparent"
+                                    }
+                                    style={{ originY: 0 }} // optional: smoother vertical shift
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell key={cell.id}>
+                                            <motion.div layout="position">
+                                                {/* Wrap cell content so text doesn't jump during layout shift */}
+                                                {flexRender(
+                                                    cell.column.columnDef.cell,
+                                                    cell.getContext()
+                                                )}
+                                            </motion.div>
+                                        </TableCell>
+                                    ))}
+                                </motion.tr>
+                            ))}
+                        </AnimatePresence>
                     </TableBody>
                 </Table>
             </div>

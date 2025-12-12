@@ -4,7 +4,7 @@ import {
     EmptyDescription,
     EmptyHeader,
     EmptyMedia,
-    EmptyTitle
+    EmptyTitle,
 } from "@/components/ui/empty";
 import { dayColors, dayOrder } from "@/lib/utils";
 import { Day } from "@/model/day";
@@ -135,13 +135,10 @@ export const DietSection = ({ client }: { client: User }) => {
             open={dialogOpen}
             onOpenChange={(open) => {
                 setdialogOpen(open);
-
-                if (!open) {
-                    setselectedDiet(null);
-                    setname("");
-                    setday(Day.MONDAY);
-                    seterror("");
-                }
+                setselectedDiet(null);
+                setname("");
+                setday(Day.MONDAY);
+                seterror("");
             }}
         >
             <div className="mt-14">
@@ -155,7 +152,7 @@ export const DietSection = ({ client }: { client: User }) => {
                     </div>
 
                     {user?.role === UserRole.TRAINER && (
-                        <DialogTrigger>
+                        <DialogTrigger asChild>
                             <Button variant="default">Add Diet Day</Button>
                         </DialogTrigger>
                     )}

@@ -171,14 +171,12 @@ export const MealsSection = ({
             onOpenChange={(open) => {
                 setdialogOpen(open);
 
-                if (!open) {
-                    setselectedMeal(null);
-                    setname("");
-                    setdescription("");
-                    setcal(0);
-                    setprotein(0);
-                    seterror("");
-                }
+                setselectedMeal(null);
+                setname("");
+                setdescription("");
+                setcal(0);
+                setprotein(0);
+                seterror("");
             }}
         >
             <div className="flex items-end mb-10 md:mb-0 justify-between">

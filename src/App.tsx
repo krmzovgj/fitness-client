@@ -66,7 +66,7 @@ function App() {
     if (tenantLoading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <Spinner className="size-10" />
+                <Spinner className="size-6" />
             </div>
         );
     }

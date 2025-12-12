@@ -8,7 +8,7 @@ import {
     EmptyDescription,
     EmptyHeader,
     EmptyMedia,
-    EmptyTitle
+    EmptyTitle,
 } from "@/components/ui/empty";
 import { dayColors, dayOrder } from "@/lib/utils";
 import { Day } from "@/model/day";
@@ -146,14 +146,11 @@ export const WorkoutSection = ({ client }: { client: User }) => {
         <Dialog
             open={dialogOpen}
             onOpenChange={(open) => {
-                setdialogOpen(open);
-
-                if (!open) {
-                    setselectedWorkout(null);
-                    setname("");
-                    setday(Day.MONDAY);
-                    seterror("");
-                }
+                setdialogOpen(open);    
+                setselectedWorkout(null);
+                setname("");
+                setday(Day.MONDAY);
+                seterror("");
             }}
         >
             <div className="mt-14">

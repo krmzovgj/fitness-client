@@ -29,16 +29,12 @@ export const Header = ({ user }: { user?: User }) => {
 
     return (
         <div className="flex justify-between items-center">
-            <div className="flex items-center gap-x-1 md:gap-x-2">
-                <h3 className="text-md md:text-xl font-extrabold text-foreground">
+            <div className="flex items-center gap-x-1">
+                <h3 className="text-xl font-bold text-foreground">
                     {tenant?.subdomain}
                 </h3>
-                <Hashtag variant="Bold" size={20} color="#000" />
-                <h3 className="text-md md:text-xl font-extrabold text-foreground">
-                    my
-                    <span className="text-[#66A786] text-3xl leading-0">.</span>
-                    coach
-                </h3>
+                <Hashtag variant="Bold" size={20} color="#66A786" />
+                <h3 className="text-xl font-bold text-foreground">my.coach</h3>
             </div>
 
             <div className="flex items-center gap-x-5">

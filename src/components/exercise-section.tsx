@@ -150,14 +150,11 @@ export const ExerciseSection = ({
             open={dialogOpen}
             onOpenChange={(open) => {
                 setdialogOpen(open);
-
-                if (!open) {
-                    setselectedExercise(null);
-                    setname("");
-                    setsets(0);
-                    setreps("");
-                    seterror("");
-                }
+                setselectedExercise(null);
+                setname("");
+                setsets(0);
+                setreps("");
+                seterror("");
             }}
         >
             <div className="flex items-end mb-10 md:mb-0 justify-between">
@@ -215,6 +212,7 @@ export const ExerciseSection = ({
                             </Empty>
                         ) : (
                             <DataTable
+                                enableSorting={true}
                                 data={exercises}
                                 columns={ExerciseColumns(
                                     setselectedExercise,

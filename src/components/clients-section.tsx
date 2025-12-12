@@ -158,17 +158,15 @@ export const ClientsSection = () => {
             onOpenChange={(open) => {
                 setOpen(open);
 
-                if (!open) {
-                    setselectedClient(null);
-                    setFirstName("");
-                    setLastName("");
-                    setAge(0);
-                    setHeight(0);
-                    setWeight(0);
-                    setEmail("");
-                    setGender("");
-                    setPassword("");
-                }
+                setselectedClient(null);
+                setFirstName("");
+                setLastName("");
+                setAge(0);
+                setHeight(0);
+                setWeight(0);
+                setEmail("");
+                setGender("");
+                setPassword("");
             }}
         >
             <div className="flex h-full flex-col">
@@ -207,6 +205,7 @@ export const ClientsSection = () => {
                                 </Empty>
                             ) : (
                                 <DataTable<User>
+                                    enableSorting={true}
                                     columns={clientColumns(
                                         setselectedClient,
                                         setOpen,

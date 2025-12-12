@@ -1,4 +1,4 @@
-import { Flash } from "iconsax-reactjs";
+import { Flash, Hashtag } from "iconsax-reactjs";
 import { Header } from "../components/header";
 import { UserRole } from "../model/user";
 import { useUserStore } from "../store/user";
@@ -8,14 +8,16 @@ import { DietSection } from "@/components/diet-section";
 import { UserStats } from "@/components/user-stats";
 import { Spinner } from "@/components/ui/spinner";
 import { formatDate } from "@/lib/utils";
+import { useTenantStore } from "@/store/tenant";
 
 export const Home = () => {
     const { user, loading } = useUserStore();
-    
+    const { tenant } = useTenantStore();
+
     if (loading) {
         return (
             <div className="flex items-center justify-center h-screen">
-                <Spinner className="size-10" />
+                <Spinner className="size-6" />
             </div>
         );
     }
@@ -23,7 +25,7 @@ export const Home = () => {
     const now = new Date();
 
     return (
-        <div className="h-full flex flex-col overflow-y-scroll md:h-screen md:p-10 p-6">
+        <div className="h-full flex flex-col md:h-screen md:p-8 p-6">
             <Header user={user!} />
 
             <div className="mt-20 flex md:flex-row flex-col items-start md:items-end gap-x-20">
