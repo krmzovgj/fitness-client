@@ -1,19 +1,17 @@
-import { Flash, Hashtag } from "iconsax-reactjs";
+import { ClientsSection } from "@/components/clients-section";
+import { DietSection } from "@/components/diet-section";
+import { Spinner } from "@/components/ui/spinner";
+import { UserStats } from "@/components/user-stats";
+import { WorkoutSection } from "@/components/workout-section";
+import { formatDate } from "@/lib/utils";
+import { Flash } from "iconsax-reactjs";
 import { Header } from "../components/header";
 import { UserRole } from "../model/user";
 import { useUserStore } from "../store/user";
-import { ClientsSection } from "@/components/clients-section";
-import { WorkoutSection } from "@/components/workout-section";
-import { DietSection } from "@/components/diet-section";
-import { UserStats } from "@/components/user-stats";
-import { Spinner } from "@/components/ui/spinner";
-import { formatDate } from "@/lib/utils";
-import { useTenantStore } from "@/store/tenant";
 
 export const Home = () => {
     const { user, loading } = useUserStore();
-    const { tenant } = useTenantStore();
-
+    
     if (loading) {
         return (
             <div className="flex items-center justify-center h-screen">
