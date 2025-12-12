@@ -11,15 +11,7 @@ import { formatDate } from "@/lib/utils";
 
 export const Home = () => {
     const { user, loading } = useUserStore();
-
-    if (!user && !loading) {
-        return (
-            <div className="flex items-center justify-center h-screen">
-                Internal Error. Try again later
-            </div>
-        );
-    }
-
+    
     if (loading) {
         return (
             <div className="flex items-center justify-center h-screen">
@@ -30,7 +22,7 @@ export const Home = () => {
 
     const now = new Date();
 
-    return (            
+    return (
         <div className="h-full flex flex-col overflow-y-scroll md:h-screen md:p-10 p-6">
             <Header user={user!} />
 
