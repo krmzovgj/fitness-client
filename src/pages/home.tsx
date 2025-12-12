@@ -1,6 +1,5 @@
 import { ClientsSection } from "@/components/clients-section";
 import { DietSection } from "@/components/diet-section";
-import { Spinner } from "@/components/ui/spinner";
 import { UserStats } from "@/components/user-stats";
 import { WorkoutSection } from "@/components/workout-section";
 import { formatDate } from "@/lib/utils";
@@ -10,23 +9,15 @@ import { UserRole } from "../model/user";
 import { useUserStore } from "../store/user";
 
 export const Home = () => {
-    const { user, loading } = useUserStore();
-    
-    if (loading) {
-        return (
-            <div className="flex items-center justify-center h-screen">
-                <Spinner className="size-6" />
-            </div>
-        );
-    }
+    const { user } = useUserStore();
 
     const now = new Date();
 
     return (
-        <div className="h-full flex flex-col md:h-screen md:p-8 p-6">
+        <div className="h-full flex flex-col overflow-x-hidden md:h-screen md:p-8 p-6">
             <Header user={user!} />
 
-            <div className="mt-20 flex md:flex-row flex-col items-start md:items-end gap-x-20">
+            <div className="mt-20 flex md:flex-row flex-col items-start md:justify-between md:items-end gap-x-20">
                 <div className="flex mb-5 md:mb-0 items-center justify-between">
                     <div>
                         <h3 className="text-sm md:text-md text-foreground">
@@ -49,7 +40,17 @@ export const Home = () => {
                     </div>
                 </div>
 
-                {user?.role === UserRole.CLIENT && <UserStats client={user} />}
+                {user?.role === UserRole.CLIENT && (
+                    <div className="md:w-fit w-full relative">
+                        <UserStats client={user!} />
+
+                        <div
+                            className="absolute md:hidden flex -right-2 top-0 bottom-0 w-16 
+                                bg-linear-to-l from-white to-transparent 
+                                dark:from-background-dark dark:to-transparent"
+                        />
+                    </div>
+                )}
             </div>
 
             <div className="flex-1 flex flex-col">

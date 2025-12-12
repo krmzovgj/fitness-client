@@ -1,6 +1,7 @@
 import { getUserById } from "@/api/user";
 import { DietSection } from "@/components/diet-section";
 import { Header } from "@/components/header";
+import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { UserStats } from "@/components/user-stats";
 import { WorkoutSection } from "@/components/workout-section";
@@ -51,18 +52,25 @@ export const Client = () => {
             {loadingClient ? (
                 <div className="h-screen flex justify-center items-center">
                     <Spinner className="size-6" />
-                </div>      
+                </div>
             ) : (
                 <div>
-                    <div className="flex md:flex-row flex-col items-start md:items-end gap-x-20">
-                        <div className="mt-20 mb-5 md:mb-0">
-                            <ArrowLeft
-                                className="cursor-pointer"
-                                onClick={() => navigate("/")}
-                                variant="Bold"
-                                size={30}
-                                color="#000"
-                            />
+                    <div className="flex md:flex-row flex-col mt-20 mb-5 md:mb-0 items-start justify-between md:items-end gap-x-20">
+                        <div className="">
+                            <Button
+                                onClick={() => navigate(-1)}
+                                variant="ghost"
+                                className="bg-muted/50"
+                            >
+                                <ArrowLeft
+                                    className="cursor-pointer"
+                                    variant="Linear"
+                                    size={20}
+                                    color="#000"
+                                />
+                                Back
+                            </Button>
+
                             <h3 className="mt-4 text-md font-bold flex items-center gap-x-2 ml-0.5 text-foreground/80">
                                 <div className="w-2 h-2 rounded-full bg-[#66A786]" />
                                 {client?.role}
@@ -72,7 +80,15 @@ export const Client = () => {
                             </h1>
                         </div>
 
-                        <UserStats client={client!} />
+                        <div className="md:w-fit border w-full relative">
+                            <UserStats client={client!} />
+
+                            <div
+                                className="absolute md:hidden flex -right-2 top-0 bottom-0 w-16 
+                                bg-linear-to-l from-white to-transparent 
+                                dark:from-background-dark dark:to-transparent"
+                            />
+                        </div>
                     </div>
 
                     <WorkoutSection client={client!} />

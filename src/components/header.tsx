@@ -29,12 +29,16 @@ export const Header = ({ user }: { user?: User }) => {
 
     return (
         <div className="flex justify-between items-center">
-            <div className="flex items-center gap-x-1">
-                <h3 className="text-xl font-bold text-foreground">
+            <div className="">
+                <h3 className="text-xl leading-4 font-bold text-foreground/70">
                     {tenant?.subdomain}
                 </h3>
-                <Hashtag variant="Bold" size={20} color="#66A786" />
-                <h3 className="text-xl font-bold text-foreground">my.coach</h3>
+                <div className="flex items-center gap-x-1 leading-0">
+                    <Hashtag variant="Bold" size={20} color="#66A786" />
+                    <h3 className="text-xl font-bold text-foreground">
+                        my.coach
+                    </h3>
+                </div>
             </div>
 
             <div className="flex items-center gap-x-5">
@@ -57,8 +61,8 @@ export const Header = ({ user }: { user?: User }) => {
                         <AlertDialog>
                             <AlertDialogTrigger asChild>
                                 <Button
-                                    variant="outline"
-                                    className="flex items-center gap-x-1"
+                                    variant="ghost"
+                                    className="flex bg-muted/50 items-center gap-x-1"
                                 >
                                     <Logout color="red" size={20} />
                                 </Button>

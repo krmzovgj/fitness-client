@@ -19,54 +19,52 @@ function App() {
     const { token, clearToken } = useAuthStore();
     const { setUser, clearUser } = useUserStore();
     const { setTenant, tenant } = useTenantStore();
-    const [tenantLoading, setTenantLoading] = useState(true);
+
+    const [isBootstrapping, setIsBootstrapping] = useState(true);
     const [tenantError, setTenantError] = useState(false);
 
     useEffect(() => {
-        const fetchTenant = async () => {
+        const bootstrap = async () => {
             try {
-                setTenantLoading(true);
+                setIsBootstrapping(true);
                 setTenantError(false);
 
                 const subdomain =
-                    import.meta.env.VITE_TENANT_SUBDOMAIN || "kalapocev";
-                const response = await getTenantBySubdomain(subdomain);
+                    import.meta.env.VITE_TENANT_SUBDOMAIN ||
+                    window.location.hostname.split(".")[0];
 
-                setTenant(response.data);
+                const tenantResponse = await getTenantBySubdomain(subdomain);
+                setTenant(tenantResponse.data);
+
+                if (token) {
+                    try {
+                        const userResponse = await getMe(token);
+                        setUser(userResponse.data);
+                    } catch (err) {
+                        console.warn("Invalid or expired token");
+                        clearToken();
+                        clearUser();
+                    }
+                } else {
+                    clearUser();
+                }
             } catch (err) {
-                console.error("Tenant not found or invalid subdomain");
+                console.error("Failed to load tenant:", err);
                 setTenantError(true);
-            } finally {
-                setTenantLoading(false);
-            }
-        };
-
-        fetchTenant();
-    }, []); 
-
-    useEffect(() => {
-        if (!token) {
-            clearUser();
-            return;
-        }
-
-        const fetchUser = async () => {
-            try {
-                const res = await getMe(token);
-                setUser(res.data);
-            } catch (err) {
-                clearToken();
                 clearUser();
+                clearToken();
+            } finally {
+                setIsBootstrapping(false);
             }
         };
 
-        fetchUser();
-    }, [token]);
+        bootstrap();
+    }, []);
 
-    if (tenantLoading) {
+    if (isBootstrapping) {
         return (
-            <div className="flex items-center justify-center min-h-screen">
-                <Spinner className="size-6" />
+            <div className="flex items-center gap-x-3 justify-center min-h-screen">
+                <Spinner className="size-6" /> Loading...
             </div>
         );
     }
@@ -75,14 +73,13 @@ function App() {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen gap-6 p-6 text-center">
                 <div>
-                    <h2 className="text-2xl font-bold">Internal Error</h2>
+                    <h2 className="text-2xl font-bold">App Not Available</h2>
                     <p className="text-foreground/70 mt-2">
-                        Failed to load the subdomain{" "}
+                        Could not load configuration for subdomain:{" "}
                         <strong>
                             {import.meta.env.VITE_TENANT_SUBDOMAIN ||
                                 window.location.hostname.split(".")[0]}
                         </strong>
-                        .
                     </p>
                 </div>
                 <Button onClick={() => window.location.reload()}>
@@ -92,7 +89,6 @@ function App() {
         );
     }
 
-    // 5. All good → render routes
     return (
         <Routes>
             <Route
@@ -112,6 +108,7 @@ function App() {
                     </ProtectedRoute>
                 }
             />
+
             <Route
                 path="/client/:id"
                 element={
@@ -120,6 +117,7 @@ function App() {
                     </ProtectedRoute>
                 }
             />
+
             <Route
                 path="/client/:id/exercises"
                 element={
@@ -128,6 +126,7 @@ function App() {
                     </ProtectedRoute>
                 }
             />
+
             <Route
                 path="/client/:id/meals"
                 element={

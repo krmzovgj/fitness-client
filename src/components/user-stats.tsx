@@ -1,31 +1,72 @@
 import type { User } from "@/model/user";
-import { ArrowSwapHorizontal, Calendar2, RulerPen, WeightMeter } from "iconsax-reactjs";
+import { Calendar2, RulerPen, WeightMeter } from "iconsax-reactjs";
 
 export const UserStats = ({ client }: { client: User }) => {
     return (
-        <div className="flex items-center gap-x-4">
-            <div>
-                <h3 className="font-medium text-md text-foreground flex items-center gap-x-1">
-                    <WeightMeter variant="Bulk" size={18} color="#000" />
-                    Weight: <span className="font-semibold">{client?.weight}</span>
-                    <span className="text-sm font-semibold text-foreground/70">kg</span>
+        <div
+            className="flex mt-5 md:mt-0 overflow-x-auto gap-x-4
+                scrollbar-hide 
+                [-ms-overflow-style:none] [scrollbar-width:none] 
+                [&::-webkit-scrollbar]:hidden"
+        >
+            <div className="p-4 min-w-40 shrink-0 rounded-2xl border-3 overflow-hidden border-foreground relative bg-muted/50">
+                <h3 className="text-foreground  ">
+                    Weight
+                    <div className="flex gap-x-0.5 items-end">
+                        <div className="font-semibold text-3xl">
+                            {client?.weight}
+                        </div>
+                        <div className="text-lg font-semibold text-foreground/70">
+                            kg
+                        </div>
+                    </div>
                 </h3>
-                <h3 className="font-medium text-md text-foreground flex items-center gap-x-1">
-                    <RulerPen variant="Bulk" size={18} color="#000" />
-                    Height: <span className="font-semibold">{client?.height}</span>
-                    <span className="text-sm font-semibold text-foreground/70">cm</span>
-                </h3>
+
+                <WeightMeter
+                    className="absolute -right-3 -bottom-3"
+                    variant="Bulk"
+                    size={70}
+                    color="#FF8C00"
+                />
             </div>
 
-            <div>
-                <h3 className="font-medium text-md text-foreground flex items-center gap-x-1">
-                    <Calendar2 variant="Bulk" size={18} color="#000" />
-                    Age: <span className="font-semibold">{client?.age}</span>
+            <div className="p-4 min-w-40 shrink-0 rounded-2xl border-3 overflow-hidden border-foreground relative bg-muted/50">
+                <h3 className="text-foreground  ">
+                    Height
+                    <div className="flex gap-x-0.5 items-end">
+                        <div className="font-semibold text-3xl">
+                            {client?.height} 
+                        </div>
+                        <div className="text-lg font-semibold text-foreground/70">
+                            cm
+                        </div>
+                    </div>
                 </h3>
-                <h3 className="font-medium text-md text-foreground flex items-center gap-x-1">
-                    <ArrowSwapHorizontal variant="Bulk" size={18} color="#000" />
-                    Gender: <span className="font-semibold">{client?.gender}</span>
+
+                <RulerPen
+                    className="absolute -right-3 -bottom-3"
+                    variant="Bulk"
+                    size={70}
+                    color="#FF6B6B"
+                />
+            </div>
+
+            <div className="p-4 min-w-40 shrink-0 rounded-2xl border-3 overflow-hidden border-foreground relative bg-muted/50">
+                <h3 className="text-foreground  ">
+                    Age
+                    <div className="flex items-center">
+                        <div className="font-semibold text-3xl">
+                            {client?.age}
+                        </div>
+                    </div>
                 </h3>
+
+                <Calendar2
+                    className="absolute -right-3 -bottom-3"
+                    variant="Bulk"
+                    size={70}
+                    color="#66A786"
+                />
             </div>
         </div>
     );

@@ -182,13 +182,19 @@ export const MealsSection = ({
             <div className="flex items-end mb-10 md:mb-0 justify-between">
                 <div className="mt-20 ">
                     <div className="flex items-center gap-x-3">
-                        <ArrowLeft
-                            className="cursor-pointer"
+                        <Button
                             onClick={() => navigate(-1)}
-                            variant="Bold"
-                            size={30}
-                            color="#000"
-                        />
+                            variant="ghost"
+                            className="bg-muted/50"
+                        >
+                            <ArrowLeft
+                                className="cursor-pointer"
+                                variant="Linear"
+                                size={20}
+                                color="#000"
+                            />
+                            Back
+                        </Button>
                     </div>
 
                     <h3 className="mt-4 text-md font-bold flex items-center gap-x-2 ml-0.5 text-foreground/80">
