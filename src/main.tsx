@@ -19,6 +19,7 @@ createRoot(document.getElementById("root")!).render(
                     "[mask-image:radial-gradient(800px_circle_at_center,white,transparent) ]"
                 )}
             />
+            
             <App />
         </div>
     </BrowserRouter>

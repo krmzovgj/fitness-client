@@ -1,23 +1,18 @@
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { getTenantBySubdomain } from "./api/tenant";
-import { getMe } from "./api/user";
 import ProtectedRoute from "./components/protected-route";
 import PublicRoute from "./components/public-route";
+import { Button } from "./components/ui/button";
+import { Spinner } from "./components/ui/spinner";
 import { SignIn } from "./pages/auth/sign-in";
 import { Client } from "./pages/client/[id]";
 import { Exercises } from "./pages/client/exercises";
 import { Meals } from "./pages/client/meals";
 import { Home } from "./pages/home";
-import { useAuthStore } from "./store/auth";
 import { useTenantStore } from "./store/tenant";
-import { useUserStore } from "./store/user";
-import { Button } from "./components/ui/button";
-import { Spinner } from "./components/ui/spinner";
 
 function App() {
-    const { token, clearToken } = useAuthStore();
-    const { setUser, clearUser } = useUserStore();
     const { setTenant, tenant } = useTenantStore();
 
     const [isBootstrapping, setIsBootstrapping] = useState(true);
@@ -36,23 +31,8 @@ function App() {
                 const tenantResponse = await getTenantBySubdomain(subdomain);
                 setTenant(tenantResponse.data);
 
-                if (token) {
-                    try {
-                        const userResponse = await getMe(token);
-                        setUser(userResponse.data);
-                    } catch (err) {
-                        console.warn("Invalid or expired token");
-                        clearToken();
-                        clearUser();
-                    }
-                } else {
-                    clearUser();
-                }
             } catch (err) {
-                console.error("Failed to load tenant:", err);
                 setTenantError(true);
-                clearUser();
-                clearToken();
             } finally {
                 setIsBootstrapping(false);
             }

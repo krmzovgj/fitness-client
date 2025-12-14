@@ -157,7 +157,7 @@ export const ExerciseSection = ({
                 seterror("");
             }}
         >
-            <div className="flex items-end mb-10 md:mb-0 justify-between">
+            <div className="flex items-end justify-between">
                 <div className="mt-20">
                     <div className="flex items-center gap-x-3">
                         <Button
@@ -191,7 +191,7 @@ export const ExerciseSection = ({
                 )}
             </div>
 
-            <div className="mt-5 flex flex-col md:mt-14 h-full">
+            <div className="mt-5 flex flex-col h-full">
                 {loadingExercises ? (
                     <div className="h-full flex justify-center items-center">
                         <Spinner className="size-6" />

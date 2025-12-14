@@ -153,7 +153,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                 seterror("");
             }}
         >
-            <div className="mt-14">
+            <div className="mt-5">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-x-2">
                         <div className="w-1 h-5 bg-foreground rounded-full"></div>
