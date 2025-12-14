@@ -80,7 +80,7 @@ export const Client = () => {
                             </h1>
                         </div>
 
-                        <div className="md:w-fit border w-full relative">
+                        <div className="md:w-fit w-full relative">
                             <UserStats client={client!} />
 
                             <div

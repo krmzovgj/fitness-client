@@ -11,10 +11,14 @@ import { Exercises } from "./pages/client/exercises";
 import { Meals } from "./pages/client/meals";
 import { Home } from "./pages/home";
 import { useTenantStore } from "./store/tenant";
+import { useAuthStore } from "./store/auth";
+import { getMe } from "./api/user";
+import { useUserStore } from "./store/user";
 
 function App() {
     const { setTenant, tenant } = useTenantStore();
-
+    const { token, clearToken } = useAuthStore();
+    const { setUser, clearUser } = useUserStore();
     const [isBootstrapping, setIsBootstrapping] = useState(true);
     const [tenantError, setTenantError] = useState(false);
 
@@ -31,6 +35,16 @@ function App() {
                 const tenantResponse = await getTenantBySubdomain(subdomain);
                 setTenant(tenantResponse.data);
 
+                if (token) {
+                    try {
+                        const userRes = await getMe(token);
+                        setUser(userRes.data);
+                    } catch {
+                        console.warn("Invalid or expired token");
+                        clearToken();
+                        clearUser();
+                    }
+                }
             } catch (err) {
                 setTenantError(true);
             } finally {
