@@ -52,7 +52,7 @@ export const ClientsSection = () => {
 
             if (user?.role === UserRole.CLIENT) return;
 
-            const response = await getClients(token!);
+            const response = await getClients(token!, user?.tenantId!);
 
             setClients(response.data);
         } catch (error) {

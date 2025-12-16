@@ -33,8 +33,8 @@ export const addClient = async (token: string, data: CreateClientDto) => {
     return response;
 };
 
-export const getClients = async (token: string) => {
-    const response = await api.get<User[]>("/user/client", {
+export const getClients = async (token: string, tenantId: string) => {
+    const response = await api.get<User[]>(`/user/client/${tenantId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
