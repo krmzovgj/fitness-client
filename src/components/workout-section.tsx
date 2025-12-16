@@ -44,7 +44,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
     const { user } = useUserStore();
     const { workoutsByClient, setWorkouts } = useWorkoutStore();
-    const clientId =  client?.id;
+    const clientId = client?.id;
 
     const [loadingWorkouts, setloadingWorkouts] = useState(false);
 
@@ -163,7 +163,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                 seterror("");
             }}
         >
-            <div className="mt-5">
+            <div className="mt-10">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-x-2">
                         <div className="w-1 h-5 bg-foreground rounded-full"></div>
@@ -180,35 +180,37 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                     )}
                 </div>
 
-                <div className="mt-5">
-                    {workouts?.length === 0 && !loadingWorkouts ? (
-                        <Empty>
-                            <EmptyHeader>
-                                <EmptyMedia variant="icon">
-                                    <Box1
-                                        variant="Bold"
-                                        size={20}
-                                        color="#fff"
-                                    />
-                                </EmptyMedia>
-                                <EmptyTitle>No Workouts Yet</EmptyTitle>
-                                <EmptyDescription>
-                                    {user?.role === UserRole.TRAINER
-                                        ? "No workouts created yet. Once you create a workout it will appear here"
-                                        : "No workouts yet. Once your trainer creates a workout it will appear here"}
-                                </EmptyDescription>
-                            </EmptyHeader>
-                        </Empty>
-                    ) : (
-                        <DataTable
-                            data={sortedWorkouts}
-                            columns={workoutColumns(
-                                setselectedWorkout,
-                                setdialogOpen
-                            )}
-                        />
-                    )}
-                </div>
+                {!loadingWorkouts && (
+                    <div className="mt-5">
+                        {workouts?.length === 0 && !loadingWorkouts ? (
+                            <Empty>
+                                <EmptyHeader>
+                                    <EmptyMedia variant="icon">
+                                        <Box1
+                                            variant="Bold"
+                                            size={20}
+                                            color="#fff"
+                                        />
+                                    </EmptyMedia>
+                                    <EmptyTitle>No Workouts Yet</EmptyTitle>
+                                    <EmptyDescription>
+                                        {user?.role === UserRole.TRAINER
+                                            ? "No workouts created yet. Once you create a workout it will appear here"
+                                            : "No workouts yet. Once your trainer creates a workout it will appear here"}
+                                    </EmptyDescription>
+                                </EmptyHeader>
+                            </Empty>
+                        ) : (
+                            <DataTable
+                                data={sortedWorkouts}
+                                columns={workoutColumns(
+                                    setselectedWorkout,
+                                    setdialogOpen
+                                )}
+                            />
+                        )}
+                    </div>
+                )}
             </div>
 
             <DialogContent>

@@ -150,7 +150,7 @@ export const DietSection = ({ client }: { client: User }) => {
                 seterror("");
             }}
         >
-            <div className="mt-14">
+            <div className="mt-10">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-x-2">
                         <div className="w-1 h-5 bg-foreground rounded-full"></div>
@@ -167,35 +167,37 @@ export const DietSection = ({ client }: { client: User }) => {
                     )}
                 </div>
 
-                <div className="mt-5">
-                    {mealDays?.length === 0 && !loadingMealDays ? (
-                        <Empty>
-                            <EmptyHeader>
-                                <EmptyMedia variant="icon">
-                                    <Book
-                                        variant="Bold"
-                                        size={20}
-                                        color="#fff"
-                                    />
-                                </EmptyMedia>
-                                <EmptyTitle>No Diet Yet</EmptyTitle>
-                                <EmptyDescription>
-                                    {user?.role === UserRole.TRAINER
-                                        ? "No diet created yet. Once you create a diet it will appear here"
-                                        : "No diet yet. Once your trainer creates a diet it will appear here"}
-                                </EmptyDescription>
-                            </EmptyHeader>
-                        </Empty>
-                    ) : (
-                        <DataTable
-                            data={sortedMealDays}
-                            columns={dietColumns(
-                                setselectedDiet,
-                                setdialogOpen
-                            )}
-                        />
-                    )}
-                </div>
+                {!loadingMealDays && (
+                    <div className="mt-5">
+                        {mealDays?.length === 0 && !loadingMealDays ? (
+                            <Empty>
+                                <EmptyHeader>
+                                    <EmptyMedia variant="icon">
+                                        <Book
+                                            variant="Bold"
+                                            size={20}
+                                            color="#fff"
+                                        />
+                                    </EmptyMedia>
+                                    <EmptyTitle>No Diet Yet</EmptyTitle>
+                                    <EmptyDescription>
+                                        {user?.role === UserRole.TRAINER
+                                            ? "No diet created yet. Once you create a diet it will appear here"
+                                            : "No diet yet. Once your trainer creates a diet it will appear here"}
+                                    </EmptyDescription>
+                                </EmptyHeader>
+                            </Empty>
+                        ) : (
+                            <DataTable
+                                data={sortedMealDays}
+                                columns={dietColumns(
+                                    setselectedDiet,
+                                    setdialogOpen
+                                )}
+                            />
+                        )}
+                    </div>
+                )}
             </div>
 
             <DialogContent>

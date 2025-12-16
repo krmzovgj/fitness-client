@@ -184,37 +184,41 @@ export const ClientsSection = () => {
                             </DialogTrigger>
                         </div>
 
-                        <div className="mt-5 flex flex-col h-full">
-                            {clients?.length === 0 ? (
-                                <Empty className="h-full">
-                                    <EmptyHeader>
-                                        <EmptyMedia variant="icon">
-                                            <Profile2User
-                                                variant="Bold"
-                                                size={20}
-                                                color="#fff"
-                                            />
-                                        </EmptyMedia>
-                                        <EmptyTitle>No Clients Yet</EmptyTitle>
-                                        <EmptyDescription>
-                                            You haven&apos;t added any clients
-                                            yet. Get started by adding your
-                                            first client.
-                                        </EmptyDescription>
-                                    </EmptyHeader>
-                                </Empty>
-                            ) : (
-                                <DataTable<User>
-                                    enableSorting={true}
-                                    columns={clientColumns(
-                                        setselectedClient,
-                                        setOpen,
-                                        handleGetClients
-                                    )}
-                                    data={clients || []}
-                                />
-                            )}
-                        </div>
+                        {!loadingClients && (
+                            <div className="mt-5 flex flex-col h-full">
+                                {clients?.length === 0 ? (
+                                    <Empty className="h-full">
+                                        <EmptyHeader>
+                                            <EmptyMedia variant="icon">
+                                                <Profile2User
+                                                    variant="Bold"
+                                                    size={20}
+                                                    color="#fff"
+                                                />
+                                            </EmptyMedia>
+                                            <EmptyTitle>
+                                                No Clients Yet
+                                            </EmptyTitle>
+                                            <EmptyDescription>
+                                                You haven&apos;t added any
+                                                clients yet. Get started by
+                                                adding your first client.
+                                            </EmptyDescription>
+                                        </EmptyHeader>
+                                    </Empty>
+                                ) : (
+                                    <DataTable<User>
+                                        enableSorting={true}
+                                        columns={clientColumns(
+                                            setselectedClient,
+                                            setOpen,
+                                            handleGetClients
+                                        )}
+                                        data={clients || []}
+                                    />
+                                )}
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
