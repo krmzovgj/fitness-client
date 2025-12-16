@@ -1,26 +1,25 @@
 import type { User } from "@/model/user";
+import { useAuthStore } from "@/store/auth";
+import { useUserStore } from "@/store/user";
 import { Hashtag, Logout } from "iconsax-reactjs";
 import {
     AlertDialog,
-    AlertDialogTrigger,
+    AlertDialogAction,
+    AlertDialogCancel,
     AlertDialogContent,
-    AlertDialogHeader,
-    AlertDialogTitle,
     AlertDialogDescription,
     AlertDialogFooter,
-    AlertDialogCancel,
-    AlertDialogAction,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import { Avatar } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { useAuthStore } from "@/store/auth";
-import { useUserStore } from "@/store/user";
-import { useTenantStore } from "@/store/tenant";
 
 export const Header = ({ user }: { user?: User }) => {
     const { clearToken } = useAuthStore();
     const { clearUser } = useUserStore();
-    const { tenant } = useTenantStore();
+    // const { tenant } = useTenantStore();
 
     const signOut = () => {
         clearToken();
@@ -31,7 +30,7 @@ export const Header = ({ user }: { user?: User }) => {
         <div className="flex justify-between items-center">
             <div className="">
                 <h3 className="text-xl leading-4 font-bold text-foreground/70">
-                    {tenant?.subdomain}
+                    app
                 </h3>
                 <div className="flex items-center gap-x-1 leading-0">
                     <Hashtag variant="Bold" size={20} color="#66A786" />
