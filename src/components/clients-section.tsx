@@ -78,6 +78,7 @@ export const ClientsSection = () => {
                 weight,
                 height,
                 role: UserRole.CLIENT,
+                tenantId: user?.tenantId,
                 password,
             };
 
