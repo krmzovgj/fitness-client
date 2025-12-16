@@ -39,8 +39,10 @@ import { Spinner } from "./ui/spinner";
 export const DietSection = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
     const { user } = useUserStore();
-    const { mealDays, setMealDays } = useDietStore();
+    const { mealDaysByClient, setMealDays } = useDietStore();
     const [loadingMealDays, setloadingMealDays] = useState(false);
+
+    const clientId = client?.id;
 
     const [name, setname] = useState("");
     const [day, setday] = useState<Day>(Day.MONDAY);
@@ -49,25 +51,32 @@ export const DietSection = ({ client }: { client: User }) => {
     const [dialogOpen, setdialogOpen] = useState(false);
     const [selectedDiet, setselectedDiet] = useState<Diet | null>(null);
 
-    const sortedMealDays = mealDays.sort((a, b) => {
-        return dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day);
-    });
+    const mealDays = clientId ? mealDaysByClient[clientId] : undefined;
+
+    const sortedMealDays = mealDays
+        ? [...mealDays].sort(
+              (a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day)
+          )
+        : [];
 
     const handleGetDietsByClient = async () => {
-        if (!token || !client?.id) return;
+        if (!token || !clientId) return;
+
         try {
             setloadingMealDays(true);
-            const response = await getDietByClient(client?.id, token);
-            setMealDays(response.data);
-        } catch (error) {
+            const response = await getDietByClient(clientId, token);
+            setMealDays(clientId, response.data);
         } finally {
             setloadingMealDays(false);
         }
     };
 
     useEffect(() => {
+        if (!token || !clientId) return;
+        if (mealDays) return;
+
         handleGetDietsByClient();
-    }, []);
+    }, [clientId]);
 
     useEffect(() => {
         if (!selectedDiet) return;
@@ -77,13 +86,13 @@ export const DietSection = ({ client }: { client: User }) => {
     }, [selectedDiet]);
 
     const handleCreateDiet = async () => {
-        if (!token || !client?.id) return;
+        if (!token || !clientId) return;
         try {
             setcreatingDiet(true);
             const response = await createDiet(token, {
                 name,
                 day,
-                clientId: client?.id,
+                clientId: clientId,
             });
             if (response.status === 201) {
                 setdialogOpen(false);
@@ -110,7 +119,7 @@ export const DietSection = ({ client }: { client: User }) => {
             const response = await updateDiet(token, selectedDiet?.id, {
                 name,
                 day,
-                clientId: client?.id,
+                clientId: clientId,
             });
 
             if (response.status === 200) {
@@ -159,7 +168,7 @@ export const DietSection = ({ client }: { client: User }) => {
                 </div>
 
                 <div className="mt-5">
-                    {mealDays.length === 0 && !loadingMealDays ? (
+                    {mealDays?.length === 0 && !loadingMealDays ? (
                         <Empty>
                             <EmptyHeader>
                                 <EmptyMedia variant="icon">

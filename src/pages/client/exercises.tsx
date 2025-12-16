@@ -12,7 +12,7 @@ export const Exercises = () => {
     const dayMatch = dayColors.find((day) => day.day === state.day);
 
     return (
-        <div className="h-full overflow-x-hidden md:h-screen overflow-y-scroll flex flex-col w-screen md:p-10 p-6">
+        <div className="h-full overflow-x-hidden md:h-screen overflow-y-scroll flex flex-col w-screen md:p-8 p-6">
             <Header user={user!} />
 
             <ExerciseSection

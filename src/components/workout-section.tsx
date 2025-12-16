@@ -43,7 +43,9 @@ import { Spinner } from "./ui/spinner";
 export const WorkoutSection = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
     const { user } = useUserStore();
-    const { workouts, setWorkouts } = useWorkoutStore();
+    const { workoutsByClient, setWorkouts } = useWorkoutStore();
+    const clientId =  client?.id;
+
     const [loadingWorkouts, setloadingWorkouts] = useState(false);
 
     const [name, setname] = useState("");
@@ -55,25 +57,33 @@ export const WorkoutSection = ({ client }: { client: User }) => {
         null
     );
 
-    const sortedWorkouts = workouts?.sort((a, b) => {
-        return dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day);
-    });
+    const workouts = clientId ? workoutsByClient[clientId] : undefined;
+
+    const sortedWorkouts = workouts
+        ? [...workouts].sort(
+              (a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day)
+          )
+        : [];
 
     const handleGetWorkoutsByClient = async () => {
-        if (!token || !client?.id) return;
+        if (!token || !clientId) return;
+
         try {
             setloadingWorkouts(true);
-            const response = await getWorkoutsByClient(token, client?.id);
-            setWorkouts(response.data);
-        } catch (error) {
+            const response = await getWorkoutsByClient(token, clientId);
+
+            setWorkouts(clientId, response.data); // ✅ correct
         } finally {
             setloadingWorkouts(false);
         }
     };
 
     useEffect(() => {
+        if (!token || !clientId) return;
+        if (workouts) return;
+
         handleGetWorkoutsByClient();
-    }, []);
+    }, [clientId]);
 
     useEffect(() => {
         if (!selectedWorkout) return;
@@ -83,13 +93,13 @@ export const WorkoutSection = ({ client }: { client: User }) => {
     }, [selectedWorkout]);
 
     const handleCreateWorkout = async () => {
-        if (!token || !client?.id) return;
+        if (!token || !clientId) return;
         try {
             setcreatingWorkout(true);
             const response = await createWorkout(token, {
                 name,
                 day,
-                clientId: client?.id,
+                clientId: clientId,
             });
             if (response.status === 201) {
                 setdialogOpen(false);
@@ -146,7 +156,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
         <Dialog
             open={dialogOpen}
             onOpenChange={(open) => {
-                setdialogOpen(open);    
+                setdialogOpen(open);
                 setselectedWorkout(null);
                 setname("");
                 setday(Day.MONDAY);
