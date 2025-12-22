@@ -25,6 +25,13 @@ import {
 } from "./ui/empty";
 import { Input } from "./ui/input";
 import { Spinner } from "./ui/spinner";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "./ui/select";
 
 export const ClientsSection = () => {
     const { user } = useUserStore();
@@ -276,11 +283,41 @@ export const ClientsSection = () => {
                             setAge(value === "" ? 0 : Number(value));
                         }}
                     />
-                    <Input
-                        placeholder="Gender (MALE / FEMALE)"
-                        value={gender}
-                        onChange={(e) => setGender(e.target.value)}
-                    />
+
+                    <Select onValueChange={setGender} value={gender}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Gender" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem
+                                value={"MALE"}
+                            >
+                                <div className="flex items-center gap-x-2">
+                                    <div
+                                        className="w-2 h-2 rounded-full"
+                                        style={{
+                                            backgroundColor: "#66A786",
+                                        }}
+                                    ></div>
+                                    <h2>MALE</h2>
+                                </div>
+                            </SelectItem>
+
+                            <SelectItem
+                                value={"FEMALE"}
+                            >
+                                <div className="flex items-center gap-x-2">
+                                    <div
+                                        className="w-2 h-2 rounded-full"
+                                        style={{
+                                            backgroundColor: "#9B5DE5",
+                                        }}
+                                    ></div>
+                                    <h2>FEMALE</h2>
+                                </div>
+                            </SelectItem>
+                        </SelectContent>
+                    </Select>
 
                     {!selectedClient && (
                         <div className="relative">

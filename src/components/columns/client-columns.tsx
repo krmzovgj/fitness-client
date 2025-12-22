@@ -107,15 +107,6 @@ export const clientColumns = (
             </span>
         ),
     },
-
-    {
-        accessorKey: "role",
-        header: "Role",
-        cell: ({ row }) => {
-            const role = row.original.role;
-            return <span>{role}</span>;
-        },
-    },
     {
         accessorKey: "createdAt",
         header: "Created At",

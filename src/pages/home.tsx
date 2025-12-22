@@ -88,7 +88,7 @@ export const Home = () => {
                 )}
             </div>
 
-            <div className="flex-1 z-50 flex flex-col mt-8">
+            <div className="flex-1 z-50 flex flex-col">
                 {user?.role === UserRole.TRAINER ? (
                     <ClientsSection />
                 ) : (

@@ -30,13 +30,13 @@ export const Header = ({ user }: { user?: User }) => {
     return (
         <div className="flex justify-between items-center">
             <div className="">
-                <h3 className="text-xl leading-4 font-bold text-foreground/70">
+                <h3 className="text-xl leading-4 font-bold text-foreground">
                     {tenant?.subdomain}
                 </h3>
                 <div className="flex items-center gap-x-1 leading-0">
                     <Hashtag variant="Bold" size={20} color="#66A786" />
                     <h3 className="text-xl font-bold text-foreground">
-                        my.coach
+                        mycoach.mk
                     </h3>
                 </div>
             </div>
