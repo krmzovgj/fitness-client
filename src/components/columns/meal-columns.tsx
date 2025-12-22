@@ -218,7 +218,7 @@ export const MealColumns = (
                         <div className="flex items-center gap-x-2">
                             <Button onClick={handleOpenEdit} variant="outline">
                                 <Edit
-                                    variant="Bulk"
+                                    variant="Bold"
                                     size={18}
                                     color="#292929"
                                 />
@@ -232,7 +232,7 @@ export const MealColumns = (
                                 <AlertDialogTrigger asChild>
                                     <Button variant="outline">
                                         <Trash
-                                            variant="Bulk"
+                                            variant="Bold"
                                             size={18}
                                             color="red"
                                         />
