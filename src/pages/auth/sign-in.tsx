@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Eye, EyeSlash, Login, Sms } from "iconsax-reactjs";
 import { Header } from "@/components/header";
 import { Spinner } from "@/components/ui/spinner";
+import { useTenantStore } from "@/store/tenant";
 
 export const SignIn = () => {
     const navigate = useNavigate();
@@ -15,11 +16,18 @@ export const SignIn = () => {
     const [loading, setloading] = useState(false);
     const [error, seterror] = useState("");
     const [showPassword, setshowPassword] = useState(false);
+    const { tenant } = useTenantStore();
 
     const handleSignIn = async () => {
+        if (!tenant) return;
+        
         try {
             setloading(true);
-            const response = await signIn({ email, password });
+            const response = await signIn({
+                email,
+                password,
+                tenantId: tenant?.id,
+            });
             useAuthStore.getState().setToken(response.token);
 
             navigate("/");
