@@ -20,14 +20,16 @@ export const SignIn = () => {
 
     const handleSignIn = async () => {
         if (!tenant) return;
-        
+
         try {
             setloading(true);
-            const response = await signIn({
-                email,
-                password,
-                tenantId: tenant?.id,
-            });
+            const response = await signIn(
+                {
+                    email,
+                    password,
+                },
+                tenant.id
+            );
             useAuthStore.getState().setToken(response.token);
 
             navigate("/");
