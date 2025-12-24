@@ -280,7 +280,7 @@ export const MealsSection = ({
                             const value = e.target.value;
                             setcal(value === "" ? 0 : Number(value));
                         }}
-                        placeholder="Calories (g)"
+                        placeholder="Calories (kcal)"
                         type="number"
                     />
 
