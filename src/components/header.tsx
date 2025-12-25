@@ -1,7 +1,17 @@
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { formatDate } from "@/lib/utils";
 import type { User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
+import { useTenantStore } from "@/store/tenant";
 import { useUserStore } from "@/store/user";
-import { Hashtag, Logout } from "iconsax-reactjs";
+import { ArrowDown2, Calendar, Hashtag, LogoutCurve } from "iconsax-reactjs";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -14,8 +24,7 @@ import {
     AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import { Avatar } from "./ui/avatar";
-import { Button } from "./ui/button";
-import { useTenantStore } from "@/store/tenant";
+import { SidebarTrigger } from "./ui/sidebar";
 
 export const Header = ({ user }: { user?: User }) => {
     const { clearToken } = useAuthStore();
@@ -27,46 +36,79 @@ export const Header = ({ user }: { user?: User }) => {
         clearUser();
     };
 
+    const now = new Date();
+
     return (
         <div className="flex justify-between items-center">
-            <div className="">
-                <h3 className="text-xl leading-4 font-bold text-foreground">
-                    {tenant?.subdomain}
-                </h3>
-                <div className="flex items-center gap-x-1 leading-0">
-                    <Hashtag variant="Bold" size={20} color="#66A786" />
-                    <h3 className="text-xl font-bold text-foreground">
-                        mycoach.mk
-                    </h3>
+            <div className="flex items-center gap-x-3">
+                <div className="md:hidden flex">
+                    <SidebarTrigger />
                 </div>
+                {user ? (
+                    <div className="flex items-center gap-x-2 text-2xl font-medium">
+                        Dashboard
+                    </div>
+                ) : (
+                    <div className="flex items-center gap-x-1">
+                        <Hashtag variant="Bold" size={40} color="#66A786" />
+                        <div>
+                            <h3 className="leading-4 uppercase text-sm font-black text-foreground">
+                                {tenant?.subdomain}
+                            </h3>
+                            <h4 className="leading-3 text-[15px] font-semibold">
+                                mycoach.mk
+                            </h4>
+                        </div>
+                    </div>
+                )}
             </div>
 
-            <div className="flex items-center gap-x-5">
-                {user && (
-                    <div className="flex items-center gap-x-2">
-                        <div className="hidden md:block">
-                            <h3 className="text-right font-medium">
-                                {user?.firstName} {user?.lastName}
+            <AlertDialog>
+                <div className="flex items-center gap-x-5">
+                    {user && (
+                        <div className="flex items-center gap-x-3">
+                            <h3 className="hidden md:flex py-3 px-4 rounded-2xl border items-center gap-x-1 text-sm md:text-md text-foreground">
+                                <Calendar
+                                    variant="Linear"
+                                    size={20}
+                                    color="#000"
+                                />
+                                {formatDate(now)}
                             </h3>
-                            <h3 className="text-right text-sm text-foreground/80 font-medium -mt-0.5">
-                                {user?.email}
-                            </h3>
-                        </div>
 
-                        <Avatar
-                            firstName={user.firstName}
-                            lastName={user.lastName}
-                        />
-
-                        <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    className="flex bg-muted/50 items-center gap-x-1"
-                                >
-                                    <Logout color="red" size={20} />
-                                </Button>
-                            </AlertDialogTrigger>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger>
+                                    <div className="relative cursor-pointer">
+                                        <Avatar
+                                            firstName={user.firstName}
+                                            lastName={user.lastName}
+                                        />
+                                        <div className="bg-white absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center">
+                                            <ArrowDown2
+                                                variant="Bold"
+                                                size={14}
+                                                color="#000"
+                                            />
+                                        </div>
+                                    </div>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <DropdownMenuLabel>
+                                        My Account
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <AlertDialogTrigger asChild>
+                                        <DropdownMenuItem>
+                                            <LogoutCurve
+                                                variant="Linear"
+                                                size={15}
+                                                color="red"
+                                            />
+                                            Sign Out
+                                        </DropdownMenuItem>
+                                    </AlertDialogTrigger>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
 
                             <AlertDialogContent>
                                 <AlertDialogHeader>
@@ -87,10 +129,10 @@ export const Header = ({ user }: { user?: User }) => {
                                     </AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
-                        </AlertDialog>
-                    </div>
-                )}
-            </div>
+                        </div>
+                    )}
+                </div>
+            </AlertDialog>
         </div>
     );
 };

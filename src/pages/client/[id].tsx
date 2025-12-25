@@ -1,6 +1,7 @@
 import { getUserById } from "@/api/user";
 import { DietSection } from "@/components/diet-section";
 import { Header } from "@/components/header";
+import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { UserStats } from "@/components/user-stats";
@@ -38,7 +39,7 @@ export const Client = () => {
     }, [id, token]);
 
     return (
-        <div className="h-full overflow-x-hidden md:h-screen flex flex-col md:p-8 p-6">
+        <div className="h-full overflow-x-hidden flex flex-col">
             <Header user={user!} />
 
             {!loadingClient && !client && (
@@ -55,7 +56,7 @@ export const Client = () => {
                 </div>
             ) : (
                 <div>
-                    <div className="flex md:flex-row flex-col mt-20 mb-5 md:mb-0 items-start justify-between md:items-end gap-x-20">
+                    <div className="flex md:flex-row flex-col mt-10 md:mt-20 mb-5 md:mb-0 items-start justify-between md:items-end gap-x-20">
                         <div className="">
                             <Button
                                 onClick={() => navigate(-1)}
@@ -71,13 +72,24 @@ export const Client = () => {
                                 Back
                             </Button>
 
-                            <h3 className="mt-4 text-md font-bold flex items-center gap-x-2 ml-0.5 text-foreground/80">
-                                <div className="w-2 h-2 rounded-full bg-[#66A786]" />
-                                {client?.role}
-                            </h3>
-                            <h1 className="text-3xl font-bold">
-                                {client?.firstName} {client?.lastName}
-                            </h1>
+                            <div className="flex items-center gap-x-2 md:gap-x-3 mt-4">
+                                {client && (
+                                    <Avatar
+                                        firstName={client?.firstName!}
+                                        lastName={client?.lastName!}
+                                        size={50}
+                                        className="text-xl"
+                                    />
+                                )}
+                                <div>
+                                    <h1 className="text-3xl font-bold">
+                                        {client?.firstName} {client?.lastName}
+                                    </h1>
+                                    <h3 className="text-sm md:leading-3 leading-4 ml-0.5 font-semibold text-foreground/80">
+                                        {client?.email}
+                                    </h3>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="md:w-fit w-full relative">

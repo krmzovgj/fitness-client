@@ -90,21 +90,18 @@ export function DataTable<T>({
                         <AnimatePresence mode="popLayout" initial={false}>
                             {table.getRowModel().rows.map((row) => (
                                 <motion.tr
-                                    layout // This is the ONLY thing you need for perfect add/delete shifts
+                                    layout
                                     key={row.id}
-                                    // No initial/animate/exit = no slide-in on mount or refresh
-                                    // Framer Motion's `layout` + `AnimatePresence mode="popLayout"` handles everything
                                     className={
                                         row.index % 2 === 0
                                             ? "bg-muted/50"
                                             : "bg-background"
                                     }
-                                    style={{ originY: 0 }} // optional: smoother vertical shift
+                                    style={{ originY: 0 }}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
                                             <motion.div layout="position">
-                                                {/* Wrap cell content so text doesn't jump during layout shift */}
                                                 {flexRender(
                                                     cell.column.columnDef.cell,
                                                     cell.getContext()

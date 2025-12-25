@@ -13,7 +13,7 @@ import {
 import { dayColors, dayOrder } from "@/lib/utils";
 import { Day } from "@/model/day";
 import { UserRole, type User } from "@/model/user";
-import type { Workout } from "@/model/workout";
+import { type Workout } from "@/model/workout";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import { useWorkoutStore } from "@/store/workout";
@@ -39,6 +39,8 @@ import {
     SelectValue,
 } from "./ui/select";
 import { Spinner } from "./ui/spinner";
+import { Switch } from "./ui/switch";
+import { Label } from "@radix-ui/react-dropdown-menu";
 
 export const WorkoutSection = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
@@ -50,6 +52,8 @@ export const WorkoutSection = ({ client }: { client: User }) => {
 
     const [name, setname] = useState("");
     const [day, setday] = useState<Day>(Day.MONDAY);
+    const [restDay, setrestDay] = useState<boolean>(false);
+    console.log("🚀 ~ WorkoutSection ~ restDay:", restDay);
     const [error, seterror] = useState("");
     const [creatingWorkout, setcreatingWorkout] = useState(false);
     const [dialogOpen, setdialogOpen] = useState(false);
@@ -72,7 +76,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
             setloadingWorkouts(true);
             const response = await getWorkoutsByClient(token, clientId);
 
-            setWorkouts(clientId, response.data); // ✅ correct
+            setWorkouts(clientId, response.data);
         } finally {
             setloadingWorkouts(false);
         }
@@ -90,6 +94,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
 
         setname(selectedWorkout.name);
         setday(selectedWorkout.day);
+        setrestDay(!!selectedWorkout.restDay)
     }, [selectedWorkout]);
 
     const handleCreateWorkout = async () => {
@@ -99,6 +104,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
             const response = await createWorkout(token, {
                 name,
                 day,
+                restDay: !!restDay,
                 clientId: clientId,
             });
             if (response.status === 201) {
@@ -125,6 +131,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
             ...selectedWorkout,
             name,
             day,
+            restDay: !!restDay,
         };
 
         try {
@@ -221,7 +228,6 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                     Fill the required fields to{" "}
                     {selectedWorkout ? "update" : "add"} a workout
                 </DialogDescription>
-
                 <Input
                     value={name}
                     onChange={(e) => setname(e.target.value)}
@@ -250,6 +256,13 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                         ))}
                     </SelectContent>
                 </Select>
+                <div className="flex ml-0.5 items-center space-x-2">
+                    <Switch
+                        checked={restDay}
+                        onCheckedChange={(isRest) => setrestDay(!!isRest)}
+                    />
+                    <Label>Rest Day</Label>
+                </div>
 
                 {error !== "" && (
                     <div className="text-red-500 mt-2 text-sm">

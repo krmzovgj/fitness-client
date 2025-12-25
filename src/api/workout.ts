@@ -5,12 +5,14 @@ import type { Day } from "@/model/day";
 interface CreateWorkoutDto {
     name: string;
     day: Day;
+    restDay: boolean;
     clientId: number;
 }
 
 interface UpdateWorkoutDto {
     name: string;
     day: Day;
+    restDay: boolean;
     clientId: number;
 }
 
@@ -41,7 +43,12 @@ export const updateWorkout = async (
 ) => {
     const response = await api.put(
         `/workout/${workoutId}`,
-        { name: dto.name, day: dto.day, clientId: dto.clientId },
+        {
+            name: dto.name,
+            day: dto.day,
+            restDay: dto.restDay,
+            clientId: dto.clientId,
+        },
         {
             headers: {
                 Authorization: `Bearer ${token}`,

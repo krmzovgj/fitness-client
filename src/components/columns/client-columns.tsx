@@ -1,16 +1,14 @@
 "use client";
 
-import { UserRole, type User } from "@/model/user";
-import { type ColumnDef } from "@tanstack/react-table";
-import { Edit, ExportSquare, Trash } from "iconsax-reactjs";
-import { useNavigate } from "react-router-dom";
-import { Avatar } from "../ui/avatar";
-import { formatDate } from "@/lib/utils";
-import { useUserStore } from "@/store/user";
-import { useAuthStore } from "@/store/auth";
-import { useState } from "react";
 import { deleteUser } from "@/api/user";
-import { Button } from "../ui/button";
+import { formatDate } from "@/lib/utils";
+import { UserRole, type User } from "@/model/user";
+import { useAuthStore } from "@/store/auth";
+import { useUserStore } from "@/store/user";
+import { type ColumnDef } from "@tanstack/react-table";
+import { ArrowRight, Edit, Trash } from "iconsax-reactjs";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     AlertDialog,
     AlertDialogCancel,
@@ -21,6 +19,8 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "../ui/alert-dialog";
+import { Avatar } from "../ui/avatar";
+import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
 
 export const clientColumns = (
@@ -34,8 +34,19 @@ export const clientColumns = (
         header: "Full Name",
         cell: ({ row }) => {
             const user = row.original;
+            const navigate = useNavigate();
+
             return (
-                <div className="flex w-full items-center gap-3">
+                <div
+                    onClick={() =>
+                        navigate(
+                            `/client/${user.id}?name=${encodeURIComponent(
+                                `${user.firstName} ${user.lastName}`
+                            )}`
+                        )
+                    }
+                    className="flex cursor-pointer group w-full items-center gap-3"
+                >
                     {user && (
                         <Avatar
                             firstName={user?.firstName}
@@ -44,8 +55,18 @@ export const clientColumns = (
                         />
                     )}
                     <div>
-                        <div className="w-full font-semibold text-md">
-                            {user.firstName} {user.lastName}
+                        <div className=" flex items-center gap-x-2 relative">
+                            <div className="font-semibold text-md">
+                                {user.firstName} {user.lastName}
+                            </div>
+
+                            <div className="transition-transform duration-200 scale-0 group-hover:scale-100 origin-bottom-left">
+                                <ArrowRight
+                                    variant="Linear"
+                                    color="#66A786"
+                                    size={19}
+                                />
+                            </div>
                         </div>
 
                         <h2 className="text-foreground/80 font-medium -mt-0.5 text-sm">
@@ -126,8 +147,6 @@ export const clientColumns = (
             const { token } = useAuthStore();
             const [openAlertDialog, setOpenAlertDialog] = useState(false);
             const [deletingClient, setdeletingClient] = useState(false);
-            const navigate = useNavigate();
-            const client = row.original;
 
             if (user?.role === UserRole.CLIENT) return null;
 
@@ -210,14 +229,6 @@ export const clientColumns = (
                             </AlertDialog>
                         </div>
                     )}
-
-                    <Button
-                        variant="outline"
-                        onClick={() => navigate(`/client/${client.id}`)}
-                    >
-                        <ExportSquare variant="Bold" size={18} color="#000" />
-                        Open
-                    </Button>
                 </div>
             );
         },

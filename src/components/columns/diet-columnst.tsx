@@ -1,11 +1,11 @@
 "use client";
 
-import { dayColors } from "@/lib/utils";
+import { dayColors, formatDate } from "@/lib/utils";
 import type { Diet } from "@/model/diet";
 import { UserRole } from "@/model/user";
 import { useUserStore } from "@/store/user";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Edit, ExportSquare } from "iconsax-reactjs";
+import { Calendar, Edit } from "iconsax-reactjs";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 
@@ -23,13 +23,21 @@ export const dietColumns = (
             if (!matched) {
                 return;
             }
+            const navigate = useNavigate();
 
             return (
-                <span className="flex items-center gap-x-2">
-                    <div
-                        className="w-2 h-2 rounded-full"
-                        style={{ backgroundColor: matched.color }}
-                    ></div>
+                <span
+                    onClick={() =>
+                        navigate(`/client/${row.original.id}/meals`, {
+                            state: {
+                                name: row.original.name,
+                                day: row.original.day,
+                            },
+                        })
+                    }
+                    className="flex cursor-pointer items-center gap-x-2"
+                >
+                    <Calendar variant="Bulk" size={20} color={matched.color} />
                     <h2 className="">{matched.day}</h2>
                 </span>
             );
@@ -37,16 +45,42 @@ export const dietColumns = (
     },
     {
         accessorKey: "name",
-        header: "Name",
-        cell: ({ row }) => (
-            <span className="whitespace-nowrap">{row.original.name}</span>
-        ),
+        header: "Diet Name",
+        cell: ({ row }) => {
+            const navigate = useNavigate();
+
+            return (
+                <span
+                    onClick={() =>
+                        navigate(`/client/${row.original.id}/meals`, {
+                            state: {
+                                name: row.original.name,
+                                day: row.original.day,
+                            },
+                        })
+                    }
+                    className="cursor-pointer whitespace-nowrap"
+                >
+                    {row.original.name}
+                </span>
+            );
+        },
+    },
+    {
+        accessorKey: "updatedAt",
+        header: "Updated At",
+        cell: ({ row }) => {
+            return (
+                <span className="whitespace-nowrap">
+                    {formatDate(row.original.updatedAt)}
+                </span>
+            );
+        },
     },
     {
         id: "actions",
         header: "",
         cell: ({ row }) => {
-            const navigate = useNavigate();
             const { user } = useUserStore();
 
             const handleOpenEdit = () => {
@@ -68,25 +102,6 @@ export const dietColumns = (
                             </Button>
                         </div>
                     )}
-
-                    <Button
-                        onClick={() =>
-                            navigate(`/client/${row.original.id}/meals`, {
-                                state: {
-                                    name: row.original.name,
-                                    day: row.original.day,
-                                },
-                            })
-                        }
-                        variant="outline"
-                    >
-                        <ExportSquare
-                            variant="Bold"
-                            size={18}
-                            color="#292929"
-                        />
-                        Open
-                    </Button>
                 </div>
             );
         },

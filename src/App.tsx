@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { getTenantBySubdomain } from "./api/tenant";
+import { getMe } from "./api/user";
+import { AppLayout } from "./components/layout/app-layout";
+import { AuthLayout } from "./components/layout/auth-layout";
 import ProtectedRoute from "./components/protected-route";
 import PublicRoute from "./components/public-route";
 import { Button } from "./components/ui/button";
@@ -10,9 +13,8 @@ import { Client } from "./pages/client/[id]";
 import { Exercises } from "./pages/client/exercises";
 import { Meals } from "./pages/client/meals";
 import { Home } from "./pages/home";
-import { useTenantStore } from "./store/tenant";
 import { useAuthStore } from "./store/auth";
-import { getMe } from "./api/user";
+import { useTenantStore } from "./store/tenant";
 import { useUserStore } from "./store/user";
 
 function App() {
@@ -35,9 +37,9 @@ function App() {
                 const tenantResponse = await getTenantBySubdomain(subdomain);
                 setTenant(tenantResponse.data);
 
-                if (token) {
+                if (token && tenant) {
                     try {
-                        const userRes = await getMe(token);
+                        const userRes = await getMe(token, tenant?.id);
                         setUser(userRes.data);
                     } catch {
                         console.warn("Invalid or expired token");
@@ -57,7 +59,7 @@ function App() {
 
     if (isBootstrapping) {
         return (
-            <div className="flex items-center gap-x-3 justify-center min-h-screen">
+            <div className="flex items-center gap-x-3 border w-full justify-center min-h-screen">
                 <Spinner className="size-6" /> Loading...
             </div>
         );
@@ -65,7 +67,7 @@ function App() {
 
     if (tenantError || !tenant) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-screen gap-6 p-6 text-center">
+            <div className="flex flex-col items-center justify-center w-full min-h-screen gap-6 p-6 text-center">
                 <div>
                     <h2 className="text-2xl font-bold">App Not Available</h2>
                     <p className="text-foreground/70 mt-2">
@@ -85,59 +87,63 @@ function App() {
 
     return (
         <Routes>
-            <Route
-                path="/auth/sign-in"
-                element={
-                    <PublicRoute>
-                        <SignIn />
-                    </PublicRoute>
-                }
-            />
+            <Route element={<AuthLayout />}>
+                <Route
+                    path="/auth/sign-in"
+                    element={
+                        <PublicRoute>
+                            <SignIn />
+                        </PublicRoute>
+                    }
+                />
+            </Route>
 
-            <Route
-                path="/"
-                element={
-                    <ProtectedRoute>
-                        <Home />
-                    </ProtectedRoute>
-                }
-            />
+            <Route element={<AppLayout />}>
+                <Route
+                    path="/"
+                    element={
+                        <ProtectedRoute>
+                            <Home />
+                        </ProtectedRoute>
+                    }
+                />
 
-            <Route
-                path="/client/:id"
-                element={
-                    <ProtectedRoute>
-                        <Client />
-                    </ProtectedRoute>
-                }
-            />
+                <Route
+                    path="/client/:id"
+                    element={
+                        <ProtectedRoute>
+                            <Client />
+                        </ProtectedRoute>
+                    }
+                />
 
-            <Route
-                path="/client/:id/exercises"
-                element={
-                    <ProtectedRoute>
-                        <Exercises />
-                    </ProtectedRoute>
-                }
-            />
+                <Route
+                    path="/client/:id/exercises"
+                    element={
+                        <ProtectedRoute>
+                            <Exercises />
+                        </ProtectedRoute>
+                    }
+                />
 
-            <Route
-                path="/client/:id/meals"
-                element={
-                    <ProtectedRoute>
-                        <Meals />
-                    </ProtectedRoute>
-                }
-            />
+                <Route
+                    path="/client/:id/meals"
+                    element={
+                        <ProtectedRoute>
+                            <Meals />
+                        </ProtectedRoute>
+                    }
+                />
 
-            <Route
-                path="*"
-                element={
-                    <ProtectedRoute>
-                        <Home />
-                    </ProtectedRoute>
-                }
-            />
+                <Route
+                    path="*"
+                    element={
+                        <ProtectedRoute>
+                            <Home />
+                        </ProtectedRoute>
+                    }
+                />
+            </Route>
         </Routes>
     );
 }

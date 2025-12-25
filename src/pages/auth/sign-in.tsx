@@ -57,7 +57,7 @@ export const SignIn = () => {
                     <h1 className="text-2xl text-center">Sign In</h1>
                     <p className="text-lg text-foreground/80 mt-2 text-center leading-6">
                         Sign in with your email and <br />
-                        track your progress
+                        start tracking your program
                     </p>
                 </div>
 

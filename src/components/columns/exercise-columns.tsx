@@ -180,7 +180,6 @@ export const ExerciseColumns = (
             );
         },
     },
-
     {
         accessorKey: "updatedAt",
         header: "Updated At",

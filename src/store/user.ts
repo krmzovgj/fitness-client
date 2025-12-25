@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import type { User } from "../model/user";
 
 type UserStore = {
@@ -8,21 +9,28 @@ type UserStore = {
     clearUser: () => void;
 };
 
-export const useUserStore = create<UserStore>((set) => ({
-    user: null,
-    isAuthenticated: false,
-
-    setUser: (user) => {
-        set(() => ({
-            user,
-            isAuthenticated: true,
-        }));
-    },
-
-    clearUser: () => {
-        set(() => ({
+export const useUserStore = create<UserStore>()(
+    persist(
+        (set) => ({
             user: null,
             isAuthenticated: false,
-        }));
-    },
-}));
+
+            setUser: (user: User) => {
+                set(() => ({
+                    user,
+                    isAuthenticated: true,
+                }));
+            },
+
+            clearUser: () => {
+                set(() => ({
+                    user: null,
+                    isAuthenticated: false,
+                }));
+            },
+        }),
+        {
+            name: "user-storage", // this key is used in localStorage
+        }
+    )
+);

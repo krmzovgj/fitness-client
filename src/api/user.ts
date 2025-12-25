@@ -1,10 +1,11 @@
 import type { User } from "../model/user";
 import { api } from "./axios";
 
-export const getMe = async (token: string) => {
+export const getMe = async (token: string, tenantId: string) => {
     const response = await api.get<User>("/user/me", {
         headers: {
             Authorization: `Bearer ${token}`,
+            tenantId: tenantId,
         },
     });
 

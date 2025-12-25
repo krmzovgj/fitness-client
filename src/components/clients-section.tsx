@@ -32,11 +32,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from "./ui/select";
+import { useTenantStore } from "@/store/tenant";
 
 export const ClientsSection = () => {
     const { user } = useUserStore();
     const { token } = useAuthStore();
     const { clients, setClients } = useClientStore();
+    const { tenant } = useTenantStore();
 
     const [loadingClients, setloadingClients] = useState(false);
     const [creatingClient, setcreatingClient] = useState(false);
@@ -57,9 +59,9 @@ export const ClientsSection = () => {
         try {
             setloadingClients(true);
 
-            if (user?.role === UserRole.CLIENT) return;
+            if (user?.role === UserRole.CLIENT || !tenant) return;
 
-            const response = await getClients(token!, user?.tenantId!);
+            const response = await getClients(token!, tenant?.id);
 
             setClients(response.data);
         } catch (error) {
@@ -85,7 +87,7 @@ export const ClientsSection = () => {
                 weight,
                 height,
                 role: UserRole.CLIENT,
-                tenantId: user?.tenantId,
+                tenantId: tenant?.id,
                 password,
             };
 
@@ -193,9 +195,9 @@ export const ClientsSection = () => {
                         </div>
 
                         {!loadingClients && (
-                            <div className="mt-5 flex flex-col h-full">
+                            <div className="mt-5 flex flex-col ">
                                 {clients?.length === 0 ? (
-                                    <Empty className="h-full">
+                                    <Empty>
                                         <EmptyHeader>
                                             <EmptyMedia variant="icon">
                                                 <Profile2User
@@ -233,11 +235,11 @@ export const ClientsSection = () => {
 
             <DialogContent>
                 <DialogTitle>
-                    {selectedClient ? "Update" : "Add"} New Client
+                    {selectedClient ? "Update" : "Add New"} Client
                 </DialogTitle>
                 <DialogDescription>
                     Fill the required fields to{" "}
-                    {selectedClient ? "update" : "add"} a new client
+                    {selectedClient ? "update" : "add"} a client
                 </DialogDescription>
 
                 <div className="grid gap-4">
@@ -289,9 +291,7 @@ export const ClientsSection = () => {
                             <SelectValue placeholder="Gender" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem
-                                value={"MALE"}
-                            >
+                            <SelectItem value={"MALE"}>
                                 <div className="flex items-center gap-x-2">
                                     <div
                                         className="w-2 h-2 rounded-full"
@@ -303,9 +303,7 @@ export const ClientsSection = () => {
                                 </div>
                             </SelectItem>
 
-                            <SelectItem
-                                value={"FEMALE"}
-                            >
+                            <SelectItem value={"FEMALE"}>
                                 <div className="flex items-center gap-x-2">
                                     <div
                                         className="w-2 h-2 rounded-full"

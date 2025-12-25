@@ -191,15 +191,15 @@ export const ExerciseSection = ({
                 )}
             </div>
 
-            <div className="mt-5 flex flex-col h-full">
+            <div className="mt-5 flex flex-col ">
                 {loadingExercises ? (
-                    <div className="h-full flex justify-center items-center">
+                    <div className="flex justify-center items-center">
                         <Spinner className="size-6" />
                     </div>
                 ) : (
-                    <div className="h-full flex flex-col">
+                    <div className="flex flex-col">
                         {exercises.length === 0 ? (
-                            <Empty className="h-full">
+                            <Empty className="">
                                 <EmptyHeader>
                                     <EmptyMedia variant="icon">
                                         <Weight

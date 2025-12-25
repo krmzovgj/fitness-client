@@ -119,10 +119,6 @@
    Links
 ------------------------------------------ */
 
-a:hover {
-    color: #535bf2;
-}
-
 ::selection {
     background-color: #292929; /* New background color (e.g., a shade of red) */
     color: #ffffff; /* New foreground/text color (e.g., white) */

@@ -34,7 +34,6 @@ export const dayColors: { day: Day; color: string }[] = [
     { day: Day.SUNDAY, color: "#292929" }, // purple
 ];
 
-
 export const mealTypes: { type: MealType; color: string }[] = [
     { type: MealType.BREKFAST, color: "#FF8C00" }, // orange
     { type: MealType.LUNCH, color: "#FF6B6B" }, // red

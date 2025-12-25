@@ -213,15 +213,15 @@ export const MealsSection = ({
                 )}
             </div>
 
-            <div className="mt-5 flex flex-col  h-full">
+            <div className="mt-5 flex flex-col  ">
                 {loadingExercises ? (
-                    <div className="h-full flex justify-center items-center">
+                    <div className=" flex justify-center items-center">
                         <Spinner className="size-6" />
                     </div>
                 ) : (
-                    <div className="flex flex-col h-full">
+                    <div className="flex flex-col ">
                         {meals.length === 0 ? (
-                            <Empty className="h-full">
+                            <Empty className="">
                                 <EmptyHeader>
                                     <EmptyMedia variant="icon">
                                         <Book

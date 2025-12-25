@@ -4,24 +4,27 @@ import { DietSection } from "@/components/diet-section";
 import { Spinner } from "@/components/ui/spinner";
 import { UserStats } from "@/components/user-stats";
 import { WorkoutSection } from "@/components/workout-section";
-import { formatDate } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth";
-import { Flash } from "iconsax-reactjs"; // assuming you have Spinner
+import { Flash } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { Header } from "../components/header";
 import { UserRole } from "../model/user";
 import { useUserStore } from "../store/user";
+import { useTenantStore } from "@/store/tenant";
 
 export const Home = () => {
     const { user, setUser, clearUser } = useUserStore();
+    console.log("🚀 ~ Home ~ user:", user);
     const { token, clearToken } = useAuthStore();
+    console.log("🚀 ~ Home ~ token:", token);
     const [isLoadingUser, setIsLoadingUser] = useState(false);
+    const { tenant } = useTenantStore();
 
     useEffect(() => {
-        if (user) return;
+        // if (user) return;
 
         const loadUser = async () => {
-            if (!token) {
+            if (!token || !tenant) {
                 clearUser();
                 setIsLoadingUser(false);
                 return;
@@ -29,7 +32,7 @@ export const Home = () => {
 
             try {
                 setIsLoadingUser(true);
-                const res = await getMe(token);
+                const res = await getMe(token, tenant?.id);
                 setUser(res.data);
             } catch (err) {
                 console.warn("Invalid or expired token");
@@ -51,19 +54,14 @@ export const Home = () => {
         );
     }
 
-    const now = new Date();
-
     return (
-        <div className="h-full flex flex-col overflow-x-hidden md:h-screen md:p-8 p-6">
+        <div className="h-full flex flex-col overflow-x-hidden md:h-screen ">
             <Header user={user!} />
 
             <div className="mt-20 flex md:flex-row flex-col items-start md:justify-between md:items-end gap-x-20">
                 <div className="flex mb-5 md:mb-0 items-center justify-between w-full md:w-auto">
                     <div>
-                        <h3 className="text-sm md:text-md text-foreground">
-                            {formatDate(now)}
-                        </h3>
-                        <h1 className="text-3xl font-bold">
+                        <h1 className="text-4xl font-bold">
                             Hello {user?.firstName},
                         </h1>
                         {user?.role === UserRole.TRAINER ? (
