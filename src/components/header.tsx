@@ -41,9 +41,12 @@ export const Header = ({ user }: { user?: User }) => {
     return (
         <div className="flex justify-between items-center">
             <div className="flex items-center gap-x-3">
-                <div className="md:hidden flex">
-                    <SidebarTrigger />
-                </div>
+                {!user && (
+                    <div className="md:hidden flex">
+                        <SidebarTrigger />
+                    </div>
+                )}
+                
                 {user ? (
                     <div className="flex items-center gap-x-2 text-2xl font-medium">
                         Dashboard
