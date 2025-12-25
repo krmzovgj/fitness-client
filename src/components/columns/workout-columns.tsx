@@ -40,7 +40,13 @@ export const workoutColumns = (
                     }}
                     className=" cursor-pointer flex whitespace-nowrap items-center gap-x-2"
                 >
-                    <Calendar variant="Bulk" size={20} color={matched.color} />
+                    <div className="relative  rounded-full">
+                        <div
+                            className="absolute w-2 h-2 bottom-0 right-0 rounded-full"
+                            style={{ backgroundColor: matched.color }}
+                        ></div>
+                        <Calendar variant="Bulk" size={20} color={"#181818"} />
+                    </div>
                     <h2 className="">{matched.day}</h2>
                 </span>
             );
@@ -48,7 +54,7 @@ export const workoutColumns = (
     },
     {
         accessorKey: "name",
-        header: "Workout Name",
+        header: "Name",
         cell: ({ row }) => {
             const navigate = useNavigate();
 

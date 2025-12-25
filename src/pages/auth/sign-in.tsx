@@ -5,7 +5,6 @@ import { signIn } from "../../api/auth";
 import { useAuthStore } from "../../store/auth";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeSlash, Login, Sms } from "iconsax-reactjs";
-import { Header } from "@/components/header";
 import { Spinner } from "@/components/ui/spinner";
 import { useTenantStore } from "@/store/tenant";
 
@@ -48,7 +47,6 @@ export const SignIn = () => {
 
     return (
         <div className="w-screen p-10 flex-col h-screen flex justify-between ">
-            <Header />
             <div className="md:w-1/4 w-full flex self-center justify-center  flex-col">
                 <div className="mb-6 flex flex-col items-center">
                     <div className="mb-6  bg-foreground/5 text-foreground flex size-10 shrink-0 items-center justify-center rounded-lg [&_svg:not([class*='size-'])]:size-6">

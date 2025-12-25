@@ -5,23 +5,20 @@ import { Spinner } from "@/components/ui/spinner";
 import { UserStats } from "@/components/user-stats";
 import { WorkoutSection } from "@/components/workout-section";
 import { useAuthStore } from "@/store/auth";
+import { useTenantStore } from "@/store/tenant";
 import { Flash } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
-import { Header } from "../components/header";
 import { UserRole } from "../model/user";
 import { useUserStore } from "../store/user";
-import { useTenantStore } from "@/store/tenant";
 
 export const Home = () => {
     const { user, setUser, clearUser } = useUserStore();
-    console.log("🚀 ~ Home ~ user:", user);
     const { token, clearToken } = useAuthStore();
-    console.log("🚀 ~ Home ~ token:", token);
     const [isLoadingUser, setIsLoadingUser] = useState(false);
     const { tenant } = useTenantStore();
 
     useEffect(() => {
-        // if (user) return;
+        if (user) return;
 
         const loadUser = async () => {
             if (!token || !tenant) {
@@ -55,14 +52,12 @@ export const Home = () => {
     }
 
     return (
-        <div className="h-full flex flex-col overflow-x-hidden md:h-screen ">
-            <Header user={user!} />
-
+        <div className="h-full  flex flex-col overflow-x-hidden md:h-screen ">
             <div className="mt-20 flex md:flex-row flex-col items-start md:justify-between md:items-end gap-x-20">
                 <div className="flex mb-5 md:mb-0 items-center justify-between w-full md:w-auto">
                     <div>
                         <h1 className="text-4xl font-bold">
-                            Hello {user?.firstName},
+                            Hello {user ? user.firstName : "User"},
                         </h1>
                         {user?.role === UserRole.TRAINER ? (
                             <h3 className="text-sm md:text-md font-medium text-foreground/80 flex items-center gap-x-1 mt-1 -ml-0.5">
@@ -90,11 +85,11 @@ export const Home = () => {
                 {user?.role === UserRole.TRAINER ? (
                     <ClientsSection />
                 ) : (
-                    <>
+                    <div>
                         {/* <TodaysActivity /> */}
                         <WorkoutSection client={user!} />
                         <DietSection client={user!} />
-                    </>
+                    </div>
                 )}
             </div>
         </div>

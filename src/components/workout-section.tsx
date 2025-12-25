@@ -53,7 +53,6 @@ export const WorkoutSection = ({ client }: { client: User }) => {
     const [name, setname] = useState("");
     const [day, setday] = useState<Day>(Day.MONDAY);
     const [restDay, setrestDay] = useState<boolean>(false);
-    console.log("🚀 ~ WorkoutSection ~ restDay:", restDay);
     const [error, seterror] = useState("");
     const [creatingWorkout, setcreatingWorkout] = useState(false);
     const [dialogOpen, setdialogOpen] = useState(false);

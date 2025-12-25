@@ -1,6 +1,5 @@
 import { getUserById } from "@/api/user";
 import { DietSection } from "@/components/diet-section";
-import { Header } from "@/components/header";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -8,14 +7,12 @@ import { UserStats } from "@/components/user-stats";
 import { WorkoutSection } from "@/components/workout-section";
 import { type User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
-import { useUserStore } from "@/store/user";
 import { ArrowLeft } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const Client = () => {
     const navigate = useNavigate();
-    const { user } = useUserStore();
     const { token } = useAuthStore();
     const { id } = useParams();
 
@@ -40,8 +37,6 @@ export const Client = () => {
 
     return (
         <div className="h-full overflow-x-hidden flex flex-col">
-            <Header user={user!} />
-
             {!loadingClient && !client && (
                 <div>
                     <div className="flex items-center justify-center h-screen">

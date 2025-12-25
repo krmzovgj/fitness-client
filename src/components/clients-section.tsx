@@ -167,7 +167,6 @@ export const ClientsSection = () => {
             open={open}
             onOpenChange={(open) => {
                 setOpen(open);
-
                 setselectedClient(null);
                 setFirstName("");
                 setLastName("");

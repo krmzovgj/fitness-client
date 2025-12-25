@@ -213,7 +213,7 @@ const Sidebar = React.forwardRef<
                     <SheetContent
                         data-sidebar="sidebar"
                         data-mobile="true"
-                        className="bg-background text-sidebar-foreground [&>button]:hidden"
+                        className="bg-background rounded-tr-2xl rounded-br-2xl text-sidebar-foreground [&>button]:hidden"
                         style={{} as React.CSSProperties}
                         side={side}
                     >

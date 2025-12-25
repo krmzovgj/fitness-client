@@ -90,7 +90,6 @@ export const ExerciseColumns = (
                         handleGetExercisesByWorkout();
                     }
                 } catch (err) {
-                    console.log(err);
                 }
             };
 
