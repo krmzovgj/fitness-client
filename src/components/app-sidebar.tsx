@@ -74,21 +74,9 @@ export function AppSidebar() {
                                         <item.icon
                                             variant="Bold"
                                             size={20}
-                                            color={
-                                                item.url === currentPathName
-                                                    ? "#000"
-                                                    : "#999B9D"
-                                            }
+                                            color={"#181818"}
                                         />
-                                        <span
-                                            style={{
-                                                color:
-                                                    item.url === currentPathName
-                                                        ? "#181818"
-                                                        : "#999B9D",
-                                            }}
-                                            className="leading-0  text-[15px]"
-                                        >
+                                        <span className="leading-0 text-foreground text-[15px]">
                                             {item.title}
                                         </span>
                                     </Link>
