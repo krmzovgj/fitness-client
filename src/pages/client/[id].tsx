@@ -78,13 +78,14 @@ export const Client = () => {
                                             />
                                         )}
                                         <div>
-                                            <h1 className="text-3xl tracking-tight font-medium md:font-bold">
+                                            <h3 className="font-bold text-foreground/70 text-sm">CLIENT</h3>
+                                            <h1 className="text-3xl font-bold">
                                                 {client?.firstName}{" "}
                                                 {client?.lastName}
                                             </h1>
-                                            <h3 className="text-sm md:leading-3 tracking-tight leading-3 ml-0.5 font-medium md:font-semibold text-foreground/80">
+                                            {/* <h3 className="text-sm md:leading-3 leading-3 ml-0.5 font-medium md:font-semibold text-foreground/80">
                                                 {client?.email}
-                                            </h3>
+                                            </h3> */}
                                         </div>
                                     </div>
                                 </div>
