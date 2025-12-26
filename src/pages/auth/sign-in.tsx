@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
+import { useTenantStore } from "@/store/tenant";
+import { Eye, EyeSlash, Login } from "iconsax-reactjs";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn } from "../../api/auth";
 import { useAuthStore } from "../../store/auth";
-import { Input } from "@/components/ui/input";
-import { Eye, EyeSlash, Login, Sms } from "iconsax-reactjs";
-import { Spinner } from "@/components/ui/spinner";
-import { useTenantStore } from "@/store/tenant";
 
 export const SignIn = () => {
     const navigate = useNavigate();

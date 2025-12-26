@@ -11,7 +11,7 @@ import type { User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useTenantStore } from "@/store/tenant";
 import { useUserStore } from "@/store/user";
-import { ArrowDown2, Calendar, Hashtag, LogoutCurve } from "iconsax-reactjs";
+import { ArrowDown2, Calendar, LogoutCurve } from "iconsax-reactjs";
 import {
     AlertDialog,
     AlertDialogAction,
