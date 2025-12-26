@@ -3,14 +3,14 @@ import { api } from "./axios";
 import type { Day } from "@/model/day";
 
 interface CreateWorkoutDto {
-    name: string;
+    name?: string;
     day: Day;
     restDay: boolean;
     clientId: number;
 }
 
 interface UpdateWorkoutDto {
-    name: string;
+    name?: string;
     day: Day;
     restDay: boolean;
     clientId: number;

@@ -11,7 +11,13 @@ import type { User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useTenantStore } from "@/store/tenant";
 import { useUserStore } from "@/store/user";
-import { ArrowDown2, Calendar, LogoutCurve } from "iconsax-reactjs";
+import {
+    ArrowDown2,
+    Calendar,
+    Lifebuoy,
+    LogoutCurve,
+    Profile,
+} from "iconsax-reactjs";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -86,6 +92,28 @@ export const Header = ({ user }: { user?: User }) => {
                                         My Account
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
+                                    <DropdownMenuItem>
+                                        <Profile
+                                            variant="Linear"
+                                            size={15}
+                                            color="#000"
+                                        />
+                                        Profile
+                                    </DropdownMenuItem>
+
+                                    <a
+                                        href="https://www.instagram.com/mycoach.mk/"
+                                        target="_blank"
+                                    >
+                                        <DropdownMenuItem>
+                                            <Lifebuoy
+                                                variant="Linear"
+                                                size={15}
+                                                color="#000"
+                                            />
+                                            Need Help?
+                                        </DropdownMenuItem>
+                                    </a>
                                     <AlertDialogTrigger asChild>
                                         <DropdownMenuItem>
                                             <LogoutCurve

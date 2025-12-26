@@ -50,7 +50,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
 
     const [loadingWorkouts, setloadingWorkouts] = useState(false);
 
-    const [name, setname] = useState("");
+    const [name, setname] = useState<string>("");
     const [day, setday] = useState<Day>(Day.MONDAY);
     const [restDay, setrestDay] = useState<boolean>(false);
     const [error, seterror] = useState("");
@@ -93,7 +93,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
 
         setname(selectedWorkout.name);
         setday(selectedWorkout.day);
-        setrestDay(!!selectedWorkout.restDay)
+        setrestDay(!!selectedWorkout.restDay);
     }, [selectedWorkout]);
 
     const handleCreateWorkout = async () => {
