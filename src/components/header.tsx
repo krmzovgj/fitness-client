@@ -53,7 +53,7 @@ export const Header = ({ user }: { user?: User }) => {
                     </div>
                 )}
 
-                <div className="flex items-center gap-x-2 text-lg md:text-2xl font-bold">
+                <div className="flex items-center gap-x-2 text-xl md:text-2xl font-semibold md:font-bold">
                     {tenant?.subdomain}.mycoach
                 </div>
             </div>

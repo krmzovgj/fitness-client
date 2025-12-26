@@ -36,7 +36,7 @@ export const Client = () => {
     }, [id, token]);
 
     return (
-        <div className="h-full overflow-x-hidden flex flex-col">
+        <div className="h-full flex flex-col">
             {!loadingClient && !client ? (
                 <div className="flex justify-center flex-col items-center h-screen">
                     <h3 className="text-2xl mb-3">Client not found</h3>
@@ -78,11 +78,11 @@ export const Client = () => {
                                             />
                                         )}
                                         <div>
-                                            <h1 className="text-3xl font-bold">
+                                            <h1 className="text-3xl tracking-tight font-medium md:font-bold">
                                                 {client?.firstName}{" "}
                                                 {client?.lastName}
                                             </h1>
-                                            <h3 className="text-sm md:leading-3 leading-4 ml-0.5 font-semibold text-foreground/80">
+                                            <h3 className="text-sm md:leading-3 tracking-tight leading-3 ml-0.5 font-medium md:font-semibold text-foreground/80">
                                                 {client?.email}
                                             </h3>
                                         </div>
