@@ -6,7 +6,6 @@ import { UserStats } from "@/components/user-stats";
 import { WorkoutSection } from "@/components/workout-section";
 import { useAuthStore } from "@/store/auth";
 import { useTenantStore } from "@/store/tenant";
-import { Flash, Refresh } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { UserRole } from "../model/user";
 import { useUserStore } from "../store/user";
