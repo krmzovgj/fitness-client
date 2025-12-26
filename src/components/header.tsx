@@ -47,23 +47,9 @@ export const Header = ({ user }: { user?: User }) => {
                     </div>
                 )}
 
-                {user ? (
-                    <div className="flex items-center gap-x-2 text-lg md:text-2xl font-bold">
-                        {tenant?.subdomain}.mycoach
-                    </div>
-                ) : (
-                    <div className="flex items-center gap-x-1">
-                        <Hashtag variant="Bold" size={40} color="#66A786" />
-                        <div>
-                            <h3 className="leading-4 uppercase text-sm font-black text-foreground">
-                                {tenant?.subdomain}
-                            </h3>
-                            <h4 className="leading-3 text-[15px] font-semibold">
-                                mycoach.mk
-                            </h4>
-                        </div>
-                    </div>
-                )}
+                <div className="flex items-center gap-x-2 text-lg md:text-2xl font-bold">
+                    {tenant?.subdomain}.mycoach
+                </div>
             </div>
 
             <AlertDialog>

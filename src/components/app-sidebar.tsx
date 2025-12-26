@@ -70,7 +70,8 @@ export function AppSidebar() {
     const { tenant } = useTenantStore();
 
     const { user } = useUserStore();
-    const menuItems = MENU_BY_ROLE[user?.role!];
+    const menuItems = MENU_BY_ROLE[user?.role!] || [];
+    
     return (
         <Sidebar className="w-70 flex bg-background border-r-2 border-foreground/5">
             <SidebarContent className="py-2 md:py-6 md:px-3 flex bg-background flex-col flex-1 w-full ">

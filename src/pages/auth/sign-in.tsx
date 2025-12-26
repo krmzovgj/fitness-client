@@ -46,11 +46,26 @@ export const SignIn = () => {
     };
 
     return (
-        <div className="w-screen p-10 flex-col h-screen flex justify-between ">
+        <div className="w-screen  p-10 flex-col h-screen flex justify-between ">
+            <div className="flex items-center gap-x-2.5">
+                <div>
+                    <h3 className="leading-4 text-xl font-bold text-foreground">
+                        {tenant?.subdomain}
+                    </h3>
+                    <h4 className="leading-4.5 text-md font-semibold text-foreground/80">
+                        mycoach
+                    </h4>
+                </div>
+            </div>
+
             <div className="md:w-1/4 w-full flex self-center justify-center  flex-col">
                 <div className="mb-6 flex flex-col items-center">
-                    <div className="mb-6  bg-foreground/5 text-foreground flex size-10 shrink-0 items-center justify-center rounded-lg [&_svg:not([class*='size-'])]:size-6">
-                        <Sms variant="Linear" size={20} color="#000" />
+                    <div className="mb-6">
+                        <img
+                            src="/logo.png"
+                            className="w-24 h-24 rounded-3xl border"
+                            alt=""
+                        />
                     </div>
                     <h1 className="text-2xl text-center">Sign In</h1>
                     <p className="text-lg text-foreground/80 mt-2 text-center leading-6">
