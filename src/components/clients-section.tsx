@@ -182,7 +182,7 @@ export const ClientsSection = () => {
                 {user?.role === UserRole.TRAINER && (
                     <div className="h-full flex flex-col mt-14">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-2xl flex items-center gap-x-3 font-semibold text-foreground">
+                            <h2 className="text-xl md:text-2xl flex items-center gap-x-3">
                                 My Clients
                                 {loadingClients && (
                                     <Spinner className="size-6" />
