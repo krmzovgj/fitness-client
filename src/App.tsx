@@ -59,7 +59,7 @@ function App() {
 
     if (isBootstrapping) {
         return (
-            <div className="flex items-center gap-x-3 border w-full justify-center min-h-screen">
+            <div className="flex items-center gap-x-3 w-full justify-center min-h-screen">
                 <Spinner className="size-6" /> Loading...
             </div>
         );
