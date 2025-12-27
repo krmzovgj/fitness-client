@@ -94,7 +94,7 @@ export function DataTable<T>({
                                     key={row.id}
                                     className={
                                         row.index % 2 === 0
-                                            ? "bg-muted/50"
+                                            ? "bg-secondary"
                                             : "bg-background"
                                     }
                                     style={{ originY: 0 }}

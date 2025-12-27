@@ -163,7 +163,7 @@ export const ExerciseSection = ({
                         <Button
                             onClick={() => navigate(-1)}
                             variant="ghost"
-                            className="bg-muted/50"
+                            className="bg-secondary"
                         >
                             <ArrowLeft
                                 className="cursor-pointer"
@@ -185,7 +185,7 @@ export const ExerciseSection = ({
                     <h1 className="text-3xl font-bold">{state.name}</h1>
                 </div>
                 {user?.role === UserRole.TRAINER && (
-                    <DialogTrigger>
+                    <DialogTrigger asChild>
                         <Button>Add Exercise</Button>
                     </DialogTrigger>
                 )}

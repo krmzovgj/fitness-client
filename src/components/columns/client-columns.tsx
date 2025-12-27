@@ -60,10 +60,10 @@ export const clientColumns = (
                                 {user.firstName} {user.lastName}
                             </div>
 
-                            <div className="transition-transform duration-200 scale-0 group-hover:scale-100 origin-bottom-left">
+                            <div className="transition-transform duration-200 scale-0 group-hover:scale-100 origin-left">
                                 <ArrowRight
                                     variant="Linear"
-                                    color="#66A786"
+                                    color="#181818"
                                     size={19}
                                 />
                             </div>

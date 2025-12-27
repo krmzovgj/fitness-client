@@ -58,19 +58,15 @@ export const Header = ({ user }: { user?: User }) => {
                 </div>
             </div>
 
+            <h3 className="hidden md:flex py-3 px-4 rounded-2xl border items-center gap-x-1 text-sm md:text-md text-foreground">
+                <Calendar variant="Bulk" size={20} color="#000" />
+                {formatDate(now)}
+            </h3>
+
             <AlertDialog>
                 <div className="flex items-center gap-x-5">
                     {user && (
                         <div className="flex items-center gap-x-3">
-                            <h3 className="hidden md:flex py-3 px-4 rounded-2xl border items-center gap-x-1 text-sm md:text-md text-foreground">
-                                <Calendar
-                                    variant="Linear"
-                                    size={20}
-                                    color="#000"
-                                />
-                                {formatDate(now)}
-                            </h3>
-
                             <DropdownMenu>
                                 <DropdownMenuTrigger>
                                     <div className="relative cursor-pointer">
@@ -94,7 +90,7 @@ export const Header = ({ user }: { user?: User }) => {
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem>
                                         <Profile
-                                            variant="Linear"
+                                            variant="Bulk"
                                             size={15}
                                             color="#000"
                                         />
@@ -107,7 +103,7 @@ export const Header = ({ user }: { user?: User }) => {
                                     >
                                         <DropdownMenuItem>
                                             <Lifebuoy
-                                                variant="Linear"
+                                                variant="Bulk"
                                                 size={15}
                                                 color="#000"
                                             />
@@ -117,7 +113,7 @@ export const Header = ({ user }: { user?: User }) => {
                                     <AlertDialogTrigger asChild>
                                         <DropdownMenuItem>
                                             <LogoutCurve
-                                                variant="Linear"
+                                                variant="Bulk"
                                                 size={15}
                                                 color="red"
                                             />

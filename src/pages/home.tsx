@@ -2,7 +2,6 @@ import { getMe } from "@/api/user";
 import { ClientsSection } from "@/components/clients-section";
 import { DietSection } from "@/components/diet-section";
 import { Spinner } from "@/components/ui/spinner";
-import { UserStats } from "@/components/user-stats";
 import { WorkoutSection } from "@/components/workout-section";
 import { useAuthStore } from "@/store/auth";
 import { useTenantStore } from "@/store/tenant";
@@ -71,13 +70,6 @@ export const Home = () => {
                         )}
                     </div>
                 </div>
-
-                {user?.role === UserRole.CLIENT && (
-                    <div className="md:w-fit w-full relative">
-                        <UserStats client={user} />
-                        <div className="absolute md:hidden flex -right-2 top-0 bottom-0 w-16 bg-linear-to-l from-white to-transparent dark:from-background dark:to-transparent pointer-events-none" />
-                    </div>
-                )}
             </div>
 
             <div className="flex-1 z-50 flex flex-col">

@@ -3,11 +3,10 @@ import { DietSection } from "@/components/diet-section";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { UserStats } from "@/components/user-stats";
 import { WorkoutSection } from "@/components/workout-section";
 import { type User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
-import { ArrowLeft } from "iconsax-reactjs";
+import { ArrowLeft, Sms } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -52,52 +51,42 @@ export const Client = () => {
                         </div>
                     ) : (
                         <div>
-                            <div className="flex md:flex-row flex-col mt-10 md:mt-20 mb-5 md:mb-0 items-start justify-between md:items-end gap-x-20">
-                                <div className="">
-                                    <Button
-                                        onClick={() => navigate(-1)}
-                                        variant="ghost"
-                                        className="bg-muted/50"
-                                    >
-                                        <ArrowLeft
-                                            className="cursor-pointer"
-                                            variant="Linear"
-                                            size={20}
-                                            color="#000"
-                                        />
-                                        Back
-                                    </Button>
-
-                                    <div className="flex items-center gap-x-2 md:gap-x-3 mt-4">
-                                        {client && (
-                                            <Avatar
-                                                firstName={client?.firstName!}
-                                                lastName={client?.lastName!}
-                                                size={48}
-                                                className="text-lg"
-                                            />
-                                        )}
-                                        <div>
-                                            <h3 className="font-bold text-foreground/70 text-sm">CLIENT</h3>
-                                            <h1 className="text-3xl font-bold">
-                                                {client?.firstName}{" "}
-                                                {client?.lastName}
-                                            </h1>
-                                            {/* <h3 className="text-sm md:leading-3 leading-3 ml-0.5 font-medium md:font-semibold text-foreground/80">
-                                                {client?.email}
-                                            </h3> */}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="md:w-fit w-full relative">
-                                    <UserStats client={client!} />
-
-                                    <div
-                                        className="absolute md:hidden flex -right-2 top-0 bottom-0 w-16 
-                                bg-linear-to-l from-white to-transparent 
-                                dark:from-background-dark dark:to-transparent"
+                            <div className="flex  flex-col mt-10 md:mt-10 items-start justify-between  gap-x-20">
+                                <Button
+                                    onClick={() => navigate("/")}
+                                    variant="secondary"
+                                >
+                                    <ArrowLeft
+                                        variant="TwoTone"
+                                        size={20}
+                                        color="#000"
                                     />
+                                    Back
+                                </Button>
+
+                                <div className="flex mt-5 items-center gap-x-3">
+                                    {client && (
+                                        <Avatar
+                                            firstName={client?.firstName!}
+                                            lastName={client?.lastName!}
+                                            size={64}
+                                            className="text-2xl"
+                                        />
+                                    )}
+                                    <div>
+                                        <h1 className="text-2xl leading-7 font-medium">
+                                            {client?.firstName}{" "}
+                                            {client?.lastName}
+                                        </h1>
+                                        <h3 className="text-foreground/70 flex items-center gap-x-1">
+                                            <Sms
+                                                variant="Bold"
+                                                size={16}
+                                                color="#000"
+                                            />
+                                            {client?.email}
+                                        </h3>
+                                    </div>
                                 </div>
                             </div>
 

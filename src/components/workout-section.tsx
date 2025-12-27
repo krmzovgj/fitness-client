@@ -17,10 +17,9 @@ import { type Workout } from "@/model/workout";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import { useWorkoutStore } from "@/store/workout";
-import { Box1 } from "iconsax-reactjs";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import { Box1, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
-import { workoutColumns } from "./columns/workout-columns";
-import { DataTable } from "./data-table";
 import { Button } from "./ui/button";
 import {
     Dialog,
@@ -40,7 +39,7 @@ import {
 } from "./ui/select";
 import { Spinner } from "./ui/spinner";
 import { Switch } from "./ui/switch";
-import { Label } from "@radix-ui/react-dropdown-menu";
+import { DayPlanCard } from "./day-plan-card";
 
 export const WorkoutSection = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
@@ -172,8 +171,8 @@ export const WorkoutSection = ({ client }: { client: User }) => {
             <div className="mt-10">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-x-2">
-                        <div className="w-1 h-5 bg-foreground rounded-full"></div>
-                        <h1 className="text-xl md:text-2xl flex items-center gap-x-3">
+                        <h1 className="text-xl md:text-2xl flex items-center gap-x-1 md:gap-x-2">
+                            <RecordCircle variant="Bold" size={20} color="#000" />
                             Workout Plan
                             {loadingWorkouts && <Spinner className="size-6" />}
                         </h1>
@@ -207,13 +206,24 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                                 </EmptyHeader>
                             </Empty>
                         ) : (
-                            <DataTable
-                                data={sortedWorkouts}
-                                columns={workoutColumns(
-                                    setselectedWorkout,
-                                    setdialogOpen
-                                )}
-                            />
+                            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
+                                {sortedWorkouts.map((workout) => (
+                                    <DayPlanCard
+                                        key={workout.id}
+                                        id={workout.id}
+                                        day={workout.day}
+                                        name={workout.name}
+                                        count={workout.exercises.length}
+                                        variant="workout"
+                                        restDay={!!workout.restDay}
+                                        openEdit={() => {
+                                            setselectedWorkout(workout);
+                                            setdialogOpen(true);
+                                        }}
+                                        user={user!}
+                                    />
+                                ))}
+                            </div>
                         )}
                     </div>
                 )}

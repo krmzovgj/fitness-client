@@ -2,6 +2,7 @@
    Tailwind + Plugins
 ------------------------------------------ */
 @import "tailwindcss";
+@import "tailwind-squircle2/css";
 @plugin "tailwindcss-animate";
 
 /* Dark variant */
@@ -122,7 +123,7 @@
 ::selection {
     background-color: #292929; /* New background color (e.g., a shade of red) */
     color: #ffffff; /* New foreground/text color (e.g., white) */
-}   
+}
 
 /* ------------------------------------------
    Theme Tokens (shadcn)

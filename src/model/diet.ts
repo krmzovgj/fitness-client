@@ -5,7 +5,7 @@ export interface Diet {
     id: string;
     name: string;
     day: Day;
-    exercises: Meal[];
+    meals: Meal[];
     clientId: number;
     updatedAt: string;
 }

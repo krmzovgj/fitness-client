@@ -71,7 +71,7 @@ export function AppSidebar() {
 
     const { user } = useUserStore();
     const menuItems = MENU_BY_ROLE[user?.role!] || [];
-    
+
     return (
         <Sidebar className="w-70 flex bg-background border-r-2 border-foreground/5">
             <SidebarContent className="py-2 md:py-6 md:px-3 flex bg-background flex-col flex-1 w-full ">
@@ -105,7 +105,7 @@ export function AppSidebar() {
                                     className={cn(
                                         "px-3.5 py-2.5 rounded-2xl transition-colors",
                                         item.url === currentPathName &&
-                                            "bg-muted/50"
+                                            "bg-secondary"
                                     )}
                                 >
                                     {item.external ? (

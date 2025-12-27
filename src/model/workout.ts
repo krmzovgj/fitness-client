@@ -6,7 +6,7 @@ export interface Workout {
     name: string;
     day: Day;
     exercises: Exercise[];
-    restDay: Boolean;
+    restDay: boolean;
     clientId: number;
     updatedAt: string;
 }

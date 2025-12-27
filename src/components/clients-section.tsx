@@ -3,7 +3,7 @@ import { UserRole, type User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useClientStore } from "@/store/client";
 import { useUserStore } from "@/store/user";
-import { Eye, EyeSlash, Profile2User } from "iconsax-reactjs";
+import { Eye, EyeSlash, Profile2User, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { clientColumns } from "./columns/client-columns";
 import { DataTable } from "./data-table";
@@ -182,7 +182,12 @@ export const ClientsSection = () => {
                 {user?.role === UserRole.TRAINER && (
                     <div className="h-full flex flex-col mt-14">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-xl md:text-2xl flex items-center gap-x-3">
+                            <h2 className="text-xl md:text-2xl flex items-center gap-x-1 md:gap-x-2">
+                                <RecordCircle
+                                    variant="Bold"
+                                    size={20}
+                                    color="#000"
+                                />
                                 My Clients
                                 {loadingClients && (
                                     <Spinner className="size-6" />

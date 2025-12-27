@@ -13,10 +13,9 @@ import { UserRole, type User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useDietStore } from "@/store/diet";
 import { useUserStore } from "@/store/user";
-import { Book } from "iconsax-reactjs";
+import { Book, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
-import { dietColumns } from "./columns/diet-columnst";
-import { DataTable } from "./data-table";
+import { DayPlanCard } from "./day-plan-card";
 import { Button } from "./ui/button";
 import {
     Dialog,
@@ -153,8 +152,12 @@ export const DietSection = ({ client }: { client: User }) => {
             <div className="mt-10">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-x-2">
-                        <div className="w-1 h-5 bg-foreground rounded-full"></div>
-                        <h1 className="text-xl md:text-2xl flex items-center gap-x-3">
+                        <h1 className="text-xl md:text-2xl flex items-center gap-x-1 md:gap-x-2">
+                            <RecordCircle
+                                variant="Bold"
+                                size={20}
+                                color="#000"
+                            />
                             Diet Plan
                             {loadingMealDays && <Spinner className="size-6" />}
                         </h1>
@@ -188,13 +191,23 @@ export const DietSection = ({ client }: { client: User }) => {
                                 </EmptyHeader>
                             </Empty>
                         ) : (
-                            <DataTable
-                                data={sortedMealDays}
-                                columns={dietColumns(
-                                    setselectedDiet,
-                                    setdialogOpen
-                                )}
-                            />
+                            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
+                                {sortedMealDays?.map((diet) => (
+                                    <DayPlanCard
+                                        id={diet.id}
+                                        key={diet.id}
+                                        day={diet.day}
+                                        name={diet.name}
+                                        count={diet?.meals?.length}
+                                        variant="diet"
+                                        openEdit={() => {
+                                            setselectedDiet(diet);
+                                            setdialogOpen(true);
+                                        }}
+                                        user={user!}
+                                    />
+                                ))}
+                            </div>
                         )}
                     </div>
                 )}
@@ -202,11 +215,11 @@ export const DietSection = ({ client }: { client: User }) => {
 
             <DialogContent>
                 <DialogTitle>
-                    {selectedDiet ? "Update" : "Add"} New Diet
+                    {selectedDiet ? "Update" : "Add New"} Diet
                 </DialogTitle>
                 <DialogDescription>
                     Fill the required fields to{" "}
-                    {selectedDiet ? "update" : "add"} a new diet
+                    {selectedDiet ? "update" : "add"} a diet
                 </DialogDescription>
 
                 <Input
