@@ -6,7 +6,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { WorkoutSection } from "@/components/workout-section";
 import { type User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
-import { ArrowLeft, Sms } from "iconsax-reactjs";
+import { ArrowLeft, Information, Sms } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -51,7 +51,7 @@ export const Client = () => {
                         </div>
                     ) : (
                         <div>
-                            <div className="flex  flex-col mt-10 md:mt-10 items-start justify-between  gap-x-20">
+                            <div className="flex flex-col mt-10 items-start justify-between gap-x-20">
                                 <Button
                                     onClick={() => navigate("/")}
                                     variant="secondary"
@@ -69,16 +69,25 @@ export const Client = () => {
                                         <Avatar
                                             firstName={client?.firstName!}
                                             lastName={client?.lastName!}
-                                            size={64}
+                                            size={60}
                                             className="text-2xl"
                                         />
                                     )}
                                     <div>
-                                        <h1 className="text-2xl leading-7 font-medium">
-                                            {client?.firstName}{" "}
-                                            {client?.lastName}
-                                        </h1>
-                                        <h3 className="text-foreground/70 flex items-center gap-x-1">
+                                        <div className="flex items-center gap-x-2">
+                                            <h1 className="text-2xl leading-7 font-medium">
+                                                {client?.firstName}{" "}
+                                                {client?.lastName}
+                                            </h1>
+
+                                            <Information
+                                                className="cursor-pointer"
+                                                variant="Bold"
+                                                size={20}
+                                                color="#000"
+                                            />
+                                        </div>
+                                        <h3 className="text-muted-foreground flex items-center gap-x-1">
                                             <Sms
                                                 variant="Bold"
                                                 size={16}

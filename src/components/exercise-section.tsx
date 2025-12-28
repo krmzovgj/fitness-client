@@ -9,7 +9,7 @@ import { UserRole } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import { Dialog } from "@radix-ui/react-dialog";
-import { ArrowLeft, Weight } from "iconsax-reactjs";
+import { ArrowLeft, RecordCircle, Weight } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ExerciseColumns } from "./columns/exercise-columns";
@@ -158,7 +158,7 @@ export const ExerciseSection = ({
             }}
         >
             <div className="flex items-end justify-between">
-                <div className="mt-20">
+                <div className="mt-10">
                     <div className="flex items-center gap-x-3">
                         <Button
                             onClick={() => navigate(-1)}
@@ -175,15 +175,36 @@ export const ExerciseSection = ({
                         </Button>
                     </div>
 
-                    <h3 className="mt-4 text-md font-bold flex items-center gap-x-2 ml-0.5 text-foreground/80">
-                        <div
-                            className="w-2 h-2 rounded-full "
-                            style={{ backgroundColor: dayMatch?.color }}
-                        />
-                        {dayMatch?.day}
-                    </h3>
-                    <h1 className="text-3xl font-bold">{state.name}</h1>
+                    <div className="flex mt-5  items-center gap-x-3">
+                        <div className="flex w-14 h-14  bg-[#FF8C00]/10 items-center justify-center squircle-round">
+                            <Weight variant="Bold" size={28} color="#FF8C00" />
+                        </div>
+                        <div>
+                            <div>
+                                <h3 className="flex items-center capitalize gap-x-1 font-semibold">
+                                    <p className="text-foreground">
+                                        {dayMatch?.day.toLowerCase()}
+                                    </p>{" "}
+                                    <p className="text-muted-foreground">
+                                        Workout Day
+                                    </p>
+                                </h3>
+                                <h1 className="text-3xl leading-7 font-medium">
+                                    {state.name}
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+
+            <div className="flex mt-10 items-center justify-between">
+                <h1 className="text-xl md:text-2xl flex items-center gap-x-1 md:gap-x-2">
+                    <RecordCircle variant="Bold" size={20} color="#000" />
+                    Exercises
+                    {loadingExercises && <Spinner className="size-6" />}
+                </h1>
+
                 {user?.role === UserRole.TRAINER && (
                     <DialogTrigger asChild>
                         <Button>Add Exercise</Button>
@@ -192,43 +213,37 @@ export const ExerciseSection = ({
             </div>
 
             <div className="mt-5 flex flex-col ">
-                {loadingExercises ? (
-                    <div className="flex justify-center items-center">
-                        <Spinner className="size-6" />
-                    </div>
-                ) : (
-                    <div className="flex flex-col">
-                        {exercises.length === 0 ? (
-                            <Empty className="">
-                                <EmptyHeader>
-                                    <EmptyMedia variant="icon">
-                                        <Weight
-                                            variant="Bold"
-                                            size={20}
-                                            color="#fff"
-                                        />
-                                    </EmptyMedia>
-                                    <EmptyTitle>No Exercises Yet</EmptyTitle>
-                                    <EmptyDescription>
-                                        {user?.role === UserRole.TRAINER
-                                            ? "No exercises created yet. Once you create an exercise it will appear here"
-                                            : "No exercises yet. Once your trainer creates an exercise it will appear here"}
-                                    </EmptyDescription>
-                                </EmptyHeader>
-                            </Empty>
-                        ) : (
-                            <DataTable
-                                enableSorting={true}
-                                data={exercises}
-                                columns={ExerciseColumns(
-                                    setselectedExercise,
-                                    setdialogOpen,
-                                    handleGetExercisesByWorkout
-                                )}
-                            />
-                        )}
-                    </div>
-                )}
+                <div className="flex flex-col">
+                    {exercises.length === 0 && !loadingExercises ? (
+                        <Empty className="">
+                            <EmptyHeader>
+                                <EmptyMedia variant="icon">
+                                    <Weight
+                                        variant="Bold"
+                                        size={20}
+                                        color="#fff"
+                                    />
+                                </EmptyMedia>
+                                <EmptyTitle>No Exercises Yet</EmptyTitle>
+                                <EmptyDescription>
+                                    {user?.role === UserRole.TRAINER
+                                        ? "No exercises created yet. Once you create an exercise it will appear here"
+                                        : "No exercises yet. Once your trainer creates an exercise it will appear here"}
+                                </EmptyDescription>
+                            </EmptyHeader>
+                        </Empty>
+                    ) : (
+                        <DataTable
+                            enableSorting={true}
+                            data={exercises}
+                            columns={ExerciseColumns(
+                                setselectedExercise,
+                                setdialogOpen,
+                                handleGetExercisesByWorkout
+                            )}
+                        />
+                    )}
+                </div>
 
                 <DialogContent>
                     <DialogTitle>

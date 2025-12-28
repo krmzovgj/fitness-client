@@ -56,7 +56,7 @@ export const clientColumns = (
                     )}
                     <div>
                         <div className=" flex items-center gap-x-2 relative">
-                            <div className="font-semibold text-md">
+                            <div className="font-medium text-md">
                                 {user.firstName} {user.lastName}
                             </div>
 
@@ -69,7 +69,7 @@ export const clientColumns = (
                             </div>
                         </div>
 
-                        <h2 className="text-foreground/80 font-medium -mt-0.5 text-sm">
+                        <h2 className="text-muted-foreground font-medium -mt-0.5 text-sm">
                             {user.email}
                         </h2>
                     </div>
@@ -90,7 +90,7 @@ export const clientColumns = (
         cell: ({ row }) => (
             <span>
                 {row.original.height}{" "}
-                <span className="text-xs font-bold -ml-0.5 text-foreground/60">
+                <span className="text-xs font-bold -ml-0.5 text-muted-foreground">
                     cm
                 </span>
             </span>
@@ -104,7 +104,7 @@ export const clientColumns = (
             <div className="flex items-center gap-1">
                 <span>
                     {row.original.weight}{" "}
-                    <span className="text-xs font-bold -ml-0.5 text-foreground/60">
+                    <span className="text-xs font-bold -ml-0.5 text-muted-foreground">
                         kg
                     </span>
                 </span>

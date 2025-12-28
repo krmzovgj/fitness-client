@@ -6,7 +6,7 @@ import { UserRole } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import { Dialog } from "@radix-ui/react-dialog";
-import { ArrowLeft, Book } from "iconsax-reactjs";
+import { ArrowLeft, Book, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MealColumns } from "./columns/meal-columns";
@@ -63,7 +63,7 @@ export const MealsSection = ({
     const [error, seterror] = useState("");
     const [creatingMeal, setCreatingMeal] = useState(false);
     const [selectedMeal, setselectedMeal] = useState<Meal | null>(null);
-    const [loadingExercises, setloadingExercises] = useState(true);
+    const [loadingMeals, setloadingMeals] = useState(true);
 
     const sortedMeals = meals.sort((a, b) => {
         return mealOrder.indexOf(a.type) - mealOrder.indexOf(b.type);
@@ -76,7 +76,7 @@ export const MealsSection = ({
             setMeals(response.data);
         } catch (error) {
         } finally {
-            setloadingExercises(false);
+            setloadingMeals(false);
         }
     };
 
@@ -180,7 +180,7 @@ export const MealsSection = ({
             }}
         >
             <div className="flex items-end  justify-between">
-                <div className="mt-20">
+                <div className="mt-10">
                     <div className="flex items-center gap-x-3">
                         <Button
                             onClick={() => navigate(-1)}
@@ -197,15 +197,34 @@ export const MealsSection = ({
                         </Button>
                     </div>
 
-                    <h3 className="mt-4 text-md font-bold flex items-center gap-x-2 ml-0.5 text-foreground/80">
-                        <div
-                            className="w-2 h-2 rounded-full "
-                            style={{ backgroundColor: dayMatch?.color }}
-                        />
-                        {dayMatch?.day}
-                    </h3>
-                    <h1 className="text-3xl font-bold">{state.name}</h1>
+                    <div className="flex mt-5  items-center gap-x-3">
+                        <div className="flex w-14 h-14  bg-[#66A786]/10 items-center justify-center squircle-round">
+                            <Book variant="Bold" size={28} color="#66A786" />
+                        </div>
+                        <div>
+                            <h3 className="flex items-center capitalize gap-x-1 font-semibold">
+                                <p className="text-foreground">
+                                    {dayMatch?.day.toLowerCase()}
+                                </p>{" "}
+                                <p className="text-muted-foreground">
+                                    Meal Day
+                                </p>
+                            </h3>
+                            <h1 className="text-3xl leading-7 font-medium">
+                                {state.name}
+                            </h1>
+                        </div>
+                    </div>
                 </div>
+            </div>
+
+            <div className="flex mt-10 items-center justify-between">
+                <h1 className="text-xl md:text-2xl flex items-center gap-x-1 md:gap-x-2">
+                    <RecordCircle variant="Bold" size={20} color="#000" />
+                    Meals
+                    {loadingMeals && <Spinner className="size-6" />}
+                </h1>
+
                 {user?.role === UserRole.TRAINER && (
                     <DialogTrigger asChild>
                         <Button>Add Meal</Button>
@@ -214,42 +233,36 @@ export const MealsSection = ({
             </div>
 
             <div className="mt-5 flex flex-col  ">
-                {loadingExercises ? (
-                    <div className=" flex justify-center items-center">
-                        <Spinner className="size-6" />
-                    </div>
-                ) : (
-                    <div className="flex flex-col ">
-                        {meals.length === 0 ? (
-                            <Empty className="">
-                                <EmptyHeader>
-                                    <EmptyMedia variant="icon">
-                                        <Book
-                                            variant="Bold"
-                                            size={20}
-                                            color="#fff"
-                                        />
-                                    </EmptyMedia>
-                                    <EmptyTitle>No Meals Yet</EmptyTitle>
-                                    <EmptyDescription>
-                                        {user?.role === UserRole.TRAINER
-                                            ? "No meals created yet. Once you create a meal it will appear here"
-                                            : "No meals yet. Once your trainer creates a meal it will appear here"}
-                                    </EmptyDescription>
-                                </EmptyHeader>
-                            </Empty>
-                        ) : (
-                            <DataTable
-                                data={sortedMeals}
-                                columns={MealColumns(
-                                    setselectedMeal,
-                                    setdialogOpen,
-                                    handleGetMealsByDiet
-                                )}
-                            />
-                        )}
-                    </div>
-                )}
+                <div className="flex flex-col ">
+                    {meals.length === 0 && !loadingMeals ? (
+                        <Empty className="">
+                            <EmptyHeader>
+                                <EmptyMedia variant="icon">
+                                    <Book
+                                        variant="Bold"
+                                        size={20}
+                                        color="#fff"
+                                    />
+                                </EmptyMedia>
+                                <EmptyTitle>No Meals Yet</EmptyTitle>
+                                <EmptyDescription>
+                                    {user?.role === UserRole.TRAINER
+                                        ? "No meals created yet. Once you create a meal it will appear here"
+                                        : "No meals yet. Once your trainer creates a meal it will appear here"}
+                                </EmptyDescription>
+                            </EmptyHeader>
+                        </Empty>
+                    ) : (
+                        <DataTable
+                            data={sortedMeals}
+                            columns={MealColumns(
+                                setselectedMeal,
+                                setdialogOpen,
+                                handleGetMealsByDiet
+                            )}
+                        />
+                    )}
+                </div>
 
                 <DialogContent>
                     <DialogTitle>

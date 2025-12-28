@@ -70,7 +70,7 @@ function App() {
             <div className="flex flex-col items-center justify-center w-full min-h-screen gap-6 p-6 text-center">
                 <div>
                     <h2 className="text-2xl font-bold">App Not Available</h2>
-                    <p className="text-foreground/70 mt-2">
+                    <p className="text-muted-foreground mt-2">
                         Could not load configuration for subdomain:{" "}
                         <strong>
                             {import.meta.env.VITE_TENANT_SUBDOMAIN ||

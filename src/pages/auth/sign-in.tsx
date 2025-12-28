@@ -57,10 +57,10 @@ export const SignIn = () => {
                         />
                     </div>
                     <h1 className="text-3xl text-center">
-                        Sign In <span className="text-foreground/70">@</span>{" "}
+                        Sign In <span className="text-muted-foreground">@</span>{" "}
                         {tenant?.subdomain}
                     </h1>
-                    <p className="text-lg text-foreground/70 mt-4 text-center leading-6">
+                    <p className="text-lg text-muted-foreground mt-4 text-center leading-6">
                         Sign in with your email and <br />
                         start tracking your program
                     </p>
@@ -90,7 +90,7 @@ export const SignIn = () => {
                         <button
                             type="button"
                             onClick={() => setshowPassword(!showPassword)}
-                            className="absolute cursor-pointer right-3 top-1/2 -translate-y-1/2 text-foreground/60 hover:text-foreground"
+                            className="absolute cursor-pointer right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                         >
                             {showPassword ? (
                                 <EyeSlash

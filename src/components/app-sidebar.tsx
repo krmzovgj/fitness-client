@@ -35,12 +35,6 @@ const MENU_BY_ROLE: Record<UserRole, MenuItem[]> = {
             url: "/profile",
             icon: Profile,
         },
-        {
-            title: "Help Center",
-            url: "https://www.instagram.com/mycoach.mk/",
-            icon: Lifebuoy,
-            external: true,
-        },
     ],
 
     CLIENT: [
@@ -53,12 +47,6 @@ const MENU_BY_ROLE: Record<UserRole, MenuItem[]> = {
             title: "Profile",
             url: "/profile",
             icon: Profile,
-        },
-        {
-            title: "Help Center",
-            url: "https://www.instagram.com/mycoach.mk/",
-            icon: Lifebuoy,
-            external: true,
         },
     ],
 };
@@ -86,7 +74,7 @@ export function AppSidebar() {
                             <h3 className="leading-4 text-md font-bold text-foreground">
                                 {tenant?.subdomain}
                             </h3>
-                            <h4 className="leading-4 text-sm font-semibold text-foreground/80">
+                            <h4 className="leading-4 text-sm font-semibold text-muted-foreground">
                                 Basic Plan
                             </h4>
                         </div>
@@ -103,9 +91,7 @@ export function AppSidebar() {
                                 <SidebarMenuItem
                                     key={item.title}
                                     className={cn(
-                                        "px-3.5 py-2.5 rounded-2xl transition-colors",
-                                        item.url === currentPathName &&
-                                            "bg-secondary"
+                                        "px-3.5 py-2.5 bg-secondary rounded-2xl transition-colors"
                                     )}
                                 >
                                     {item.external ? (
@@ -130,7 +116,11 @@ export function AppSidebar() {
                                             className="gap-x-2.5 flex items-center"
                                         >
                                             <item.icon
-                                                variant="Bulk"
+                                                variant={
+                                                    item.url === currentPathName
+                                                        ? "Bold"
+                                                        : "Bulk"
+                                                }
                                                 size={20}
                                                 color="#181818"
                                             />
@@ -146,9 +136,21 @@ export function AppSidebar() {
                 </SidebarGroup>
             </SidebarContent>
 
-            <SidebarFooter className="border-t-2 border-foreground/5 py-6 md:px-3">
-                <h3 className="text-sm text-foreground/80 text-left">
-                    {year}, mycoach v1.0.1
+            <SidebarFooter className="py-6 md:px-3">
+                <SidebarGroupLabel className="font-semibold text-sm">
+                    Other
+                </SidebarGroupLabel>
+                <a
+                    href="https://www.instagram.com/mycoach.mk/"
+                    target="_blank"
+                    className="px-3.5 -mt-2 bg-secondary py-2.5 gap-x-2.5 flex items-center rounded-2xl transition-colors"
+                >
+                    <Lifebuoy variant="Bulk" size={20} color="#000" />
+                    Help Center
+                </a>
+
+                <h3 className="mt-5 text-sm text-muted-foreground text-center">
+                    mycoach {year} v1.0.1
                 </h3>
             </SidebarFooter>
         </Sidebar>

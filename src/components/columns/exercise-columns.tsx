@@ -41,7 +41,7 @@ export const ExerciseColumns = (
         cell: ({ row }) => (
             <span className="whitespace-nowrap">
                 {row.original.sets}
-                <span className="font-bold text-xs text-[#66A786]">x</span>
+                <span className="font-bold text-xs text-[#FF8C00]">x</span>
             </span>
         ),
     },
@@ -51,7 +51,7 @@ export const ExerciseColumns = (
         cell: ({ row }) => (
             <span className="whitespace-nowrap">
                 {row.original.reps}
-                <span className="font-bold text-xs text-[#66A786]">x</span>
+                <span className="font-bold text-xs text-[#FF8C00]">x</span>
             </span>
         ),
     },
@@ -152,7 +152,7 @@ export const ExerciseColumns = (
                                     {row.original.actualPerformance}
                                 </span>
                             ) : (
-                                <span className="whitespace-nowrap text-foreground/70 flex items-center gap-x-2">
+                                <span className="whitespace-nowrap text-muted-foreground flex items-center gap-x-2">
                                     N/A
                                     <Edit
                                         variant="Bold"

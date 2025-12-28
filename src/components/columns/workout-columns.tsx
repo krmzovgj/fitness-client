@@ -71,7 +71,7 @@ export const workoutColumns = (
                     }}
                     className={`cursor-pointer whitespace-nowrap font-medium ${
                         row.original.restDay
-                            ? "text-foreground/60"
+                            ? "text-muted-foreground"
                             : "text-foreground"
                     }`}
                 >
@@ -92,7 +92,7 @@ export const workoutColumns = (
                 <span
                     className={`whitespace-nowrap flex items-center gap-x-1 font-medium ${
                         row.original.restDay
-                            ? "text-foreground/60"
+                            ? "text-muted-foreground"
                             : "text-foreground"
                     }`}
                 >
