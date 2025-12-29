@@ -57,6 +57,8 @@ export const MealsSection = ({
     const [description, setdescription] = useState("");
     const [cal, setcal] = useState<number>(0);
     const [protein, setprotein] = useState<number>(0);
+    const [carbs, setcarbs] = useState<number>(0);
+    const [fats, setfats] = useState<number>(0);
     const [type, settype] = useState<MealType>(MealType.BREKFAST);
 
     const [dialogOpen, setdialogOpen] = useState(false);
@@ -95,6 +97,8 @@ export const MealsSection = ({
                     description,
                     cal,
                     protein,
+                    carbs,
+                    fats,
                     type,
                     dietId,
                 },
@@ -126,6 +130,8 @@ export const MealsSection = ({
             description,
             cal,
             protein,
+            carbs: carbs ?? 0,
+            fats: fats ?? 0,
             type,
             dietId,
         };
@@ -163,6 +169,8 @@ export const MealsSection = ({
         setdescription(selectedMeal?.description!);
         setprotein(selectedMeal?.protein!);
         setcal(selectedMeal?.cal!);
+        setcarbs(selectedMeal?.carbs!);
+        setfats(selectedMeal?.fats!);
     }, [selectedMeal]);
 
     return (
@@ -305,6 +313,26 @@ export const MealsSection = ({
                                 setprotein(value === "" ? 0 : Number(value));
                             }}
                             placeholder="Protein (g)"
+                            type="number"
+                        />
+
+                        <Input
+                            value={carbs === 0 ? "" : carbs}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setcarbs(value === "" ? 0 : Number(value));
+                            }}
+                            placeholder="Carbs (g)"
+                            type="number"
+                        />
+
+                        <Input
+                            value={fats === 0 ? "" : fats}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setfats(value === "" ? 0 : Number(value));
+                            }}
+                            placeholder="Fats (g)"
                             type="number"
                         />
 

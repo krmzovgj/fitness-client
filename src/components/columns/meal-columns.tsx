@@ -74,16 +74,14 @@ export const MealColumns = (
                     <DialogContent>
                         <DialogHeader>
                             <div className="flex items-center gap-x-2">
-
-                            {row.original.name}
-                            <span
-                            className="font-semibold"
-                                style={{ color: match?.color }}
-                            >
-                                {row.original.type}
-                            </span>
+                                {row.original.name}
+                                <span
+                                    className="font-semibold"
+                                    style={{ color: match?.color }}
+                                >
+                                    {row.original.type}
+                                </span>
                             </div>
-
                         </DialogHeader>
                         <DialogDescription>
                             {row.original.description}
@@ -99,6 +97,20 @@ export const MealColumns = (
 
                             <div className="text-sm flex items-center">
                                 Protein: {row.original.protein}
+                                <span className="font-semibold text-sm text-[#FF8C00]">
+                                    g
+                                </span>
+                            </div>
+
+                            <div className="text-sm flex items-center">
+                                Carbs: {row.original.carbs}
+                                <span className="font-semibold text-sm text-[#FF8C00]">
+                                    g
+                                </span>
+                            </div>
+
+                            <div className="text-sm flex items-center">
+                                Fats: {row.original.fats}
                                 <span className="font-semibold text-sm text-[#FF8C00]">
                                     g
                                 </span>
@@ -136,6 +148,46 @@ export const MealColumns = (
                 row.original.protein !== undefined ? (
                     <span>
                         {row.original.protein}
+                        <span className="font-bold text-xs text-[#FF8C00]">
+                            g
+                        </span>
+                    </span>
+                ) : (
+                    <span>N/A</span>
+                )}
+            </span>
+        ),
+    },
+
+    {
+        accessorKey: "carbs",
+        header: "Carbs",
+        cell: ({ row }) => (
+            <span className="whitespace-nowrap">
+                {row.original.carbs !== null &&
+                row.original.carbs !== undefined ? (
+                    <span>
+                        {row.original.carbs}
+                        <span className="font-bold text-xs text-[#FF8C00]">
+                            g
+                        </span>
+                    </span>
+                ) : (
+                    <span>N/A</span>
+                )}
+            </span>
+        ),
+    },
+
+    {
+        accessorKey: "fats",
+        header: "Fats",
+        cell: ({ row }) => (
+            <span className="whitespace-nowrap">
+                {row.original.fats !== null &&
+                row.original.fats !== undefined ? (
+                    <span>
+                        {row.original.fats}
                         <span className="font-bold text-xs text-[#FF8C00]">
                             g
                         </span>

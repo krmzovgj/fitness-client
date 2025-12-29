@@ -84,8 +84,8 @@ export function DayPlanCard({
                         </div>
 
                         <div>
-                            <p className="text-sm text-muted-foreground">
-                                {day}
+                            <p className="text-sm capitalize text-muted-foreground">
+                                {day.toLowerCase()}
                             </p>
                             <h3 className="leading-tight">
                                 {name || (isWorkout ? "Workout" : "Diet")}

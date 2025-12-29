@@ -246,7 +246,7 @@ export const ClientsSection = () => {
                     {selectedClient ? "update" : "add"} a client
                 </DialogDescription>
 
-                <div className="grid gap-4">
+                <div className="flex flex-col gap-y-2 mt-2">
                     <Input
                         placeholder="Firstname"
                         value={firstName}

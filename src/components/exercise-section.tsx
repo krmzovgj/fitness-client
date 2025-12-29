@@ -319,11 +319,17 @@ export const ExerciseSection = ({
                             <PopoverTrigger asChild>
                                 <Button
                                     variant="outline"
-                                    className="justify-between h-10"
+                                    className="justify-between px-3 h-10"
                                 >
-                                    {selectedOptionExercise
-                                        ? selectedOptionExercise.name
-                                        : "Select exercise"}
+                                    {selectedOptionExercise ? (
+                                        <p className="text-foreground">
+                                            {selectedOptionExercise.name}
+                                        </p>
+                                    ) : (
+                                        <p className="text-muted-foreground">
+                                            Select exercise
+                                        </p>
+                                    )}
                                     <ArrowSwapVertical
                                         variant="Bulk"
                                         size={20}
@@ -331,6 +337,7 @@ export const ExerciseSection = ({
                                     />
                                 </Button>
                             </PopoverTrigger>
+
                             <PopoverContent className="p-0">
                                 <Command>
                                     <CommandInput

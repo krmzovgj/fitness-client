@@ -6,6 +6,8 @@ export interface Meal {
     description: string;
     cal?: number;
     protein?: number;
+    carbs?: number;
+    fats?: number;
     type: MealType;
     dietId: string;
     createdAt: string;

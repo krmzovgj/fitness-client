@@ -6,10 +6,11 @@ export interface CreateMealDto {
     description: string;
     cal?: number;
     protein?: number;
+    carbs?: number;
+    fats?: number;
     type: MealType;
     dietId: string;
 }
-
 
 export const getMeals = async (token: string, dietId: string) => {
     const response = await api.get(`/diet/${dietId}/meal`, {
