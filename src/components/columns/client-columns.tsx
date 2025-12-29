@@ -90,7 +90,7 @@ export const clientColumns = (
         cell: ({ row }) => (
             <span>
                 {row.original.height}{" "}
-                <span className="text-xs font-bold -ml-0.5 text-muted-foreground">
+                <span className="text-xs font-bold -ml-0.5 text-foreground/60">
                     cm
                 </span>
             </span>
@@ -104,7 +104,7 @@ export const clientColumns = (
             <div className="flex items-center gap-1">
                 <span>
                     {row.original.weight}{" "}
-                    <span className="text-xs font-bold -ml-0.5 text-muted-foreground">
+                    <span className="text-xs font-bold -ml-0.5 text-foreground/60">
                         kg
                     </span>
                 </span>

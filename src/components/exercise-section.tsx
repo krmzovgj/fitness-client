@@ -1,20 +1,37 @@
 import {
     createExercise,
     getExercisesByWorkout,
+    searchExercises,
     updateExercise,
 } from "@/api/exercise";
+import { cn } from "@/lib/utils";
 import type { Day } from "@/model/day";
 import type { Exercise } from "@/model/exercise";
 import { UserRole } from "@/model/user";
+import type { WorkoutExercise } from "@/model/workout-exercise";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import { Dialog } from "@radix-ui/react-dialog";
-import { ArrowLeft, RecordCircle, Weight } from "iconsax-reactjs";
+import {
+    ArrowLeft,
+    ArrowSwapVertical,
+    RecordCircle,
+    TickCircle,
+    Weight,
+} from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ExerciseColumns } from "./columns/exercise-columns";
 import { DataTable } from "./data-table";
 import { Button } from "./ui/button";
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from "./ui/command";
 import {
     DialogContent,
     DialogDescription,
@@ -30,6 +47,7 @@ import {
     EmptyTitle,
 } from "./ui/empty";
 import { Input } from "./ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Spinner } from "./ui/spinner";
 
 export const ExerciseSection = ({
@@ -45,19 +63,51 @@ export const ExerciseSection = ({
     const { token } = useAuthStore();
     const navigate = useNavigate();
 
-    const [exercises, setexercises] = useState<Exercise[]>([]);
+    const [exercises, setexercises] = useState<WorkoutExercise[]>([]);
 
-    const [name, setname] = useState("");
     const [sets, setsets] = useState<number>(0);
     const [reps, setreps] = useState("");
+
+    const [searchQuery, setsearchQuery] = useState("");
+    const [exerciseOptions, setexerciseOptions] = useState<Exercise[]>([]);
+    const [exerciseListOpen, setexerciseListOpen] = useState(false);
+    const [loadingOptions, setloadingOptions] = useState(false);
+    const [selectedOptionExercise, setselectedOptionExercise] =
+        useState<Exercise | null>(null);
+    console.log(
+        "🚀 ~ ExerciseSection ~ selectedOptionExercise:",
+        selectedOptionExercise
+    );
 
     const [dialogOpen, setdialogOpen] = useState(false);
     const [error, seterror] = useState("");
     const [creatingExercise, setcreatingExercise] = useState(false);
-    const [selectedExercise, setselectedExercise] = useState<Exercise | null>(
-        null
-    );
+    const [selectedExercise, setselectedExercise] =
+        useState<WorkoutExercise | null>(null);
     const [loadingExercises, setloadingExercises] = useState(true);
+
+    const handleSearchExercises = async (query: string) => {
+        if (!token) return;
+        setloadingOptions(true);
+        try {
+            const response = await searchExercises(token, query);
+            setexerciseOptions(response.data);
+        } finally {
+            setloadingOptions(false);
+        }
+    };
+
+    useEffect(() => {
+        const delay = setTimeout(() => {
+            if (searchQuery) handleSearchExercises(searchQuery);
+        }, 300);
+
+        return () => clearTimeout(delay);
+    }, [searchQuery, token]);
+
+    const filteredOptions = exerciseOptions.filter((exercise) =>
+        exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     const handleGetExercisesByWorkout = async () => {
         if (!token) return;
@@ -80,8 +130,13 @@ export const ExerciseSection = ({
             setcreatingExercise(true);
 
             const response = await createExercise(
-                { name, reps, sets, workoutId },
-                token
+                {
+                    reps,
+                    sets,
+                    exerciseId: selectedOptionExercise?.id!,
+                },
+                token,
+                workoutId
             );
 
             if (response.status === 201) {
@@ -105,10 +160,9 @@ export const ExerciseSection = ({
         if (!token) return;
 
         const payload = {
-            name,
             sets,
             reps,
-            actualPerformance: selectedExercise?.actualPerformance,
+            exerciseId: selectedOptionExercise?.id!,
         };
 
         try {
@@ -140,9 +194,10 @@ export const ExerciseSection = ({
     useEffect(() => {
         if (!selectedExercise) return;
 
-        setname(selectedExercise?.name!);
         setsets(selectedExercise?.sets!);
         setreps(selectedExercise?.reps!);
+        setsearchQuery(selectedExercise.exercise.name);
+        setselectedOptionExercise(selectedExercise.exercise);
     }, [selectedExercise]);
 
     return (
@@ -151,7 +206,9 @@ export const ExerciseSection = ({
             onOpenChange={(open) => {
                 setdialogOpen(open);
                 setselectedExercise(null);
-                setname("");
+                setsearchQuery("");
+                setselectedOptionExercise(null);
+                setexerciseOptions([]);
                 setsets(0);
                 setreps("");
                 seterror("");
@@ -254,11 +311,88 @@ export const ExerciseSection = ({
                         {selectedExercise ? "update" : "add"} an exercise
                     </DialogDescription>
 
-                    <Input
-                        value={name}
-                        onChange={(e) => setname(e.target.value)}
-                        placeholder="Name e.g. Bench Press"
-                    />
+                    <Popover
+                        open={exerciseListOpen}
+                        onOpenChange={setexerciseListOpen}
+                    >
+                        <PopoverTrigger asChild>
+                            <Button
+                                variant="outline"
+                                className="justify-between h-10"
+                            >
+                                {selectedOptionExercise
+                                    ? selectedOptionExercise.name
+                                    : "Select exercise"}
+                                <ArrowSwapVertical
+                                    variant="Bulk"
+                                    size={20}
+                                    color="#000"
+                                />
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="p-0">
+                            <Command>
+                                <CommandInput
+                                    placeholder="Search exercise..."
+                                    className="h-9"
+                                    value={searchQuery}
+                                    onValueChange={setsearchQuery}
+                                />
+                                <CommandList>
+                                    {loadingOptions ? (
+                                        <div className=" text-sm flex p-6 justify-center items-center gap-x-2 text-foreground">
+                                            <Spinner
+                                                className="size-4"
+                                                color="#000"
+                                            />
+                                            Loading...
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <CommandEmpty>
+                                                No results found...
+                                            </CommandEmpty>
+
+                                            <CommandGroup>
+                                                {filteredOptions.map(
+                                                    (exercise) => (
+                                                        <CommandItem
+                                                            className="cursor-pointer"
+                                                            key={exercise.id}
+                                                            value={
+                                                                exercise.name
+                                                            }
+                                                            onSelect={() => {
+                                                                setselectedOptionExercise(
+                                                                    exercise
+                                                                );
+                                                                setexerciseListOpen(
+                                                                    false
+                                                                );
+                                                            }}
+                                                        >
+                                                            {exercise.name}
+                                                            <TickCircle
+                                                                variant="Bold"
+                                                                size={20}
+                                                                className={cn(
+                                                                    "ml-auto",
+                                                                    selectedOptionExercise?.id ===
+                                                                        exercise.id
+                                                                        ? "opacity-100"
+                                                                        : "opacity-0"
+                                                                )}
+                                                            />
+                                                        </CommandItem>
+                                                    )
+                                                )}
+                                            </CommandGroup>
+                                        </>
+                                    )}
+                                </CommandList>
+                            </Command>
+                        </PopoverContent>
+                    </Popover>
 
                     <Input
                         value={sets === 0 ? "" : sets}
@@ -269,7 +403,6 @@ export const ExerciseSection = ({
                         placeholder="Sets"
                         type="number"
                     />
-
                     <Input
                         value={reps}
                         onChange={(e) => setreps(e.target.value)}

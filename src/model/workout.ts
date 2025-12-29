@@ -1,11 +1,11 @@
 import type { Day } from "./day";
-import type { Exercise } from "./exercise";
+import type { WorkoutExercise } from "./workout-exercise";
 
 export interface Workout {
     id: string;
     name: string;
     day: Day;
-    exercises: Exercise[];
+    workoutExercises: WorkoutExercise[];
     restDay: boolean;
     clientId: number;
     updatedAt: string;

@@ -1,25 +1,34 @@
-import type { Exercise } from "@/model/exercise";
+import type { WorkoutExercise } from "@/model/workout-exercise";
 import { api } from "./axios";
+import type { Exercise } from "@/model/exercise";
 
 export interface CreateExerciseDto {
-    name: string;
     sets: number;
     reps: string;
-    workoutId: string;
+    exerciseId: string;
 }
 
 export interface UpdateExerciseDto {
-    name: string;
     sets: number;
     reps: string;
-    actualPerformance?: string;
+    exerciseId: string;
 }
+
+export const searchExercises = async (token: string, search?: string) => {
+    const response = await api.get<Exercise[]>(`/exercise?search=${search}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return response;
+};
 
 export const getExercisesByWorkout = async (
     token: string,
     workoutId: string
 ) => {
-    const response = await api.get<Exercise[]>(
+    const response = await api.get<WorkoutExercise[]>(
         `/workout/${workoutId}/exercise`,
         {
             headers: {
@@ -31,23 +40,31 @@ export const getExercisesByWorkout = async (
     return response;
 };
 
-export const createExercise = async (dto: CreateExerciseDto, token: string) => {
-    const response = await api.post<CreateExerciseDto>("/exercise", dto, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
+export const createExercise = async (
+    dto: CreateExerciseDto,
+    token: string,
+    workoutId: string
+) => {
+    const response = await api.post<CreateExerciseDto>(
+        `/workout-exercise/${workoutId}`,
+        dto,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
 
     return response;
 };
 
 export const updateExercise = async (
-    exerciseId: string,
+    workoutExerciseId: string,
     dto: UpdateExerciseDto,
     token: string
 ) => {
     const response = await api.put<UpdateExerciseDto>(
-        `/exercise/${exerciseId}`,
+        `/workout-exercise/${workoutExerciseId}`,
         dto,
         {
             headers: {
@@ -60,7 +77,7 @@ export const updateExercise = async (
 };
 
 export const deleteExercise = async (exerciseId: string, token: string) => {
-    const response = await api.delete(`/exercise/${exerciseId}`, {
+    const response = await api.delete(`/workout-exercise/${exerciseId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

@@ -1,14 +1,14 @@
 "use client";
 
-import { deleteExercise, updateExercise } from "@/api/exercise";
+import { deleteExercise } from "@/api/exercise";
 import { formatDate } from "@/lib/utils";
-import type { Exercise } from "@/model/exercise";
 import { UserRole } from "@/model/user";
+import type { WorkoutExercise } from "@/model/workout-exercise";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import type { ColumnDef } from "@tanstack/react-table";
-import { CloseCircle, Edit, TickCircle, Trash } from "iconsax-reactjs";
-import { useEffect, useState } from "react";
+import { Edit, Trash } from "iconsax-reactjs";
+import { useState } from "react";
 import {
     AlertDialog,
     AlertDialogCancel,
@@ -20,19 +20,18 @@ import {
     AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import { Spinner } from "../ui/spinner";
 
 export const ExerciseColumns = (
-    setSelectedExercise: (exercise: Exercise | null) => void,
+    setSelectedExercise: (exercise: WorkoutExercise | null) => void,
     setopen: (open: boolean) => void,
     handleGetExercisesByWorkout: () => void
-): ColumnDef<Exercise>[] => [
+): ColumnDef<WorkoutExercise>[] => [
     {
         accessorKey: "name",
         header: "Name",
         cell: ({ row }) => (
-            <span className="whitespace-nowrap">{row.original.name}</span>
+            <span className="whitespace-nowrap">{row.original.exercise.name}</span>
         ),
     },
     {
@@ -54,130 +53,6 @@ export const ExerciseColumns = (
                 <span className="font-bold text-xs text-[#FF8C00]">x</span>
             </span>
         ),
-    },
-
-    {
-        accessorKey: "actualPerformance",
-        header: "Actual Performance",
-        cell: ({ row }) => {
-            const [editingPerformanceId, setEditingPerformanceId] = useState<
-                string | null
-            >(null);
-            const [actualPerformance, setActualPerformance] = useState("");
-
-            const match = editingPerformanceId === row.original.id;
-            const { token } = useAuthStore();
-
-            const handleSaveActualPerformance = async () => {
-                if (!token) return;
-
-                const payload = {
-                    name: row.original.name,
-                    sets: row.original.sets,
-                    reps: row.original.reps,
-                    actualPerformance,
-                };
-
-                try {
-                    const response = await updateExercise(
-                        row.original.id,
-                        payload,
-                        token
-                    );
-
-                    if (response.status === 200) {
-                        setEditingPerformanceId(null);
-                        handleGetExercisesByWorkout();
-                    }
-                } catch (err) {
-                }
-            };
-
-            useEffect(() => {
-                if (editingPerformanceId) {
-                    setActualPerformance(row.original.actualPerformance || "");
-                }
-            }, [editingPerformanceId, row.original.actualPerformance]);
-
-            return (
-                <div>
-                    {match ? (
-                        <div className="flex items-center gap-x-3">
-                            <Input
-                                maxLength={25}
-                                autoFocus={true}
-                                value={actualPerformance}
-                                onChange={(e) =>
-                                    setActualPerformance(e.target.value)
-                                }
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                        handleSaveActualPerformance();
-                                    }
-                                    if (e.key === "Escape") {
-                                        setEditingPerformanceId(null);
-                                    }
-                                }}
-                                className="w-44"
-                                placeholder="e.g. 70kg x 10"
-                            />
-                            <div className="flex items-centerg gap-x-2">
-                                <TickCircle
-                                    onClick={handleSaveActualPerformance}
-                                    className="cursor-pointer"
-                                    variant="Bold"
-                                    size={26}
-                                    color="#000"
-                                />
-                                <CloseCircle
-                                    onClick={() =>
-                                        setEditingPerformanceId(null)
-                                    }
-                                    className="cursor-pointer"
-                                    variant="Bold"
-                                    size={26}
-                                    color="red"
-                                />
-                            </div>
-                        </div>
-                    ) : (
-                        <div
-                            className="border border-dashed border-foreground/30 h-10 flex items-center w-fit px-10 rounded-2xl cursor-pointer"
-                            onClick={() =>
-                                setEditingPerformanceId(row.original.id)
-                            }
-                        >
-                            {row.original.actualPerformance ? (
-                                <span className="whitespace-nowrap">
-                                    {row.original.actualPerformance}
-                                </span>
-                            ) : (
-                                <span className="whitespace-nowrap text-muted-foreground flex items-center gap-x-2">
-                                    N/A
-                                    <Edit
-                                        variant="Bold"
-                                        size={18}
-                                        color="#000"
-                                    />
-                                </span>
-                            )}
-                        </div>
-                    )}
-                </div>
-            );
-        },
-    },
-
-    {
-        accessorKey: "createdAt",
-        header: "Created At",
-        cell: ({ row }) => {
-            return (
-                <span className="whitespace-nowrap">
-                    {formatDate(row.original.createdAt)}
-                </span>
-            );
-        },
     },
     {
         accessorKey: "updatedAt",
@@ -259,7 +134,7 @@ export const ExerciseColumns = (
                                         </AlertDialogTitle>
                                         <AlertDialogDescription>
                                             Are you sure you want to delete this
-                                            meal? This action is irreversible.
+                                            exercise? This action is irreversible.
                                         </AlertDialogDescription>
                                     </AlertDialogHeader>
 

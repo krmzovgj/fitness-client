@@ -213,7 +213,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                                         id={workout.id}
                                         day={workout.day}
                                         name={workout.name}
-                                        count={workout.exercises.length}
+                                        count={workout.workoutExercises?.length}
                                         variant="workout"
                                         restDay={!!workout.restDay}
                                         openEdit={() => {
