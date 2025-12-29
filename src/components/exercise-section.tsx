@@ -74,10 +74,6 @@ export const ExerciseSection = ({
     const [loadingOptions, setloadingOptions] = useState(false);
     const [selectedOptionExercise, setselectedOptionExercise] =
         useState<Exercise | null>(null);
-    console.log(
-        "🚀 ~ ExerciseSection ~ selectedOptionExercise:",
-        selectedOptionExercise
-    );
 
     const [dialogOpen, setdialogOpen] = useState(false);
     const [error, seterror] = useState("");
@@ -98,12 +94,16 @@ export const ExerciseSection = ({
     };
 
     useEffect(() => {
+        if (!token) return;
+        if (!exerciseListOpen) return;
+        if (searchQuery === "") return;
+
         const delay = setTimeout(() => {
-            if (searchQuery) handleSearchExercises(searchQuery);
+            handleSearchExercises(searchQuery);
         }, 300);
 
         return () => clearTimeout(delay);
-    }, [searchQuery, token]);
+    }, [searchQuery, exerciseListOpen, token]);
 
     const filteredOptions = exerciseOptions.filter((exercise) =>
         exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -333,7 +333,7 @@ export const ExerciseSection = ({
                         <PopoverContent className="p-0">
                             <Command>
                                 <CommandInput
-                                    placeholder="Search exercise..."
+                                    placeholder="Search exercise e.g.Bench Press"
                                     className="h-9"
                                     value={searchQuery}
                                     onValueChange={setsearchQuery}
