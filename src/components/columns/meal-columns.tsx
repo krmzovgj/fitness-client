@@ -104,14 +104,14 @@ export const MealColumns = (
 
                             <div className="text-sm flex items-center">
                                 Carbs: {row.original.carbs}
-                                <span className="font-semibold text-sm text-[#FF8C00]">
+                                <span className="font-semibold text-sm text-foreground/50">
                                     g
                                 </span>
                             </div>
 
                             <div className="text-sm flex items-center">
                                 Fats: {row.original.fats}
-                                <span className="font-semibold text-sm text-[#FF8C00]">
+                                <span className="font-semibold text-sm text-foreground/50">
                                     g
                                 </span>
                             </div>
@@ -168,7 +168,7 @@ export const MealColumns = (
                 row.original.carbs !== undefined ? (
                     <span>
                         {row.original.carbs}
-                        <span className="font-bold text-xs text-[#FF8C00]">
+                        <span className="font-bold text-xs text-muted-foreground">
                             g
                         </span>
                     </span>
@@ -188,7 +188,7 @@ export const MealColumns = (
                 row.original.fats !== undefined ? (
                     <span>
                         {row.original.fats}
-                        <span className="font-bold text-xs text-[#FF8C00]">
+                        <span className="font-bold text-xs text-muted-foreground">
                             g
                         </span>
                     </span>

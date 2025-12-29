@@ -198,7 +198,7 @@ export const DietSection = ({ client }: { client: User }) => {
                                         key={diet.id}
                                         day={diet.day}
                                         name={diet.name}
-                                        count={diet?.meals?.length}
+                                        meals={diet.meals}
                                         variant="diet"
                                         openEdit={() => {
                                             setselectedDiet(diet);

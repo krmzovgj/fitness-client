@@ -7,10 +7,11 @@ import {
     Maximize4,
     RecordCircle,
     Timer1,
-    Weight
+    Weight,
 } from "iconsax-reactjs";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
+import type { Meal } from "@/model/meal";
 
 type Variant = "workout" | "diet";
 
@@ -18,7 +19,8 @@ type Props = {
     id: string;
     day: Day;
     name?: string | null;
-    count: number;
+    count?: number;
+    meals?: Meal[];
     restDay?: boolean;
     variant: Variant;
     openEdit?: () => void;
@@ -30,6 +32,7 @@ export function DayPlanCard({
     day,
     name,
     count,
+    meals,
     restDay,
     variant,
     openEdit,
@@ -45,6 +48,16 @@ export function DayPlanCard({
         .toUpperCase();
 
     const highlight = variant === "diet" ? "#66A786" : "#FF8C00";
+
+    const totalCalories = meals?.reduce(
+        (sum, meal) => sum + (meal.cal ?? 0),
+        0
+    );
+
+    const totalProtein = meals?.reduce(
+        (sum, meal) => sum + (meal.protein ?? 0),
+        0
+    );
 
     return (
         <div
@@ -104,13 +117,50 @@ export function DayPlanCard({
                     {isRestDay ? (
                         <p className="text-sm flex items-center gap-x-1 text-muted-foreground">
                             <Timer1 variant="Bold" size={20} color="#181818" />
-                            <span className="flex items-center gap-x-1">Rest day <RecordCircle variant="Bulk" size={7} color="#000" /> Recovery</span>
+                            <span className="flex items-center gap-x-1">
+                                Rest day{" "}
+                                <RecordCircle
+                                    variant="Bulk"
+                                    size={7}
+                                    color="#000"
+                                />{" "}
+                                Recovery
+                            </span>
                         </p>
                     ) : (
-                        <p className="text-sm text-muted-foreground">
-                            <span className="text-foreground">{count}</span>{" "}
-                            {isWorkout ? "Exercises planned" : "Meals planned"}
-                        </p>
+                        <div>
+                            <p className="text-sm text-muted-foreground">
+                                <span className="text-foreground">
+                                    {variant === "diet" ? meals?.length : count}
+                                </span>{" "}
+                                {isWorkout
+                                    ? "Exercises planned"
+                                    : "Meals planned"}
+                            </p>
+
+                            {variant === "diet" && (
+                                <div className="flex items-center gap-x-1.5">
+                                    <p className="text-sm text-muted-foreground">
+                                        <span className="text-foreground">
+                                            {totalCalories}
+                                        </span>
+                                        kcal
+                                    </p>
+                                    <RecordCircle
+                                        variant="Bulk"
+                                        size={7}
+                                        color="#000"
+                                    />
+
+                                    <p className="text-sm text-muted-foreground">
+                                        <span className="text-foreground">
+                                            {totalProtein}
+                                        </span>
+                                        g protein
+                                    </p>
+                                </div>
+                            )}
+                        </div>
                     )}
                 </div>
             </div>

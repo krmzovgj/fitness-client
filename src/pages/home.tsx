@@ -56,7 +56,7 @@ export const Home = () => {
     return (
         <div className="h-full  flex flex-col  md:h-screen ">
             <div className="mt-10 flex md:flex-row flex-col items-start md:justify-between md:items-end gap-x-20">
-                <div className="flex mb-5 md:mb-0 items-center justify-between w-full md:w-auto">
+                <div className="flex md:mb-0 items-center justify-between w-full md:w-auto">
                     <div>
                         <h3 className="flex md:hidden w-fit py-2.5 px-3.5 rounded-2xl border items-center gap-x-1 text-sm md:text-md text-foreground">
                             <Calendar variant="Bulk" size={20} color="#000" />

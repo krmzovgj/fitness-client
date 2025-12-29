@@ -171,6 +171,7 @@ export const MealsSection = ({
         setcal(selectedMeal?.cal!);
         setcarbs(selectedMeal?.carbs!);
         setfats(selectedMeal?.fats!);
+        settype(selectedMeal?.type);
     }, [selectedMeal]);
 
     return (
