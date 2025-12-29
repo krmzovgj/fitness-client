@@ -9,7 +9,7 @@ export const Exercises = () => {
     const dayMatch = dayColors.find((day) => day.day === state.day);
 
     return (
-        <div className="h-full overflow-x-hidden md:h-screen flex flex-col ">
+        <div className="h-full md:h-screen flex flex-col ">
             <ExerciseSection
                 workoutId={id!}
                 dayMatch={dayMatch!}

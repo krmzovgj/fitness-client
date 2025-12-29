@@ -5,6 +5,7 @@ import type { Exercise } from "@/model/exercise";
 export interface CreateExerciseDto {
     sets: number;
     reps: string;
+    note?: string;
     exerciseId: string;
 }
 

@@ -31,7 +31,7 @@ export const workoutColumns = (
                     onClick={() => {
                         if (row.original.restDay) return;
 
-                        navigate(`/client/${row.original.id}/exercises`, {
+                        navigate(`/client/${row.original.id}/workout-details`, {
                             state: {
                                 name: row.original.name,
                                 day: row.original.day,
@@ -62,7 +62,7 @@ export const workoutColumns = (
                 <span
                     onClick={() => {
                         if (row.original.restDay) return;
-                        navigate(`/client/${row.original.id}/exercises`, {
+                        navigate(`/client/${row.original.id}/workout-details`, {
                             state: {
                                 name: row.original.name,
                                 day: row.original.day,

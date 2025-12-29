@@ -1,17 +1,17 @@
 import { cn } from "@/lib/utils";
 import { Day } from "@/model/day";
+import type { Meal } from "@/model/meal";
 import { UserRole, type User } from "@/model/user";
 import {
+    BatteryCharging,
     Book,
     Edit,
-    Maximize4,
     RecordCircle,
     Timer1,
     Weight,
 } from "iconsax-reactjs";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
-import type { Meal } from "@/model/meal";
 
 type Variant = "workout" | "diet";
 
@@ -42,6 +42,7 @@ export function DayPlanCard({
 
     const isWorkout = variant === "workout";
     const isRestDay = isWorkout && restDay;
+    console.log("🚀 ~ DayPlanCard ~ isRestDay:", isRestDay);
     const now = new Date();
     const today = now
         .toLocaleDateString("en-US", { weekday: "long" })
@@ -59,15 +60,29 @@ export function DayPlanCard({
         0
     );
 
+    const openDetails = () => {
+        if (isRestDay) return;
+        navigate(
+            isWorkout
+                ? `/client/${id}/workout-details`
+                : `/client/${id}/diet-details`,
+            {
+                state: { name, day },
+            }
+        );
+    };
+
     return (
         <div
             className={cn(
-                "relative bg-secondary overflow-hidden rounded-3xl pb-5"
+                "relative cursor-pointer bg-secondary overflow-hidden rounded-3xl pb-5",
+                isRestDay ? "cursor-default" : "cursor-pointer"
             )}
             style={{
                 borderWidth: today === day ? "2px" : "0px",
                 borderColor: today === day ? "#181818" : "transparent",
             }}
+            onClick={openDetails}
         >
             <div className="p-5 flex-col flex">
                 <div className="flex items-start justify-between">
@@ -84,15 +99,25 @@ export function DayPlanCard({
                             {variant === "diet" ? (
                                 <Book
                                     variant="Bold"
-                                    size={20}
+                                    size={21}
                                     color={highlight}
                                 />
                             ) : (
-                                <Weight
-                                    variant="Bold"
-                                    size={20}
-                                    color={isRestDay ? "#181818" : highlight}
-                                />
+                                <>
+                                    {isRestDay ? (
+                                        <BatteryCharging
+                                            variant="Bold"
+                                            size={21}
+                                            color="#181818"
+                                        />
+                                    ) : (
+                                        <Weight
+                                            variant="Bold"
+                                            size={21}
+                                            color={highlight}
+                                        />
+                                    )}
+                                </>
                             )}
                         </div>
 
@@ -116,7 +141,7 @@ export function DayPlanCard({
                 <div className="mt-6">
                     {isRestDay ? (
                         <p className="text-sm flex items-center gap-x-1 text-muted-foreground">
-                            <Timer1 variant="Bold" size={20} color="#181818" />
+                            <Timer1 variant="Bold" size={21} color="#181818" />
                             <span className="flex items-center gap-x-1">
                                 Rest day{" "}
                                 <RecordCircle
@@ -168,28 +193,16 @@ export function DayPlanCard({
             <div className="mt-2 px-5 flex items-center gap-x-1.5 justify-end text-sm font-medium text-primary">
                 <div className="flex items-center gap-x-1.5">
                     {user.role === UserRole.TRAINER && (
-                        <Button onClick={openEdit} variant="outline">
+                        <Button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                openEdit?.();
+                            }}
+                            variant="outline"
+                        >
                             Edit <Edit variant="Bold" size={18} color="#000" />
                         </Button>
                     )}
-
-                    <Button
-                        disabled={isRestDay}
-                        onClick={() => {
-                            if (isRestDay) return;
-                            navigate(
-                                isWorkout
-                                    ? `/client/${id}/exercises`
-                                    : `/client/${id}/meals`,
-                                {
-                                    state: { name, day },
-                                }
-                            );
-                        }}
-                        variant="outline"
-                    >
-                        View <Maximize4 variant="Bold" size={18} color="#000" />
-                    </Button>
                 </div>
             </div>
         </div>

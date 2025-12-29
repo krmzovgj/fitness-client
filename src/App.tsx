@@ -10,8 +10,8 @@ import { Button } from "./components/ui/button";
 import { Spinner } from "./components/ui/spinner";
 import { SignIn } from "./pages/auth/sign-in";
 import { Client } from "./pages/client/[id]";
-import { Exercises } from "./pages/client/exercises";
-import { Meals } from "./pages/client/meals";
+import { Exercises } from "./pages/client/workout-details";
+import { Meals } from "./pages/client/diet-details";
 import { Home } from "./pages/home";
 import { useAuthStore } from "./store/auth";
 import { useTenantStore } from "./store/tenant";
@@ -118,7 +118,7 @@ function App() {
                 />
 
                 <Route
-                    path="/client/:id/exercises"
+                    path="/client/:id/workout-details"
                     element={
                         <ProtectedRoute>
                             <Exercises />
@@ -127,7 +127,7 @@ function App() {
                 />
 
                 <Route
-                    path="/client/:id/meals"
+                    path="/client/:id/diet-details"
                     element={
                         <ProtectedRoute>
                             <Meals />

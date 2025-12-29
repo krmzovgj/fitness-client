@@ -5,6 +5,7 @@ export interface Workout {
     id: string;
     name: string;
     day: Day;
+    note?: string;
     workoutExercises: WorkoutExercise[];
     restDay: boolean;
     clientId: number;

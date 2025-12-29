@@ -7,7 +7,7 @@ import { UserRole } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Edit, ExportSquare, Trash } from "iconsax-reactjs";
+import { Edit, Maximize4, Trash } from "iconsax-reactjs";
 import { useState } from "react";
 import {
     AlertDialog,
@@ -58,7 +58,7 @@ export const MealColumns = (
                                     {row.original.description.slice(0, 15) +
                                         "..."}
                                     {row.original.description ? (
-                                        <ExportSquare
+                                        <Maximize4
                                             variant="Bold"
                                             size={15}
                                             color="#000"

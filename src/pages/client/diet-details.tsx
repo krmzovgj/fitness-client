@@ -9,7 +9,7 @@ export const Meals = () => {
     const dayMatch = dayColors.find((day) => day.day === state.day);
 
     return (
-        <div className="h-full overflow-x-hidden md:h-screen flex flex-col">
+        <div className="h-full md:h-screen flex flex-col">
             <MealsSection dietId={id!} dayMatch={dayMatch!} state={state} />
         </div>
     );

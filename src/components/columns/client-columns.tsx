@@ -38,13 +38,7 @@ export const clientColumns = (
 
             return (
                 <div
-                    onClick={() =>
-                        navigate(
-                            `/client/${user.id}?name=${encodeURIComponent(
-                                `${user.firstName} ${user.lastName}`
-                            )}`
-                        )
-                    }
+                    onClick={() => navigate(`/client/${user.id}`)}
                     className="flex cursor-pointer group w-full items-center gap-3"
                 >
                     {user && (

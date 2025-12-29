@@ -12,12 +12,23 @@ interface CreateWorkoutDto {
 interface UpdateWorkoutDto {
     name?: string;
     day: Day;
+    note?: string;
     restDay: boolean;
     clientId: number;
 }
 
 export const getWorkoutsByClient = async (token: string, clientId: number) => {
     const response = await api.get<Workout[]>(`/workout/${clientId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return response;
+};
+
+export const getWorkoutById = async (token: string, workoutId: string) => {
+    const response = await api.get<Workout>(`/workout/${workoutId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -47,6 +58,7 @@ export const updateWorkout = async (
             name: dto.name,
             day: dto.day,
             restDay: dto.restDay,
+            note: dto.note,
             clientId: dto.clientId,
         },
         {

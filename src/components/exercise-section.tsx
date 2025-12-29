@@ -49,6 +49,10 @@ import {
 import { Input } from "./ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Spinner } from "./ui/spinner";
+import { Textarea } from "./ui/textarea";
+import type { Workout } from "@/model/workout";
+import { getWorkoutById, updateWorkout } from "@/api/workout";
+import { WorkoutNote } from "./workout-note";
 
 export const ExerciseSection = ({
     workoutId,
@@ -64,9 +68,11 @@ export const ExerciseSection = ({
     const navigate = useNavigate();
 
     const [exercises, setexercises] = useState<WorkoutExercise[]>([]);
+    const [workout, setworkout] = useState<Workout | null>(null);
 
     const [sets, setsets] = useState<number>(0);
     const [reps, setreps] = useState("");
+    const [note, setnote] = useState("");
 
     const [searchQuery, setsearchQuery] = useState("");
     const [exerciseOptions, setexerciseOptions] = useState<Exercise[]>([]);
@@ -81,6 +87,21 @@ export const ExerciseSection = ({
     const [selectedExercise, setselectedExercise] =
         useState<WorkoutExercise | null>(null);
     const [loadingExercises, setloadingExercises] = useState(true);
+
+    const getWorkout = async () => {
+        if (!token) return;
+
+        try {
+            const response = await getWorkoutById(token, workoutId);
+            const data = response.data;
+
+            setworkout(data);
+        } catch (error) {}
+    };
+
+    useEffect(() => {
+        getWorkout();
+    }, [workoutId]);
 
     const handleSearchExercises = async (query: string) => {
         if (!token) return;
@@ -133,6 +154,7 @@ export const ExerciseSection = ({
                 {
                     reps,
                     sets,
+                    note,
                     exerciseId: selectedOptionExercise?.id!,
                 },
                 token,
@@ -162,6 +184,7 @@ export const ExerciseSection = ({
         const payload = {
             sets,
             reps,
+            note,
             exerciseId: selectedOptionExercise?.id!,
         };
 
@@ -198,6 +221,7 @@ export const ExerciseSection = ({
         setreps(selectedExercise?.reps!);
         setsearchQuery(selectedExercise.exercise.name);
         setselectedOptionExercise(selectedExercise.exercise);
+        setnote(selectedExercise?.note!);
     }, [selectedExercise]);
 
     return (
@@ -211,6 +235,7 @@ export const ExerciseSection = ({
                 setexerciseOptions([]);
                 setsets(0);
                 setreps("");
+                setnote("");
                 seterror("");
             }}
         >
@@ -290,15 +315,33 @@ export const ExerciseSection = ({
                             </EmptyHeader>
                         </Empty>
                     ) : (
-                        <DataTable
-                            enableSorting={true}
-                            data={exercises}
-                            columns={ExerciseColumns(
-                                setselectedExercise,
-                                setdialogOpen,
-                                handleGetExercisesByWorkout
-                            )}
-                        />
+                        <div>
+                            <DataTable
+                                enableSorting={true}
+                                data={exercises}
+                                columns={ExerciseColumns(
+                                    setselectedExercise,
+                                    setdialogOpen,
+                                    handleGetExercisesByWorkout
+                                )}
+                            />
+                            <WorkoutNote
+                                note={workout?.note!}
+                                onSave={async (newNote) => {
+                                    updateWorkout(workout?.id!, token!, {
+                                        clientId: workout?.clientId!,
+                                        day: workout?.day!,
+                                        restDay: workout?.restDay!,
+                                        name: workout?.name,
+                                        note: newNote,
+                                    });
+                                    setworkout(
+                                        (prev) =>
+                                            prev && { ...prev, note: newNote }
+                                    );
+                                }}
+                            />
+                        </div>
                     )}
                 </div>
 
@@ -418,6 +461,14 @@ export const ExerciseSection = ({
                             value={reps}
                             onChange={(e) => setreps(e.target.value)}
                             placeholder="Reps"
+                        />
+
+                        <Textarea
+                            rows={5}
+                            className="resize-none"
+                            value={note}
+                            onChange={(e) => setnote(e.target.value)}
+                            placeholder="Additional Exercise Note..."
                         />
 
                         {error !== "" && (

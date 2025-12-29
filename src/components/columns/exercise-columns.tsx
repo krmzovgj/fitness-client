@@ -7,7 +7,7 @@ import type { WorkoutExercise } from "@/model/workout-exercise";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Edit, Trash } from "iconsax-reactjs";
+import { Edit, Maximize4, Trash } from "iconsax-reactjs";
 import { useState } from "react";
 import {
     AlertDialog,
@@ -20,6 +20,13 @@ import {
     AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTrigger,
+} from "../ui/dialog";
 import { Spinner } from "../ui/spinner";
 
 export const ExerciseColumns = (
@@ -31,7 +38,9 @@ export const ExerciseColumns = (
         accessorKey: "name",
         header: "Name",
         cell: ({ row }) => (
-            <span className="whitespace-nowrap">{row.original.exercise.name}</span>
+            <span className="whitespace-nowrap">
+                {row.original.exercise.name}
+            </span>
         ),
     },
     {
@@ -53,6 +62,43 @@ export const ExerciseColumns = (
                 <span className="font-bold text-xs text-[#FF8C00]">x</span>
             </span>
         ),
+    },
+    {
+        accessorKey: "note",
+        header: "Note",
+        cell: ({ row }) => {
+            return (
+                <Dialog>
+                    <span className="whitespace-nowrap">
+                        {row.original.note ? (
+                            <DialogTrigger className="flex items-center gap-x-1 cursor-pointer">
+                                {row.original.note.slice(0, 15) + "..."}
+                                {row.original.note ? (
+                                    <Maximize4
+                                        variant="Bold"
+                                        size={15}
+                                        color="#000"
+                                    />
+                                ) : null}
+                            </DialogTrigger>
+                        ) : (
+                            "N/A"
+                        )}
+                    </span>
+
+                    <DialogContent>
+                        <DialogHeader>
+                            <div className="flex items-center gap-x-2">
+                                Note for {row.original.exercise.name}
+                            </div>
+                        </DialogHeader>
+                        <DialogDescription>
+                            {row.original.note}
+                        </DialogDescription>
+                    </DialogContent>
+                </Dialog>
+            );
+        },
     },
     {
         accessorKey: "updatedAt",
@@ -134,7 +180,8 @@ export const ExerciseColumns = (
                                         </AlertDialogTitle>
                                         <AlertDialogDescription>
                                             Are you sure you want to delete this
-                                            exercise? This action is irreversible.
+                                            exercise? This action is
+                                            irreversible.
                                         </AlertDialogDescription>
                                     </AlertDialogHeader>
 
