@@ -172,7 +172,11 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-x-2">
                         <h1 className="text-xl md:text-2xl flex items-center gap-x-1 md:gap-x-2">
-                            <RecordCircle variant="Bold" size={20} color="#000" />
+                            <RecordCircle
+                                variant="Bold"
+                                size={20}
+                                color="#000"
+                            />
                             Workout Plan
                             {loadingWorkouts && <Spinner className="size-6" />}
                         </h1>
@@ -237,47 +241,51 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                     Fill the required fields to{" "}
                     {selectedWorkout ? "update" : "add"} a workout
                 </DialogDescription>
-                <Input
-                    value={name}
-                    onChange={(e) => setname(e.target.value)}
-                    placeholder="Name e.g. Upper Body"
-                />
-                <Select
-                    value={day}
-                    onValueChange={(value: Day) => setday(value)}
-                >
-                    <SelectTrigger>
-                        <SelectValue placeholder="Day" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {dayColors.map((dayItem) => (
-                            <SelectItem value={dayItem.day}>
-                                <div className="flex items-center gap-x-2">
-                                    <div
-                                        className="w-2 h-2 rounded-full"
-                                        style={{
-                                            backgroundColor: dayItem.color,
-                                        }}
-                                    ></div>
-                                    <h2>{dayItem.day}</h2>
-                                </div>
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-                <div className="flex ml-0.5 items-center space-x-2">
-                    <Switch
-                        checked={restDay}
-                        onCheckedChange={(isRest) => setrestDay(!!isRest)}
+
+                <div className="flex flex-col gap-y-2 mt-2">
+                    <Input
+                        value={name}
+                        onChange={(e) => setname(e.target.value)}
+                        placeholder="Name e.g. Upper Body"
                     />
-                    <Label>Rest Day</Label>
+                    <Select
+                        value={day}
+                        onValueChange={(value: Day) => setday(value)}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Day" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {dayColors.map((dayItem) => (
+                                <SelectItem value={dayItem.day}>
+                                    <div className="flex items-center gap-x-2">
+                                        <div
+                                            className="w-2 h-2 rounded-full"
+                                            style={{
+                                                backgroundColor: dayItem.color,
+                                            }}
+                                        ></div>
+                                        <h2>{dayItem.day}</h2>
+                                    </div>
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <div className="flex ml-0.5 mt-1 items-center space-x-2">
+                        <Switch
+                            checked={restDay}
+                            onCheckedChange={(isRest) => setrestDay(!!isRest)}
+                        />
+                        <Label>Rest Day</Label>
+                    </div>
+
+                    {error !== "" && (
+                        <div className="text-red-500 mt-2 text-sm">
+                            {error.charAt(0).toUpperCase() + error.slice(1)}
+                        </div>
+                    )}
                 </div>
 
-                {error !== "" && (
-                    <div className="text-red-500 mt-2 text-sm">
-                        {error.charAt(0).toUpperCase() + error.slice(1)}
-                    </div>
-                )}
                 <DialogFooter
                     onClick={
                         selectedWorkout

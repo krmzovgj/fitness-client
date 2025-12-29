@@ -221,41 +221,42 @@ export const DietSection = ({ client }: { client: User }) => {
                     Fill the required fields to{" "}
                     {selectedDiet ? "update" : "add"} a diet
                 </DialogDescription>
+                <div className="flex flex-col gap-y-2 mt-2">
+                    <Input
+                        value={name}
+                        onChange={(e) => setname(e.target.value)}
+                        placeholder="Name e.g. Muscle Gain"
+                    />
+                    <Select
+                        value={day}
+                        onValueChange={(value: Day) => setday(value)}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Day" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {dayColors.map((dayItem) => (
+                                <SelectItem value={dayItem.day}>
+                                    <div className="flex items-center gap-x-2">
+                                        <div
+                                            className="w-2 h-2 rounded-full"
+                                            style={{
+                                                backgroundColor: dayItem.color,
+                                            }}
+                                        ></div>
+                                        <h2>{dayItem.day}</h2>
+                                    </div>
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
 
-                <Input
-                    value={name}
-                    onChange={(e) => setname(e.target.value)}
-                    placeholder="Name e.g. Muscle Gain"
-                />
-                <Select
-                    value={day}
-                    onValueChange={(value: Day) => setday(value)}
-                >
-                    <SelectTrigger>
-                        <SelectValue placeholder="Day" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {dayColors.map((dayItem) => (
-                            <SelectItem value={dayItem.day}>
-                                <div className="flex items-center gap-x-2">
-                                    <div
-                                        className="w-2 h-2 rounded-full"
-                                        style={{
-                                            backgroundColor: dayItem.color,
-                                        }}
-                                    ></div>
-                                    <h2>{dayItem.day}</h2>
-                                </div>
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-
-                {error !== "" && (
-                    <div className="text-red-500 mt-2 text-sm">
-                        {error.charAt(0).toUpperCase() + error.slice(1)}
-                    </div>
-                )}
+                    {error !== "" && (
+                        <div className="text-red-500 mt-2 text-sm">
+                            {error.charAt(0).toUpperCase() + error.slice(1)}
+                        </div>
+                    )}
+                </div>
                 <DialogFooter>
                     <Button
                         onClick={

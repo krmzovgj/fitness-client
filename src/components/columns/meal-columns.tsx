@@ -164,15 +164,6 @@ export const MealColumns = (
         },
     },
     {
-        accessorKey: "createdAt",
-        header: "Created At",
-        cell: ({ row }) => (
-            <span className="whitespace-nowrap">
-                {formatDate(row.original.createdAt)}
-            </span>
-        ),
-    },
-    {
         accessorKey: "updatedAt",
         header: "Updated At",
         cell: ({ row }) => (

@@ -311,109 +311,115 @@ export const ExerciseSection = ({
                         {selectedExercise ? "update" : "add"} an exercise
                     </DialogDescription>
 
-                    <Popover
-                        open={exerciseListOpen}
-                        onOpenChange={setexerciseListOpen}
-                    >
-                        <PopoverTrigger asChild>
-                            <Button
-                                variant="outline"
-                                className="justify-between h-10"
-                            >
-                                {selectedOptionExercise
-                                    ? selectedOptionExercise.name
-                                    : "Select exercise"}
-                                <ArrowSwapVertical
-                                    variant="Bulk"
-                                    size={20}
-                                    color="#000"
-                                />
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="p-0">
-                            <Command>
-                                <CommandInput
-                                    placeholder="Search exercise e.g.Bench Press"
-                                    className="h-9"
-                                    value={searchQuery}
-                                    onValueChange={setsearchQuery}
-                                />
-                                <CommandList>
-                                    {loadingOptions ? (
-                                        <div className=" text-sm flex p-6 justify-center items-center gap-x-2 text-foreground">
-                                            <Spinner
-                                                className="size-4"
-                                                color="#000"
-                                            />
-                                            Loading...
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <CommandEmpty>
-                                                No results found...
-                                            </CommandEmpty>
+                    <div className="flex flex-col gap-y-2 mt-2">
+                        <Popover
+                            open={exerciseListOpen}
+                            onOpenChange={setexerciseListOpen}
+                        >
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    className="justify-between h-10"
+                                >
+                                    {selectedOptionExercise
+                                        ? selectedOptionExercise.name
+                                        : "Select exercise"}
+                                    <ArrowSwapVertical
+                                        variant="Bulk"
+                                        size={20}
+                                        color="#000"
+                                    />
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="p-0">
+                                <Command>
+                                    <CommandInput
+                                        placeholder="Search exercise e.g. Bench Press"
+                                        className="h-9"
+                                        value={searchQuery}
+                                        onValueChange={setsearchQuery}
+                                    />
+                                    <CommandList>
+                                        {loadingOptions ? (
+                                            <div className=" text-sm flex p-6 justify-center items-center gap-x-2 text-foreground">
+                                                <Spinner
+                                                    className="size-4"
+                                                    color="#000"
+                                                />
+                                                Loading...
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <CommandEmpty>
+                                                    No results found...
+                                                </CommandEmpty>
 
-                                            <CommandGroup>
-                                                {filteredOptions.map(
-                                                    (exercise) => (
-                                                        <CommandItem
-                                                            className="cursor-pointer"
-                                                            key={exercise.id}
-                                                            value={
-                                                                exercise.name
-                                                            }
-                                                            onSelect={() => {
-                                                                setselectedOptionExercise(
-                                                                    exercise
-                                                                );
-                                                                setexerciseListOpen(
-                                                                    false
-                                                                );
-                                                            }}
-                                                        >
-                                                            {exercise.name}
-                                                            <TickCircle
-                                                                variant="Bold"
-                                                                size={20}
-                                                                className={cn(
-                                                                    "ml-auto",
-                                                                    selectedOptionExercise?.id ===
-                                                                        exercise.id
-                                                                        ? "opacity-100"
-                                                                        : "opacity-0"
-                                                                )}
-                                                            />
-                                                        </CommandItem>
-                                                    )
-                                                )}
-                                            </CommandGroup>
-                                        </>
-                                    )}
-                                </CommandList>
-                            </Command>
-                        </PopoverContent>
-                    </Popover>
+                                                <CommandGroup>
+                                                    {filteredOptions.map(
+                                                        (exercise) => (
+                                                            <CommandItem
+                                                                className="cursor-pointer"
+                                                                key={
+                                                                    exercise.id
+                                                                }
+                                                                value={
+                                                                    exercise.name
+                                                                }
+                                                                onSelect={() => {
+                                                                    setselectedOptionExercise(
+                                                                        exercise
+                                                                    );
+                                                                    setexerciseListOpen(
+                                                                        false
+                                                                    );
+                                                                }}
+                                                            >
+                                                                {exercise.name}
+                                                                <TickCircle
+                                                                    variant="Bold"
+                                                                    size={20}
+                                                                    className={cn(
+                                                                        "ml-auto",
+                                                                        selectedOptionExercise?.id ===
+                                                                            exercise.id
+                                                                            ? "opacity-100"
+                                                                            : "opacity-0"
+                                                                    )}
+                                                                />
+                                                            </CommandItem>
+                                                        )
+                                                    )}
+                                                </CommandGroup>
+                                            </>
+                                        )}
+                                    </CommandList>
+                                </Command>
+                            </PopoverContent>
+                        </Popover>
 
-                    <Input
-                        value={sets === 0 ? "" : sets}
-                        onChange={(e) => {
-                            const value = e.target.value;
-                            setsets(value === "" ? 0 : Number(value));
-                        }}
-                        placeholder="Sets"
-                        type="number"
-                    />
-                    <Input
-                        value={reps}
-                        onChange={(e) => setreps(e.target.value)}
-                        placeholder="Reps"
-                    />
+                        <Input
+                            value={sets === 0 ? "" : sets}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setsets(value === "" ? 0 : Number(value));
+                            }}
+                            placeholder="Sets"
+                            type="number"
+                        />
 
-                    {error !== "" && (
-                        <div className="text-red-500 mt-2 text-sm">
-                            {error.charAt(0).toUpperCase() + error.slice(1)}
-                        </div>
-                    )}
+                        <Input
+                            value={reps}
+                            onChange={(e) => setreps(e.target.value)}
+                            placeholder="Reps"
+                        />
+
+                        {error !== "" && (
+                            <div className="text-red-500 mt-2 text-sm">
+                                {error.charAt(0).toUpperCase() + error.slice(1)}
+                            </div>
+                        )}
+                    </div>
+
                     <DialogFooter>
                         <Button
                             onClick={

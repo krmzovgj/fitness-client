@@ -273,70 +273,72 @@ export const MealsSection = ({
                         {selectedMeal ? "update" : "add"} a meal
                     </DialogDescription>
 
-                    <Input
-                        value={name}
-                        onChange={(e) => setname(e.target.value)}
-                        placeholder="Name e.g. Oat Meal"
-                    />
+                    <div className="flex flex-col gap-y-2 mt-2">
+                        <Input
+                            value={name}
+                            onChange={(e) => setname(e.target.value)}
+                            placeholder="Name e.g. Oat Meal"
+                        />
 
-                    <Textarea
-                        rows={5}
-                        className="resize-none"
-                        value={description}
-                        onChange={(e) => setdescription(e.target.value)}
-                        placeholder="Description"
-                    />
+                        <Textarea
+                            rows={5}
+                            className="resize-none"
+                            value={description}
+                            onChange={(e) => setdescription(e.target.value)}
+                            placeholder="Description"
+                        />
 
-                    <Input
-                        value={cal === 0 ? "" : cal}
-                        onChange={(e) => {
-                            const value = e.target.value;
-                            setcal(value === "" ? 0 : Number(value));
-                        }}
-                        placeholder="Calories (kcal)"
-                        type="number"
-                    />
+                        <Input
+                            value={cal === 0 ? "" : cal}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setcal(value === "" ? 0 : Number(value));
+                            }}
+                            placeholder="Calories (kcal)"
+                            type="number"
+                        />
 
-                    <Input
-                        value={protein === 0 ? "" : protein}
-                        onChange={(e) => {
-                            const value = e.target.value;
-                            setprotein(value === "" ? 0 : Number(value));
-                        }}
-                        placeholder="Protein (g)"
-                        type="number"
-                    />
+                        <Input
+                            value={protein === 0 ? "" : protein}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setprotein(value === "" ? 0 : Number(value));
+                            }}
+                            placeholder="Protein (g)"
+                            type="number"
+                        />
 
-                    <Select
-                        value={type}
-                        onValueChange={(value: MealType) => settype(value)}
-                    >
-                        <SelectTrigger>
-                            <SelectValue placeholder="Day" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {mealTypes.map((mealTypeItem) => (
-                                <SelectItem value={mealTypeItem.type}>
-                                    <div className="flex items-center gap-x-2">
-                                        <div
-                                            className="w-2 h-2 rounded-full"
-                                            style={{
-                                                backgroundColor:
-                                                    mealTypeItem.color,
-                                            }}
-                                        ></div>
-                                        <h2>{mealTypeItem.type}</h2>
-                                    </div>
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                        <Select
+                            value={type}
+                            onValueChange={(value: MealType) => settype(value)}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Day" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {mealTypes.map((mealTypeItem) => (
+                                    <SelectItem value={mealTypeItem.type}>
+                                        <div className="flex items-center gap-x-2">
+                                            <div
+                                                className="w-2 h-2 rounded-full"
+                                                style={{
+                                                    backgroundColor:
+                                                        mealTypeItem.color,
+                                                }}
+                                            ></div>
+                                            <h2>{mealTypeItem.type}</h2>
+                                        </div>
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
 
-                    {error !== "" && (
-                        <div className="text-red-500 mt-2 text-sm">
-                            {error.charAt(0).toUpperCase() + error.slice(1)}
-                        </div>
-                    )}
+                        {error !== "" && (
+                            <div className="text-red-500 mt-2 text-sm">
+                                {error.charAt(0).toUpperCase() + error.slice(1)}
+                            </div>
+                        )}
+                    </div>
                     <DialogFooter>
                         <Button
                             onClick={
