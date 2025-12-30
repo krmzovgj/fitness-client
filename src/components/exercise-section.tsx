@@ -315,34 +315,32 @@ export const ExerciseSection = ({
                             </EmptyHeader>
                         </Empty>
                     ) : (
-                        <div>
-                            <DataTable
-                                enableSorting={true}
-                                data={exercises}
-                                columns={ExerciseColumns(
-                                    setselectedExercise,
-                                    setdialogOpen,
-                                    handleGetExercisesByWorkout
-                                )}
-                            />
-                            <WorkoutNote
-                                note={workout?.note!}
-                                onSave={async (newNote) => {
-                                    updateWorkout(workout?.id!, token!, {
-                                        clientId: workout?.clientId!,
-                                        day: workout?.day!,
-                                        restDay: workout?.restDay!,
-                                        name: workout?.name,
-                                        note: newNote,
-                                    });
-                                    setworkout(
-                                        (prev) =>
-                                            prev && { ...prev, note: newNote }
-                                    );
-                                }}
-                            />
-                        </div>
+                        <DataTable
+                            enableSorting={true}
+                            data={exercises}
+                            columns={ExerciseColumns(
+                                setselectedExercise,
+                                setdialogOpen,
+                                handleGetExercisesByWorkout
+                            )}
+                        />
                     )}
+
+                    <WorkoutNote
+                        note={workout?.note!}
+                        onSave={async (newNote) => {
+                            updateWorkout(workout?.id!, token!, {
+                                clientId: workout?.clientId!,
+                                day: workout?.day!,
+                                restDay: workout?.restDay!,
+                                name: workout?.name,
+                                note: newNote,
+                            });
+                            setworkout(
+                                (prev) => prev && { ...prev, note: newNote }
+                            );
+                        }}
+                    />
                 </div>
 
                 <DialogContent>
