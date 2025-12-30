@@ -42,7 +42,6 @@ export function DayPlanCard({
 
     const isWorkout = variant === "workout";
     const isRestDay = isWorkout && restDay;
-    console.log("🚀 ~ DayPlanCard ~ isRestDay:", isRestDay);
     const now = new Date();
     const today = now
         .toLocaleDateString("en-US", { weekday: "long" })

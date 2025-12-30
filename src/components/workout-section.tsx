@@ -60,7 +60,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
     );
 
     const workouts = clientId ? workoutsByClient[clientId] : undefined;
-
+    
     const sortedWorkouts = workouts
         ? [...workouts].sort(
               (a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day)
@@ -73,8 +73,8 @@ export const WorkoutSection = ({ client }: { client: User }) => {
         try {
             setloadingWorkouts(true);
             const response = await getWorkoutsByClient(token, clientId);
-
             setWorkouts(clientId, response.data);
+        } catch (err) {
         } finally {
             setloadingWorkouts(false);
         }

@@ -18,7 +18,7 @@ interface UpdateWorkoutDto {
 }
 
 export const getWorkoutsByClient = async (token: string, clientId: number) => {
-    const response = await api.get<Workout[]>(`/workout/${clientId}`, {
+    const response = await api.get<Workout[]>(`/workout/client/${clientId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
