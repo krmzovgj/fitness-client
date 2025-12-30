@@ -11,7 +11,7 @@ import {
     Weight,
 } from "iconsax-reactjs";
 import { useNavigate } from "react-router-dom";
-import { Button } from "./ui/button";
+import { Button } from "./button";
 
 type Variant = "workout" | "diet";
 

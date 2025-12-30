@@ -21,9 +21,31 @@ import {
 } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ExerciseColumns } from "./columns/exercise-columns";
-import { DataTable } from "./data-table";
-import { Button } from "./ui/button";
+import type { Workout } from "@/model/workout";
+import { getWorkoutById, updateWorkout } from "@/api/workout";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
+import {
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+    Empty,
+    EmptyDescription,
+    EmptyHeader,
+    EmptyMedia,
+    EmptyTitle,
+} from "@/components/ui/empty";
+import { DataTable } from "@/components/data-table";
+import { ExerciseColumns } from "@/components/columns/exercise-columns";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
 import {
     Command,
     CommandEmpty,
@@ -31,30 +53,12 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
-} from "./ui/command";
-import {
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogTitle,
-    DialogTrigger,
-} from "./ui/dialog";
-import {
-    Empty,
-    EmptyDescription,
-    EmptyHeader,
-    EmptyMedia,
-    EmptyTitle,
-} from "./ui/empty";
-import { Input } from "./ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Spinner } from "./ui/spinner";
-import { Textarea } from "./ui/textarea";
-import type { Workout } from "@/model/workout";
-import { getWorkoutById, updateWorkout } from "@/api/workout";
+} from "@/components/ui/command";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { WorkoutNote } from "./workout-note";
 
-export const ExerciseSection = ({
+export const WorkoutDetailsView = ({
     workoutId,
     dayMatch,
     state,
@@ -71,8 +75,8 @@ export const ExerciseSection = ({
     const [workout, setworkout] = useState<Workout | null>(null);
 
     const [sets, setsets] = useState<number>(0);
-    const [reps, setreps] = useState("");
-    const [note, setnote] = useState("");
+    const [reps, setreps] = useState<string>("");
+    const [note, setnote] = useState<string>("");
 
     const [searchQuery, setsearchQuery] = useState("");
     const [exerciseOptions, setexerciseOptions] = useState<Exercise[]>([]);
@@ -98,10 +102,6 @@ export const ExerciseSection = ({
             setworkout(data);
         } catch (error) {}
     };
-
-    useEffect(() => {
-        getWorkout();
-    }, [workoutId]);
 
     const handleSearchExercises = async (query: string) => {
         if (!token) return;
@@ -140,10 +140,6 @@ export const ExerciseSection = ({
             setloadingExercises(false);
         }
     };
-
-    useEffect(() => {
-        handleGetExercisesByWorkout();
-    }, [workoutId, token]);
 
     const handleCreateExercise = async () => {
         if (!token) return;
@@ -224,6 +220,14 @@ export const ExerciseSection = ({
         setnote(selectedExercise?.note!);
     }, [selectedExercise]);
 
+    useEffect(() => {
+        if (!token) return;
+        const fetchWorkoutAndExercises = async () => {
+            await Promise.all([getWorkout(), handleGetExercisesByWorkout()]);
+        };
+        fetchWorkoutAndExercises();
+    }, [workoutId, token]);
+
     return (
         <Dialog
             open={dialogOpen}
@@ -284,7 +288,7 @@ export const ExerciseSection = ({
                 <h1 className="text-xl md:text-2xl flex items-center gap-x-1 md:gap-x-2">
                     <RecordCircle variant="Bold" size={20} color="#000" />
                     Exercises
-                    {loadingExercises && <Spinner className="size-6" />}
+                    {loadingExercises && <Spinner className="size-5" />}
                 </h1>
 
                 {user?.role === UserRole.TRAINER && (

@@ -1,13 +1,7 @@
 import { addClient, getClients, updateClient } from "@/api/client";
-import { UserRole, type User } from "@/model/user";
-import { useAuthStore } from "@/store/auth";
-import { useClientStore } from "@/store/client";
-import { useUserStore } from "@/store/user";
-import { Eye, EyeSlash, Profile2User, RecordCircle } from "iconsax-reactjs";
-import { useEffect, useState } from "react";
-import { clientColumns } from "./columns/client-columns";
-import { DataTable } from "./data-table";
-import { Button } from "./ui/button";
+import { clientColumns } from "@/components/columns/client-columns";
+import { DataTable } from "@/components/data-table";
+import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
@@ -15,26 +9,32 @@ import {
     DialogFooter,
     DialogTitle,
     DialogTrigger,
-} from "./ui/dialog";
+} from "@/components/ui/dialog";
 import {
     Empty,
     EmptyDescription,
     EmptyHeader,
     EmptyMedia,
     EmptyTitle,
-} from "./ui/empty";
-import { Input } from "./ui/input";
-import { Spinner } from "./ui/spinner";
+} from "@/components/ui/empty";
+import { Input } from "@/components/ui/input";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "./ui/select";
+} from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
+import { UserRole, type User } from "@/model/user";
+import { useAuthStore } from "@/store/auth";
+import { useClientStore } from "@/store/client";
 import { useTenantStore } from "@/store/tenant";
+import { useUserStore } from "@/store/user";
+import { Eye, EyeSlash, Profile2User, RecordCircle } from "iconsax-reactjs";
+import { useEffect, useState } from "react";
 
-export const ClientsSection = () => {
+export const ClientsView = () => {
     const { user } = useUserStore();
     const { token } = useAuthStore();
     const { clients, setClients } = useClientStore();
@@ -190,7 +190,7 @@ export const ClientsSection = () => {
                                 />
                                 My Clients
                                 {loadingClients && (
-                                    <Spinner className="size-6" />
+                                    <Spinner className="size-5" />
                                 )}
                             </h2>
                             <DialogTrigger asChild className="rounded-xl">

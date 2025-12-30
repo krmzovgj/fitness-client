@@ -1,7 +1,35 @@
 import { createMeal, getMeals, updateMeal } from "@/api/meal";
+import { MealColumns } from "@/components/columns/meal-columns";
+import { DataTable } from "@/components/data-table";
+import { Button } from "@/components/ui/button";
+import {
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+    Empty,
+    EmptyDescription,
+    EmptyHeader,
+    EmptyMedia,
+    EmptyTitle,
+} from "@/components/ui/empty";
+import { Input } from "@/components/ui/input";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
+import { Textarea } from "@/components/ui/textarea";
 import { mealOrder, mealTypes } from "@/lib/utils";
 import type { Day } from "@/model/day";
 import type { Meal } from "@/model/meal";
+import { MealType } from "@/model/meal-type";
 import { UserRole } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
@@ -9,43 +37,18 @@ import { Dialog } from "@radix-ui/react-dialog";
 import { ArrowLeft, Book, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MealColumns } from "./columns/meal-columns";
-import { DataTable } from "./data-table";
-import { Button } from "./ui/button";
-import {
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogTitle,
-    DialogTrigger,
-} from "./ui/dialog";
-import {
-    Empty,
-    EmptyDescription,
-    EmptyHeader,
-    EmptyMedia,
-    EmptyTitle,
-} from "./ui/empty";
-import { Input } from "./ui/input";
-import { Spinner } from "./ui/spinner";
-import { Textarea } from "./ui/textarea";
-import { MealType } from "@/model/meal-type";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "./ui/select";
 
-export const MealsSection = ({
+export const DietDetailsView = ({
     dietId,
     dayMatch,
-    state,
+    diet,
 }: {
     dietId: string;
     dayMatch: { day: Day; color: string };
-    state: any;
+    diet: {
+        name: string;
+        day: Day;
+    };
 }) => {
     const { user } = useUserStore();
     const { token } = useAuthStore();
@@ -220,7 +223,7 @@ export const MealsSection = ({
                                 </p>
                             </h3>
                             <h1 className="text-3xl leading-7 font-medium">
-                                {state.name}
+                                {diet.name}
                             </h1>
                         </div>
                     </div>
@@ -231,7 +234,7 @@ export const MealsSection = ({
                 <h1 className="text-xl md:text-2xl flex items-center gap-x-1 md:gap-x-2">
                     <RecordCircle variant="Bold" size={20} color="#000" />
                     Meals
-                    {loadingMeals && <Spinner className="size-6" />}
+                    {loadingMeals && <Spinner className="size-5" />}
                 </h1>
 
                 {user?.role === UserRole.TRAINER && (

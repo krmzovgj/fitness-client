@@ -1,26 +1,6 @@
-import {
-    createWorkout,
-    getWorkoutsByClient,
-    updateWorkout,
-} from "@/api/workout";
-import {
-    Empty,
-    EmptyDescription,
-    EmptyHeader,
-    EmptyMedia,
-    EmptyTitle,
-} from "@/components/ui/empty";
-import { dayColors, dayOrder } from "@/lib/utils";
-import { Day } from "@/model/day";
-import { UserRole, type User } from "@/model/user";
-import { type Workout } from "@/model/workout";
-import { useAuthStore } from "@/store/auth";
-import { useUserStore } from "@/store/user";
-import { useWorkoutStore } from "@/store/workout";
-import { Label } from "@radix-ui/react-dropdown-menu";
-import { Box1, RecordCircle } from "iconsax-reactjs";
-import { useEffect, useState } from "react";
-import { Button } from "./ui/button";
+import { createDiet, getDietByClient, updateDiet } from "@/api/diet";
+import { DayPlanCard } from "@/components/ui/day-plan-card";
+import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
@@ -28,86 +8,94 @@ import {
     DialogFooter,
     DialogTitle,
     DialogTrigger,
-} from "./ui/dialog";
-import { Input } from "./ui/input";
+} from "@/components/ui/dialog";
+import {
+    Empty,
+    EmptyDescription,
+    EmptyHeader,
+    EmptyMedia,
+    EmptyTitle,
+} from "@/components/ui/empty";
+import { Input } from "@/components/ui/input";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "./ui/select";
-import { Spinner } from "./ui/spinner";
-import { Switch } from "./ui/switch";
-import { DayPlanCard } from "./day-plan-card";
+} from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
+import { dayColors, dayOrder } from "@/lib/utils";
+import { Day } from "@/model/day";
+import type { Diet } from "@/model/diet";
+import { UserRole, type User } from "@/model/user";
+import { useAuthStore } from "@/store/auth";
+import { useDietStore } from "@/store/diet";
+import { useUserStore } from "@/store/user";
+import { Book, RecordCircle } from "iconsax-reactjs";
+import { useEffect, useState } from "react";
 
-export const WorkoutSection = ({ client }: { client: User }) => {
+export const DietView = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
     const { user } = useUserStore();
-    const { workoutsByClient, setWorkouts } = useWorkoutStore();
+    const { mealDaysByClient, setMealDays } = useDietStore();
+    const [loadingMealDays, setloadingMealDays] = useState(false);
+
     const clientId = client?.id;
 
-    const [loadingWorkouts, setloadingWorkouts] = useState(false);
-
-    const [name, setname] = useState<string>("");
+    const [name, setname] = useState("");
     const [day, setday] = useState<Day>(Day.MONDAY);
-    const [restDay, setrestDay] = useState<boolean>(false);
     const [error, seterror] = useState("");
-    const [creatingWorkout, setcreatingWorkout] = useState(false);
+    const [creatingDiet, setcreatingDiet] = useState(false);
     const [dialogOpen, setdialogOpen] = useState(false);
-    const [selectedWorkout, setselectedWorkout] = useState<Workout | null>(
-        null
-    );
+    const [selectedDiet, setselectedDiet] = useState<Diet | null>(null);
 
-    const workouts = clientId ? workoutsByClient[clientId] : undefined;
-    
-    const sortedWorkouts = workouts
-        ? [...workouts].sort(
+    const mealDays = clientId ? mealDaysByClient[clientId] : undefined;
+
+    const sortedMealDays = mealDays
+        ? [...mealDays].sort(
               (a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day)
           )
         : [];
 
-    const handleGetWorkoutsByClient = async () => {
+    const handleGetDietsByClient = async () => {
         if (!token || !clientId) return;
 
         try {
-            setloadingWorkouts(true);
-            const response = await getWorkoutsByClient(token, clientId);
-            setWorkouts(clientId, response.data);
-        } catch (err) {
+            setloadingMealDays(true);
+            const response = await getDietByClient(clientId, token);
+            setMealDays(clientId, response.data);
         } finally {
-            setloadingWorkouts(false);
+            setloadingMealDays(false);
         }
     };
 
     useEffect(() => {
         if (!token || !clientId) return;
-        if (workouts) return;
+        if (mealDays) return;
 
-        handleGetWorkoutsByClient();
+        handleGetDietsByClient();
     }, [clientId]);
 
     useEffect(() => {
-        if (!selectedWorkout) return;
+        if (!selectedDiet) return;
 
-        setname(selectedWorkout.name);
-        setday(selectedWorkout.day);
-        setrestDay(!!selectedWorkout.restDay);
-    }, [selectedWorkout]);
+        setname(selectedDiet.name);
+        setday(selectedDiet.day);
+    }, [selectedDiet]);
 
-    const handleCreateWorkout = async () => {
+    const handleCreateDiet = async () => {
         if (!token || !clientId) return;
         try {
-            setcreatingWorkout(true);
-            const response = await createWorkout(token, {
+            setcreatingDiet(true);
+            const response = await createDiet(token, {
                 name,
                 day,
-                restDay: !!restDay,
                 clientId: clientId,
             });
             if (response.status === 201) {
                 setdialogOpen(false);
-                handleGetWorkoutsByClient();
+                handleGetDietsByClient();
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -118,31 +106,24 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                 seterror(msg);
             }
         } finally {
-            setcreatingWorkout(false);
+            setcreatingDiet(false);
         }
     };
 
-    const handleUpdateWorkout = async () => {
-        if (!token || !selectedWorkout) return;
-
-        const payload = {
-            ...selectedWorkout,
-            name,
-            day,
-            restDay: !!restDay,
-        };
+    const handleUpdateDiet = async () => {
+        if (!token || !selectedDiet) return;
 
         try {
-            setcreatingWorkout(true);
-            const response = await updateWorkout(
-                selectedWorkout?.id,
-                token,
-                payload
-            );
+            setcreatingDiet(true);
+            const response = await updateDiet(token, selectedDiet?.id, {
+                name,
+                day,
+                clientId: clientId,
+            });
 
             if (response.status === 200) {
                 setdialogOpen(false);
-                handleGetWorkoutsByClient();
+                handleGetDietsByClient();
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -153,7 +134,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                 seterror(msg);
             }
         } finally {
-            setcreatingWorkout(false);
+            setcreatingDiet(false);
         }
     };
 
@@ -162,7 +143,7 @@ export const WorkoutSection = ({ client }: { client: User }) => {
             open={dialogOpen}
             onOpenChange={(open) => {
                 setdialogOpen(open);
-                setselectedWorkout(null);
+                setselectedDiet(null);
                 setname("");
                 setday(Day.MONDAY);
                 seterror("");
@@ -177,51 +158,50 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                                 size={20}
                                 color="#000"
                             />
-                            Workout Plan
-                            {loadingWorkouts && <Spinner className="size-6" />}
+                            Diet Plan
+                            {loadingMealDays && <Spinner className="size-5" />}
                         </h1>
                     </div>
 
                     {user?.role === UserRole.TRAINER && (
                         <DialogTrigger asChild>
-                            <Button variant="default">Add Workout Day</Button>
+                            <Button variant="default">Add Diet Day</Button>
                         </DialogTrigger>
                     )}
                 </div>
 
-                {!loadingWorkouts && (
+                {!loadingMealDays && (
                     <div className="mt-5">
-                        {workouts?.length === 0 && !loadingWorkouts ? (
+                        {mealDays?.length === 0 && !loadingMealDays ? (
                             <Empty>
                                 <EmptyHeader>
                                     <EmptyMedia variant="icon">
-                                        <Box1
+                                        <Book
                                             variant="Bold"
                                             size={20}
                                             color="#fff"
                                         />
                                     </EmptyMedia>
-                                    <EmptyTitle>No Workouts Yet</EmptyTitle>
+                                    <EmptyTitle>No Diet Yet</EmptyTitle>
                                     <EmptyDescription>
                                         {user?.role === UserRole.TRAINER
-                                            ? "No workouts created yet. Once you create a workout it will appear here"
-                                            : "No workouts yet. Once your trainer creates a workout it will appear here"}
+                                            ? "No diet created yet. Once you create a diet it will appear here"
+                                            : "No diet yet. Once your trainer creates a diet it will appear here"}
                                     </EmptyDescription>
                                 </EmptyHeader>
                             </Empty>
                         ) : (
                             <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
-                                {sortedWorkouts.map((workout) => (
+                                {sortedMealDays?.map((diet) => (
                                     <DayPlanCard
-                                        key={workout.id}
-                                        id={workout.id}
-                                        day={workout.day}
-                                        name={workout.name}
-                                        count={workout.workoutExercises?.length}
-                                        variant="workout"
-                                        restDay={!!workout.restDay}
+                                        id={diet.id}
+                                        key={diet.id}
+                                        day={diet.day}
+                                        name={diet.name}
+                                        meals={diet.meals}
+                                        variant="diet"
                                         openEdit={() => {
-                                            setselectedWorkout(workout);
+                                            setselectedDiet(diet);
                                             setdialogOpen(true);
                                         }}
                                         user={user!}
@@ -235,18 +215,17 @@ export const WorkoutSection = ({ client }: { client: User }) => {
 
             <DialogContent>
                 <DialogTitle>
-                    {selectedWorkout ? "Update" : "Add New"} Workout
+                    {selectedDiet ? "Update" : "Add New"} Diet
                 </DialogTitle>
                 <DialogDescription>
                     Fill the required fields to{" "}
-                    {selectedWorkout ? "update" : "add"} a workout
+                    {selectedDiet ? "update" : "add"} a diet
                 </DialogDescription>
-
                 <div className="flex flex-col gap-y-2 mt-2">
                     <Input
                         value={name}
                         onChange={(e) => setname(e.target.value)}
-                        placeholder="Name e.g. Upper Body"
+                        placeholder="Name e.g. Muscle Gain"
                     />
                     <Select
                         value={day}
@@ -271,13 +250,6 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                             ))}
                         </SelectContent>
                     </Select>
-                    <div className="flex ml-0.5 mt-1 items-center space-x-2">
-                        <Switch
-                            checked={restDay}
-                            onCheckedChange={(isRest) => setrestDay(!!isRest)}
-                        />
-                        <Label>Rest Day</Label>
-                    </div>
 
                     {error !== "" && (
                         <div className="text-red-500 mt-2 text-sm">
@@ -285,19 +257,17 @@ export const WorkoutSection = ({ client }: { client: User }) => {
                         </div>
                     )}
                 </div>
-
-                <DialogFooter
-                    onClick={
-                        selectedWorkout
-                            ? handleUpdateWorkout
-                            : handleCreateWorkout
-                    }
-                >
-                    <Button className="self-end">
-                        {creatingWorkout ? (
+                <DialogFooter>
+                    <Button
+                        onClick={
+                            selectedDiet ? handleUpdateDiet : handleCreateDiet
+                        }
+                        className="self-end"
+                    >
+                        {creatingDiet ? (
                             <Spinner className="size-6" />
                         ) : (
-                            <>{selectedWorkout ? "Update" : "Add"} Workout</>
+                            <>{selectedDiet ? "Update" : "Add"} Diet</>
                         )}
                     </Button>
                 </DialogFooter>

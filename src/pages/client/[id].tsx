@@ -1,9 +1,9 @@
 import { getUserById } from "@/api/user";
-import { DietSection } from "@/components/diet-section";
+import { DietView } from "@/components/screens/client-details/diet.view";
+import { WorkoutView } from "@/components/screens/client-details/workout.view";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { WorkoutSection } from "@/components/workout-section";
 import { type User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { ArrowLeft, Information, Sms } from "iconsax-reactjs";
@@ -99,9 +99,8 @@ export const Client = () => {
                                 </div>
                             </div>
 
-                            <WorkoutSection client={client!} />
-
-                            <DietSection client={client!} />
+                            <WorkoutView client={client!} />
+                            <DietView client={client!} />
                         </div>
                     )}
                 </>

@@ -1,9 +1,9 @@
 // src/layouts/AppLayout.tsx
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/components/layout/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Outlet } from "react-router-dom";
-import { Header } from "../header";
 import { useUserStore } from "@/store/user";
+import { Header } from "./header";
 
 export function AppLayout() {
     const { user } = useUserStore();

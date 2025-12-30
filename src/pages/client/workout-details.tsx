@@ -1,4 +1,4 @@
-import { ExerciseSection } from "@/components/exercise-section";
+import { WorkoutDetailsView } from "@/components/screens/workout-details/workout-details.view";
 import { dayColors } from "@/lib/utils";
 import { useLocation, useParams } from "react-router-dom";
 
@@ -10,7 +10,7 @@ export const Exercises = () => {
 
     return (
         <div className="h-full md:h-screen flex flex-col ">
-            <ExerciseSection
+            <WorkoutDetailsView
                 workoutId={id!}
                 dayMatch={dayMatch!}
                 state={state}

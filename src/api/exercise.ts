@@ -12,6 +12,7 @@ export interface CreateExerciseDto {
 export interface UpdateExerciseDto {
     sets: number;
     reps: string;
+    note?: string;
     exerciseId: string;
 }
 

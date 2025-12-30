@@ -1,15 +1,15 @@
 import { getMe } from "@/api/user";
-import { ClientsSection } from "@/components/clients-section";
-import { DietSection } from "@/components/diet-section";
+import { DietView } from "@/components/screens/client-details/diet.view";
+import { WorkoutView } from "@/components/screens/client-details/workout.view";
+import { ClientsView } from "@/components/screens/home/clients.view";
 import { Spinner } from "@/components/ui/spinner";
-import { WorkoutSection } from "@/components/workout-section";
+import { formatDate } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth";
 import { useTenantStore } from "@/store/tenant";
+import { Calendar } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { UserRole } from "../model/user";
 import { useUserStore } from "../store/user";
-import { formatDate } from "@/lib/utils";
-import { Calendar } from "iconsax-reactjs";
 
 export const Home = () => {
     const { user, setUser, clearUser } = useUserStore();
@@ -81,11 +81,11 @@ export const Home = () => {
 
             <div className="flex-1 z-50 flex flex-col">
                 {user?.role === UserRole.TRAINER ? (
-                    <ClientsSection />
+                    <ClientsView />
                 ) : (
                     <div>
-                        <WorkoutSection client={user!} />
-                        <DietSection client={user!} />
+                        <WorkoutView client={user!} />
+                        <DietView client={user!} />
                     </div>
                 )}
             </div>

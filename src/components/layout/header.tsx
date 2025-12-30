@@ -28,9 +28,9 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from "./ui/alert-dialog";
-import { Avatar } from "./ui/avatar";
-import { SidebarTrigger } from "./ui/sidebar";
+} from "../ui/alert-dialog";
+import { SidebarTrigger } from "../ui/sidebar";
+import { Avatar } from "../ui/avatar";
 
 export const Header = ({ user }: { user?: User }) => {
     const { clearToken } = useAuthStore();
