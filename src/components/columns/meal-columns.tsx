@@ -87,7 +87,7 @@ export const MealColumns = (
                             {row.original.description}
                         </DialogDescription>
 
-                        <div className="flex items-center gap-x-3">
+                        <div className="md:flex grid grid-cols-2 grid-rows-2 gap-2 md:grid-cols-4 md:grid-rows-1">
                             <div className="text-sm flex items-center">
                                 Calories: {row.original.cal}
                                 <span className="font-semibold text-sm text-[#FF8C00]">

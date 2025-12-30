@@ -267,7 +267,7 @@ export const WorkoutDetailsView = ({
                         </div>
                         <div>
                             <div>
-                                <h3 className="flex items-center capitalize gap-x-1 font-semibold">
+                                <h3 className="flex items-center capitalize gap-x-1 font-medium">
                                     <p className="text-foreground">
                                         {dayMatch?.day.toLowerCase()}
                                     </p>{" "}
