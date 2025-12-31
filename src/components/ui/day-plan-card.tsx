@@ -75,12 +75,9 @@ export function DayPlanCard({
         <div
             className={cn(
                 "relative cursor-pointer bg-secondary overflow-hidden rounded-3xl pb-5",
-                isRestDay ? "cursor-default" : "cursor-pointer"
+                isRestDay ? "cursor-default" : "cursor-pointer hover:scale-101 transition-all",
+                today === day ? "border-2 border-foreground" : "border-0"
             )}
-            style={{
-                borderWidth: today === day ? "2px" : "0px",
-                borderColor: today === day ? "#181818" : "transparent",
-            }}
             onClick={openDetails}
         >
             <div className="p-5 flex-col flex">

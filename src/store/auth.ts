@@ -1,4 +1,3 @@
-// src/store/auth.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -16,7 +15,7 @@ export const useAuthStore = create(
             clearToken: () => set({ token: null }),
         }),
         {
-            name: "auth-store", // key in localStorage
+            name: "auth-store",
         }
     )
 );

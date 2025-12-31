@@ -30,7 +30,7 @@ export const useUserStore = create<UserStore>()(
             },
         }),
         {
-            name: "user-storage", // this key is used in localStorage
+            name: "user-storage",
         }
     )
 );

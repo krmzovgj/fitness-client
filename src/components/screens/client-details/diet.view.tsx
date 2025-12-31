@@ -44,7 +44,7 @@ export const DietView = ({ client }: { client: User }) => {
     const clientId = client?.id;
 
     const [name, setname] = useState("");
-    const [day, setday] = useState<Day>(Day.MONDAY);
+    const [day, setday] = useState<Day | null>(null);
     const [error, seterror] = useState("");
     const [creatingDiet, setcreatingDiet] = useState(false);
     const [dialogOpen, setdialogOpen] = useState(false);
@@ -138,6 +138,12 @@ export const DietView = ({ client }: { client: User }) => {
         }
     };
 
+    const usedDays = new Set(mealDays?.map((w) => w.day));
+    const availableDays = dayColors.filter((day) => {
+        if (selectedDiet && day.day === selectedDiet.day) return true;
+        return !usedDays.has(day.day);
+    });
+
     return (
         <Dialog
             open={dialogOpen}
@@ -145,7 +151,7 @@ export const DietView = ({ client }: { client: User }) => {
                 setdialogOpen(open);
                 setselectedDiet(null);
                 setname("");
-                setday(Day.MONDAY);
+                setday(availableDays[0].day);
                 seterror("");
             }}
         >
@@ -185,8 +191,8 @@ export const DietView = ({ client }: { client: User }) => {
                                     <EmptyTitle>No Diet Yet</EmptyTitle>
                                     <EmptyDescription>
                                         {user?.role === UserRole.TRAINER
-                                            ? "No diet created yet. Once you create a diet it will appear here"
-                                            : "No diet yet. Once your trainer creates a diet it will appear here"}
+                                            ? "No diet days created yet. Once you create a diet it will appear here"
+                                            : "No diet days yet. Once your trainer creates a diet it will appear here"}
                                     </EmptyDescription>
                                 </EmptyHeader>
                             </Empty>
@@ -228,14 +234,14 @@ export const DietView = ({ client }: { client: User }) => {
                         placeholder="Name e.g. Muscle Gain"
                     />
                     <Select
-                        value={day}
+                        value={day!}
                         onValueChange={(value: Day) => setday(value)}
                     >
                         <SelectTrigger>
                             <SelectValue placeholder="Day" />
                         </SelectTrigger>
                         <SelectContent>
-                            {dayColors.map((dayItem) => (
+                            {availableDays.map((dayItem) => (
                                 <SelectItem value={dayItem.day}>
                                     <div className="flex items-center gap-x-2">
                                         <div

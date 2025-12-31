@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
-import { SidebarRight } from "iconsax-reactjs";
+import { HamburgerMenu } from "iconsax-reactjs";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -276,7 +276,7 @@ const SidebarTrigger = React.forwardRef<
             }}
             {...props}
         >
-            <SidebarRight variant="Bold" size={25} color="#000" />
+            <HamburgerMenu variant="Linear" size={27} color="#000" />
         </button>
     );
 });
@@ -723,5 +723,6 @@ export {
     SidebarRail,
     SidebarSeparator,
     SidebarTrigger,
-    useSidebar,
+    useSidebar
 };
+

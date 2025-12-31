@@ -53,9 +53,13 @@ export const Header = ({ user }: { user?: User }) => {
                     </div>
                 )}
 
-                <div className="flex items-center gap-x-2 text-xl md:text-2xl font-semibold md:font-bold">
-                    {tenant?.subdomain}.mycoach
+                <div className="hidden md:flex  items-end text-xl md:text-2xl font-semibold md:font-bold">
+                    {tenant?.subdomain}
                 </div>
+            </div>
+
+            <div className="flex md:hidden items-center gap-x-2 text-xl md:text-2xl font-semibold md:font-bold">
+                {tenant?.subdomain}
             </div>
 
             <h3 className="hidden md:flex py-3 px-4 rounded-2xl border items-center gap-x-1 text-sm md:text-md text-foreground">

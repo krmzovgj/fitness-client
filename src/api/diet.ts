@@ -3,7 +3,7 @@ import { api } from "./axios";
 
 interface CreateDietDto {
     name: string;
-    day: Day;
+    day: Day | null;
     clientId: number;
 }
 

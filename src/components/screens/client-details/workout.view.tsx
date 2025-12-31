@@ -45,12 +45,14 @@ export const WorkoutView = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
     const { user } = useUserStore();
     const { workoutsByClient, setWorkouts } = useWorkoutStore();
+
     const clientId = client?.id;
+    const workouts = clientId ? workoutsByClient[clientId] : undefined;
 
     const [loadingWorkouts, setloadingWorkouts] = useState(false);
 
     const [name, setname] = useState<string>("");
-    const [day, setday] = useState<Day>(Day.MONDAY);
+    const [day, setday] = useState<Day | null>(null);
     const [restDay, setrestDay] = useState<boolean>(false);
     const [error, seterror] = useState("");
     const [creatingWorkout, setcreatingWorkout] = useState(false);
@@ -58,8 +60,6 @@ export const WorkoutView = ({ client }: { client: User }) => {
     const [selectedWorkout, setselectedWorkout] = useState<Workout | null>(
         null
     );
-
-    const workouts = clientId ? workoutsByClient[clientId] : undefined;
 
     const sortedWorkouts = workouts
         ? [...workouts].sort(
@@ -157,6 +157,12 @@ export const WorkoutView = ({ client }: { client: User }) => {
         }
     };
 
+    const usedDays = new Set(workouts?.map((w) => w.day));
+    const availableDays = dayColors.filter((day) => {
+        if (selectedWorkout && day.day === selectedWorkout.day) return true;
+        return !usedDays.has(day.day);
+    });
+
     return (
         <Dialog
             open={dialogOpen}
@@ -164,7 +170,7 @@ export const WorkoutView = ({ client }: { client: User }) => {
                 setdialogOpen(open);
                 setselectedWorkout(null);
                 setname("");
-                setday(Day.MONDAY);
+                setday(availableDays[0].day);
                 seterror("");
             }}
         >
@@ -249,14 +255,14 @@ export const WorkoutView = ({ client }: { client: User }) => {
                         placeholder="Name e.g. Upper Body"
                     />
                     <Select
-                        value={day}
+                        value={day!}
                         onValueChange={(value: Day) => setday(value)}
                     >
                         <SelectTrigger>
                             <SelectValue placeholder="Day" />
                         </SelectTrigger>
                         <SelectContent>
-                            {dayColors.map((dayItem) => (
+                            {availableDays.map((dayItem) => (
                                 <SelectItem value={dayItem.day}>
                                     <div className="flex items-center gap-x-2">
                                         <div

@@ -4,14 +4,14 @@ import type { Day } from "@/model/day";
 
 interface CreateWorkoutDto {
     name?: string;
-    day: Day;
+    day: Day | null;
     restDay: boolean;
     clientId: number;
 }
 
 interface UpdateWorkoutDto {
     name?: string;
-    day: Day;
+    day: Day | null;
     note?: string;
     restDay: boolean;
     clientId: number;
