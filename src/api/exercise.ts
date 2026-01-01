@@ -16,6 +16,20 @@ export interface UpdateExerciseDto {
     exerciseId: string;
 }
 
+export const createGlobalExercise = async (token: string, name: string) => {
+    const response = await api.post(
+        "/exercise",
+        { name },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+
+    return response;
+};
+
 export const searchExercises = async (token: string, search?: string) => {
     const response = await api.get<Exercise[]>(`/exercise?search=${search}`, {
         headers: {
@@ -42,7 +56,7 @@ export const getExercisesByWorkout = async (
     return response;
 };
 
-export const createExercise = async (
+export const createWorkoutExercise = async (
     dto: CreateExerciseDto,
     token: string,
     workoutId: string

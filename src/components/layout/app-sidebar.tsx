@@ -108,7 +108,7 @@ export function AppSidebar() {
                 </SidebarHeader>
 
                 <SidebarGroup className="flex-1 w-full">
-                    <SidebarGroupLabel className="font-semibold text-sm">
+                    <SidebarGroupLabel className="font-medium md:font-semibold text-sm">
                         Main
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
@@ -171,7 +171,7 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter className="py-6 md:px-3">
-                <SidebarGroupLabel className="font-semibold text-sm">
+                <SidebarGroupLabel className="font-medium md:font-semibold text-sm">
                     Other
                 </SidebarGroupLabel>
                 <a

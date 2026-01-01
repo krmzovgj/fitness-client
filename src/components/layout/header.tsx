@@ -48,7 +48,7 @@ export const Header = ({ user }: { user?: User }) => {
         <div className="py-3 md:py-5 md:px-10 px-5 flex justify-between items-center">
             <div className="flex items-center gap-x-3">
                 {user && (
-                    <div className="md:hidden flex">
+                    <div className="w-11 md:hidden flex">
                         <SidebarTrigger />
                     </div>
                 )}
@@ -58,7 +58,7 @@ export const Header = ({ user }: { user?: User }) => {
                 </div>
             </div>
 
-            <div className="flex md:hidden items-center gap-x-2 text-xl font-medium">
+            <div className="flex md:hidden items-center gap-x-2 text-xl font-bold">
                 {tenant?.subdomain}
             </div>
 

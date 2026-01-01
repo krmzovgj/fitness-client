@@ -25,10 +25,10 @@ import {
     DialogContent,
     DialogDescription,
     DialogHeader,
+    DialogTitle,
     DialogTrigger,
 } from "../ui/dialog";
 import { Spinner } from "../ui/spinner";
-import { DialogTitle } from "@radix-ui/react-dialog";
 
 export const ExerciseColumns = (
     setSelectedExercise: (exercise: WorkoutExercise | null) => void,

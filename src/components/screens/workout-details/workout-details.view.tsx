@@ -1,5 +1,6 @@
 import {
-    createExercise,
+    createGlobalExercise,
+    createWorkoutExercise,
     searchExercises,
     updateExercise,
 } from "@/api/exercise";
@@ -16,6 +17,7 @@ import {
     CommandList,
 } from "@/components/ui/command";
 import {
+    Dialog,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -45,7 +47,6 @@ import type { Workout } from "@/model/workout";
 import type { WorkoutExercise } from "@/model/workout-exercise";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
-import { Dialog } from "@radix-ui/react-dialog";
 import {
     ArrowLeft,
     ArrowSwapVertical,
@@ -78,6 +79,7 @@ export const WorkoutDetailsView = ({
     const [note, setnote] = useState<string>("");
 
     const [searchQuery, setsearchQuery] = useState("");
+    const [debouncedQuery, setDebouncedQuery] = useState("");
     const [exerciseOptions, setexerciseOptions] = useState<Exercise[]>([]);
     const [exerciseListOpen, setexerciseListOpen] = useState(false);
     const [loadingOptions, setloadingOptions] = useState(false);
@@ -90,7 +92,7 @@ export const WorkoutDetailsView = ({
     const [selectedExercise, setselectedExercise] =
         useState<WorkoutExercise | null>(null);
 
-        const filteredOptions = exerciseOptions.filter((exercise) =>
+    const filteredOptions = exerciseOptions.filter((exercise) =>
         exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
@@ -127,20 +129,20 @@ export const WorkoutDetailsView = ({
         if (!exerciseListOpen) return;
         if (searchQuery === "") return;
 
-        const delay = setTimeout(() => {
+        const timeout = setTimeout(() => {
+            setDebouncedQuery(searchQuery);
             handleSearchExercises(searchQuery);
         }, 300);
 
-        return () => clearTimeout(delay);
+        return () => clearTimeout(timeout);
     }, [searchQuery, exerciseListOpen, token]);
-
 
     const handleCreateExercise = async () => {
         if (!token) return;
         try {
             setcreatingExercise(true);
 
-            const response = await createExercise(
+            const response = await createWorkoutExercise(
                 {
                     reps,
                     sets,
@@ -326,7 +328,6 @@ export const WorkoutDetailsView = ({
                                 name: workout?.name,
                                 note: newNote,
                             });
-                            // getWorkout
                             setWorkout(
                                 (prev: Workout) =>
                                     prev && { ...prev, note: newNote }
@@ -375,7 +376,7 @@ export const WorkoutDetailsView = ({
                                 <Command>
                                     <CommandInput
                                         placeholder="Search exercise e.g. Bench Press"
-                                        className="h-9"
+                                        className="h-9 capitalize"
                                         value={searchQuery}
                                         onValueChange={setsearchQuery}
                                     />
@@ -390,8 +391,50 @@ export const WorkoutDetailsView = ({
                                             </div>
                                         ) : (
                                             <>
-                                                <CommandEmpty>
-                                                    No results found...
+                                                <CommandEmpty className="p-4">
+                                                    {searchQuery === "" ? (
+                                                        <h3 className="text-sm text-center text-foreground">
+                                                            Search for an
+                                                            exercise
+                                                        </h3>
+                                                    ) : (
+                                                        <>
+                                                            <h3 className="text-sm text-center">
+                                                                Not listed? Add your exercise
+                                                            </h3>
+
+                                                            {debouncedQuery !==
+                                                                "" &&
+                                                                !loadingOptions &&
+                                                                exerciseOptions.length ===
+                                                                    0 && (
+                                                                    <Button
+                                                                        onClick={async () => {
+                                                                            if (
+                                                                                !token
+                                                                            )
+                                                                                return;
+                                                                            await createGlobalExercise(
+                                                                                token,
+                                                                                searchQuery
+                                                                            );
+                                                                            await handleSearchExercises(
+                                                                                searchQuery
+                                                                            );
+                                                                        }}
+                                                                        variant="outline"
+                                                                        className="border-dashed border-2 mt-4 w-full"
+                                                                    >
+                                                                        <span className="text-muted-foreground mr-1">
+                                                                            Add
+                                                                        </span>
+                                                                        {
+                                                                            searchQuery
+                                                                        }
+                                                                    </Button>
+                                                                )}
+                                                        </>
+                                                    )}
                                                 </CommandEmpty>
 
                                                 <CommandGroup>

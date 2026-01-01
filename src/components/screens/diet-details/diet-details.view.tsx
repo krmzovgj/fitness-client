@@ -4,6 +4,7 @@ import { MealColumns } from "@/components/columns/meal-columns";
 import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import {
+    Dialog,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -35,7 +36,6 @@ import { MealType } from "@/model/meal-type";
 import { UserRole } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
-import { Dialog } from "@radix-ui/react-dialog";
 import { ArrowLeft, Book1, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
