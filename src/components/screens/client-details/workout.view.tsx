@@ -3,8 +3,8 @@ import {
     getWorkoutsByClient,
     updateWorkout,
 } from "@/api/workout";
-import { DayPlanCard } from "@/components/ui/day-plan-card";
 import { Button } from "@/components/ui/button";
+import { DayPlanCard } from "@/components/ui/day-plan-card";
 import {
     Dialog,
     DialogContent,
@@ -38,7 +38,7 @@ import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import { useWorkoutStore } from "@/store/workout";
 import { Label } from "@radix-ui/react-dropdown-menu";
-import { Box1, RecordCircle, Weight } from "iconsax-reactjs";
+import { RecordCircle, Weight } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 
 export const WorkoutView = ({ client }: { client: User }) => {
