@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { UserRole } from "@/model/user";
 import { useUserStore } from "@/store/user";
-import { Note1 } from "iconsax-reactjs";
-import { useState, useEffect } from "react";
+import { RecordCircle } from "iconsax-reactjs";
+import { useEffect, useState } from "react";
 
 export const WorkoutNote = ({
     note: initialNote,
@@ -15,7 +15,7 @@ export const WorkoutNote = ({
     const { user } = useUserStore();
     const [isEditing, setIsEditing] = useState(false);
     const [note, setNote] = useState(initialNote || "");
-    
+
     useEffect(() => {
         setNote(initialNote || "");
     }, [initialNote]);
@@ -34,7 +34,7 @@ export const WorkoutNote = ({
         <div className="mt-10">
             <div className="flex items-center gap-x-3 w-full md:w-fit justify-between md:justify-start">
                 <h1 className="text-xl md:text-2xl flex items-center gap-x-1 md:gap-x-2">
-                    <Note1 variant="Bold" size={20} color="#000" />
+                    <RecordCircle variant="Bold" size={20} color="#000" />
                     Additional Note
                 </h1>
 

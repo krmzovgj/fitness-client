@@ -21,22 +21,22 @@
     font-family: onest;
     font-weight: 500;
     color: #181818;
-    background-color: #fefefe;
+    background-color: #FAFAFA;
 
     --radius: 0.625rem;
 
     /* Light mode palette */
-    --background: #fefefe;
+    --background: #FAFAFA;
     --foreground: #181818;
 
-    --card: #ffffff;
+    --card: #FAFAFA;
     --card-foreground: #181818;
 
-    --popover: #ffffff;
+    --popover: #FAFAFA;
     --popover-foreground: #181818;
 
     --primary: oklch(0.205 0 0);
-    --primary-foreground: #ffffff;
+    --primary-foreground: #FAFAFA;
 
     --secondary: oklch(0.97 0 0);
     --secondary-foreground: #181818;
@@ -59,10 +59,10 @@
     --chart-4: oklch(0.828 0.189 84.429);
     --chart-5: oklch(0.769 0.188 70.08);
 
-    --sidebar: #ffffff;
+    --sidebar: #FAFAFA;
     --sidebar-foreground: #181818;
     --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: #ffffff;
+    --sidebar-primary-foreground: #FAFAFA;
     --sidebar-accent: oklch(0.97 0 0);
     --sidebar-accent-foreground: #181818;
     --sidebar-border: oklch(0.922 0 0);
@@ -74,10 +74,10 @@
 ------------------------------------------ */
 .dark {
     --background: #181818;
-    --foreground: #fefefe;
+    --foreground: #FAFAFA;
 
     --card: #181818;
-    --card-foreground: #fefefe;
+    --card-foreground: #FAFAFA;
 
     --popover: #181818;
     --popover-foreground: #fefefe;
@@ -122,7 +122,7 @@
 
 ::selection {
     background-color: #292929; /* New background color (e.g., a shade of red) */
-    color: #ffffff; /* New foreground/text color (e.g., white) */
+    color: #FAFAFA; /* New foreground/text color (e.g., white) */
 }
 
 /* ------------------------------------------

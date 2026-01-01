@@ -211,11 +211,11 @@ export const DietDetailsView = ({
                     </div>
 
                     <div className="flex mt-5  items-center gap-x-3">
-                        <div className="flex w-14 h-14  bg-[#66A786] items-center justify-center squircle-round">
-                            <Book1 variant="Bold" size={28} color="#fff" />
+                        <div className="flex w-14 h-14  bg-foreground items-center justify-center squircle-round">
+                            <Book1 variant="Bold" size={28} color="#66A786" />
                         </div>
                         <div>
-                            <h3 className="flex items-center capitalize gap-x-1 font-semibold">
+                            <h3 className="ml-0.5 flex items-center capitalize gap-x-1 font-medium">
                                 <p className="text-foreground">
                                     {dayMatch?.day.toLowerCase()}
                                 </p>{" "}

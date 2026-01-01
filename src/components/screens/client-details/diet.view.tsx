@@ -235,6 +235,7 @@ export const DietView = ({ client }: { client: User }) => {
                 <div className="flex flex-col gap-y-2 mt-2">
                     <Input
                         value={name}
+                        className="capitalize"
                         onChange={(e) => setname(e.target.value)}
                         placeholder="Name e.g. Muscle Gain"
                     />

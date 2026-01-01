@@ -248,11 +248,13 @@ export const ClientsView = () => {
 
                 <div className="flex flex-col gap-y-2 mt-2">
                     <Input
+                        className="capitalize"
                         placeholder="Firstname"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                     />
                     <Input
+                        className="capitalize"
                         placeholder="Lastname"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}

@@ -13,7 +13,14 @@ import { cn } from "@/lib/utils";
 import type { UserRole } from "@/model/user";
 import { useTenantStore } from "@/store/tenant";
 import { useUserStore } from "@/store/user";
-import { Bookmark2, Home2, Lifebuoy, Profile, Weight } from "iconsax-reactjs";
+import {
+    Bookmark2,
+    DirectInbox,
+    Home2,
+    Lifebuoy,
+    Profile,
+    Weight,
+} from "iconsax-reactjs";
 import { Link, useLocation } from "react-router-dom";
 
 type MenuItem = {
@@ -21,6 +28,7 @@ type MenuItem = {
     url: string;
     icon: any;
     external?: boolean;
+    commingSoon?: boolean;
 };
 
 const MENU_BY_ROLE: Record<UserRole, MenuItem[]> = {
@@ -29,11 +37,19 @@ const MENU_BY_ROLE: Record<UserRole, MenuItem[]> = {
             title: "Clients",
             url: "/",
             icon: Home2,
+            commingSoon: false,
+        },
+        {
+            title: "Inbox",
+            url: "/inbox",
+            icon: DirectInbox,
+            commingSoon: true,
         },
         {
             title: "Profile",
             url: "/profile",
             icon: Profile,
+            commingSoon: true,
         },
     ],
 
@@ -47,11 +63,13 @@ const MENU_BY_ROLE: Record<UserRole, MenuItem[]> = {
             title: "My Program",
             url: "/my-program",
             icon: Bookmark2,
+            commingSoon: true,
         },
         {
             title: "Profile",
             url: "/profile",
             icon: Profile,
+            commingSoon: true,
         },
     ],
 };
@@ -71,7 +89,12 @@ export function AppSidebar() {
                 <SidebarHeader>
                     <div className="flex items-center gap-x-2.5">
                         <div className="flex justify-center items-center w-10 h-10 squircle-round bg-foreground">
-                            <Weight variant="Bulk" size={25} color="#fff" className="-rotate-45" />
+                            <Weight
+                                variant="Bold"
+                                size={24}
+                                color="#fff"
+                                className="-rotate-45"
+                            />
                         </div>
                         <div>
                             <h3 className="leading-4 text-md font-bold text-foreground">
@@ -94,7 +117,7 @@ export function AppSidebar() {
                                 <SidebarMenuItem
                                     key={item.title}
                                     className={cn(
-                                        "px-3.5 py-2.5 rounded-2xl transition-colors",
+                                        "px-3.5 py-2.5 relative rounded-2xl transition-colors",
                                         item.url === currentPathName &&
                                             "bg-secondary"
                                     )}
@@ -118,8 +141,14 @@ export function AppSidebar() {
                                     ) : (
                                         <Link
                                             to={item.url}
-                                            className="gap-x-2.5 flex items-center"
+                                            className="gap-x-2.5 relative flex items-center"
                                         >
+                                            {item.commingSoon && (
+                                                <div className="px-2 h-5 z-20  right-0 absolute text-xs font-medium rounded-lg flex justify-center items-center bg-foreground text-background">
+                                                    Comming Soon
+                                                </div>
+                                            )}
+
                                             <item.icon
                                                 variant={
                                                     item.url === currentPathName

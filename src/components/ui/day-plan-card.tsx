@@ -101,15 +101,16 @@ export function DayPlanCard({
                     <div className="flex items-center gap-3">
                         <div
                             style={{
-                                backgroundColor: isRestDay
-                                    ? "#181818"
-                                    : highlight,
-                                borderColor: isRestDay ? "#181818" : highlight,
+                                backgroundColor: "#181818",
                             }}
                             className="flex h-10 w-10 items-center justify-center squircle-round"
                         >
                             {variant === "diet" ? (
-                                <Book1 variant="Bold" size={21} color="#fff" />
+                                <Book1
+                                    variant="Bold"
+                                    size={21}
+                                    color={highlight}
+                                />
                             ) : (
                                 <>
                                     {isRestDay ? (
@@ -122,7 +123,7 @@ export function DayPlanCard({
                                         <Weight
                                             variant="Bold"
                                             size={21}
-                                            color="#fff"
+                                            color={highlight}
                                         />
                                     )}
                                 </>
@@ -159,7 +160,7 @@ export function DayPlanCard({
                 <div className="mt-6 flex items-center justify-between">
                     {isRestDay ? (
                         <p className="text-sm flex items-center gap-x-1 text-muted-foreground">
-                            <Timer1 variant="Bold" size={21} color="#181818" />
+                            <Timer1 variant="Bulk" size={21} color="#181818" />
                             <span className="flex items-center gap-x-1">
                                 Rest day{" "}
                                 <RecordCircle
@@ -218,7 +219,7 @@ export function DayPlanCard({
                                 variant="outline"
                             >
                                 Edit{" "}
-                                <Edit variant="Bold" size={18} color="#000" />
+                                <Edit variant="Bulk" size={18} color="#000" />
                             </Button>
                         )}
                     </div>

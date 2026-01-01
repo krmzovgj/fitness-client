@@ -93,7 +93,7 @@ export const WorkoutDetailsView = ({
         const filteredOptions = exerciseOptions.filter((exercise) =>
         exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    
+
     const getWorkout = async () => {
         if (!token) return;
 
@@ -248,12 +248,12 @@ export const WorkoutDetailsView = ({
                     </div>
 
                     <div className="flex mt-5  items-center gap-x-3">
-                        <div className="flex w-14 h-14  bg-[#FF8C00] items-center justify-center squircle-round">
-                            <Weight variant="Bold" size={28} color="#fff" />
+                        <div className="flex w-14 h-14  bg-foreground items-center justify-center squircle-round">
+                            <Weight variant="Bold" size={28} color="#FF8C00" />
                         </div>
                         <div>
                             <div>
-                                <h3 className="flex items-center capitalize gap-x-1 font-medium">
+                                <h3 className="flex ml-0.5 items-center capitalize gap-x-1 font-medium">
                                     <p className="text-foreground">
                                         {dayMatch?.day.toLowerCase()}
                                     </p>{" "}

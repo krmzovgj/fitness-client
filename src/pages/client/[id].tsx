@@ -74,7 +74,7 @@ export const Client = () => {
                                     )}
                                     <div>
                                         <div className="flex items-center gap-x-2">
-                                            <h1 className="text-2xl leading-7 font-medium">
+                                            <h1 className="text-2xl md:text-3xl leading-7 font-medium">
                                                 {client?.firstName}{" "}
                                                 {client?.lastName}
                                             </h1>

@@ -54,7 +54,7 @@ export const clientColumns = (
                                 {user.firstName} {user.lastName}
                             </div>
 
-                            <div className="transition-transform duration-200 scale-0 group-hover:scale-100 origin-left">
+                            <div className="transition-transform duration-200 scale-0 group-hover:scale-100 origin-center">
                                 <ArrowRight
                                     variant="Linear"
                                     color="#181818"

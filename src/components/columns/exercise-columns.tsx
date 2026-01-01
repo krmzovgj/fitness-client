@@ -49,8 +49,8 @@ export const ExerciseColumns = (
         header: "Sets",
         cell: ({ row }) => (
             <span className="whitespace-nowrap">
-                {row.original.sets}
                 <span className="font-bold text-xs text-[#FF8C00]">x</span>
+                {row.original.sets}
             </span>
         ),
     },
@@ -59,8 +59,8 @@ export const ExerciseColumns = (
         header: "Reps",
         cell: ({ row }) => (
             <span className="whitespace-nowrap">
-                {row.original.reps}
                 <span className="font-bold text-xs text-[#FF8C00]">x</span>
+                {row.original.reps}
             </span>
         ),
     },

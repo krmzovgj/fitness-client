@@ -92,7 +92,7 @@ export function DataTable<T>({
                                 <motion.tr
                                     layout
                                     key={row.id}
-                                    className={"border-b"}
+                                    className={"border-b hover:bg-secondary transition-all"}
                                     style={{ originY: 0 }}
                                 >
                                     {row.getVisibleCells().map((cell) => (
