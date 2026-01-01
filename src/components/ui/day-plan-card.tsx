@@ -75,6 +75,7 @@ export function DayPlanCard({
                         ? {
                               id,
                               name,
+                              clientId,
                               day,
                               meals,
                           }

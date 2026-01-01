@@ -43,7 +43,6 @@ function App() {
                         const userRes = await getMe(token, tenant?.id);
                         setUser(userRes.data);
                     } catch {
-                        console.warn("Invalid or expired token");
                         clearToken();
                         clearUser();
                     }

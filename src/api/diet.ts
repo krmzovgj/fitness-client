@@ -8,7 +8,17 @@ interface CreateDietDto {
 }
 
 export const getDietByClient = async (clientId: number, token: string) => {
-    const response = await api.get(`/diet/${clientId}`, {
+    const response = await api.get(`/diet/client/${clientId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return response;
+};
+
+export const getDietById = async (token: string, dietId: string) => {
+    const response = await api.get(`/diet/${dietId}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

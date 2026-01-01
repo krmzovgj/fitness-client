@@ -1,4 +1,5 @@
-import { createMeal, getMeals, updateMeal } from "@/api/meal";
+import { getDietById } from "@/api/diet";
+import { createMeal, updateMeal } from "@/api/meal";
 import { MealColumns } from "@/components/columns/meal-columns";
 import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { mealOrder, mealTypes } from "@/lib/utils";
 import type { Day } from "@/model/day";
+import type { Diet } from "@/model/diet";
 import type { Meal } from "@/model/meal";
 import { MealType } from "@/model/meal-type";
 import { UserRole } from "@/model/user";
@@ -41,21 +43,18 @@ import { useNavigate } from "react-router-dom";
 export const DietDetailsView = ({
     dietId,
     dayMatch,
-    diet,
+    state,
 }: {
     dietId: string;
     dayMatch: { day: Day; color: string };
-    diet: {
-        name: string;
-        day: Day;
-    };
+    state: any;
 }) => {
     const { user } = useUserStore();
     const { token } = useAuthStore();
     const navigate = useNavigate();
 
-    const [meals, setMeals] = useState<Meal[]>([]);
-    
+    const [diet, setDiet] = useState<Diet | null>(state.diet ?? null);
+
     const [name, setname] = useState("");
     const [description, setdescription] = useState("");
     const [cal, setcal] = useState<number>(0);
@@ -68,26 +67,28 @@ export const DietDetailsView = ({
     const [error, seterror] = useState("");
     const [creatingMeal, setCreatingMeal] = useState(false);
     const [selectedMeal, setselectedMeal] = useState<Meal | null>(null);
-    const [loadingMeals, setloadingMeals] = useState(true);
+    const [loadingDiet, setloadingDiet] = useState(false);
 
-    const sortedMeals = meals.sort((a, b) => {
+    const sortedMeals = diet?.meals?.sort((a, b) => {
         return mealOrder.indexOf(a.type) - mealOrder.indexOf(b.type);
     });
 
-    const handleGetMealsByDiet = async () => {
-        if (!token || !dietId) return;
+    const getDiet = async () => {
+        if (!token) return;
+
         try {
-            const response = await getMeals(token, dietId);
-            setMeals(response.data);
-        } catch (error) {
+            setloadingDiet(true);
+            const response = await getDietById(token, dietId);
+            const data = response.data;
+
+            setDiet({
+                ...data,
+                meals: data.meals ?? [],
+            });
         } finally {
-            setloadingMeals(false);
+            setloadingDiet(false);
         }
     };
-
-    useEffect(() => {
-        handleGetMealsByDiet();
-    }, [dietId, token]);
 
     const handleCreateMeal = async () => {
         if (!token) return;
@@ -110,7 +111,7 @@ export const DietDetailsView = ({
 
             if (response.status === 201) {
                 setdialogOpen(false);
-                handleGetMealsByDiet();
+                getDiet();
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -150,7 +151,7 @@ export const DietDetailsView = ({
 
             if (response.status === 200) {
                 setdialogOpen(false);
-                handleGetMealsByDiet();
+                getDiet();
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -223,7 +224,7 @@ export const DietDetailsView = ({
                                 </p>
                             </h3>
                             <h1 className="text-3xl leading-7 font-medium">
-                                {diet.name}
+                                {diet?.name}
                             </h1>
                         </div>
                     </div>
@@ -234,7 +235,7 @@ export const DietDetailsView = ({
                 <h1 className="text-xl md:text-2xl flex items-center gap-x-1 md:gap-x-2">
                     <RecordCircle variant="Bold" size={20} color="#000" />
                     Meals
-                    {loadingMeals && <Spinner className="size-5" />}
+                    {loadingDiet && <Spinner className="size-5" />}
                 </h1>
 
                 {user?.role === UserRole.TRAINER && (
@@ -246,7 +247,7 @@ export const DietDetailsView = ({
 
             <div className="mt-5 flex flex-col  ">
                 <div className="flex flex-col ">
-                    {meals.length === 0 && !loadingMeals ? (
+                    {diet?.meals?.length === 0 ? (
                         <Empty className="">
                             <EmptyHeader>
                                 <EmptyMedia variant="icon">
@@ -266,11 +267,11 @@ export const DietDetailsView = ({
                         </Empty>
                     ) : (
                         <DataTable
-                            data={sortedMeals}
+                            data={sortedMeals ?? []}
                             columns={MealColumns(
                                 setselectedMeal,
                                 setdialogOpen,
-                                handleGetMealsByDiet
+                                getDiet
                             )}
                         />
                     )}

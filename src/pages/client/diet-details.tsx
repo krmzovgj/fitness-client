@@ -10,11 +10,7 @@ export const Meals = () => {
 
     return (
         <div className="h-full md:h-screen flex flex-col">
-            <DietDetailsView
-                dietId={id!}
-                dayMatch={dayMatch!}
-                diet={state.diet}
-            />
+            <DietDetailsView dietId={id!} dayMatch={dayMatch!} state={state} />
         </div>
     );
 };

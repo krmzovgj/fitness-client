@@ -25,6 +25,7 @@ import {
     DialogContent,
     DialogDescription,
     DialogHeader,
+    DialogTitle,
     DialogTrigger,
 } from "../ui/dialog";
 import { Spinner } from "../ui/spinner";
@@ -73,15 +74,17 @@ export const MealColumns = (
 
                     <DialogContent>
                         <DialogHeader>
-                            <div className="flex items-center gap-x-2">
-                                {row.original.name}
-                                <span
-                                    className="font-semibold"
-                                    style={{ color: match?.color }}
-                                >
-                                    {row.original.type}
-                                </span>
-                            </div>
+                            <DialogTitle>
+                                <div className="flex items-center gap-x-2">
+                                    {row.original.name}
+                                    <span
+                                        className="font-semibold"
+                                        style={{ color: match?.color }}
+                                    >
+                                        {row.original.type}
+                                    </span>
+                                </div>
+                            </DialogTitle>
                         </DialogHeader>
                         <DialogDescription>
                             {row.original.description}
@@ -304,7 +307,10 @@ export const MealColumns = (
                                             onClick={handleDeleteMeal}
                                         >
                                             {deletingMeal ? (
-                                                <Spinner color="#fff" className="size-6" />
+                                                <Spinner
+                                                    color="#fff"
+                                                    className="size-6"
+                                                />
                                             ) : (
                                                 "Delete Meal"
                                             )}

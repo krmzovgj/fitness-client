@@ -96,7 +96,9 @@ export function AppSidebar() {
                                 <SidebarMenuItem
                                     key={item.title}
                                     className={cn(
-                                        "px-3.5 py-2.5 bg-secondary rounded-2xl transition-colors"
+                                        "px-3.5 py-2.5 rounded-2xl transition-colors",
+                                        item.url === currentPathName &&
+                                            "bg-secondary"
                                     )}
                                 >
                                     {item.external ? (

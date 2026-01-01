@@ -26,7 +26,6 @@ export const Client = () => {
                 const response = await getUserById(id, token!);
                 setClient(response.data);
             } catch (err) {
-                console.error(err);
             } finally {
                 setLoadingClient(false);
             }

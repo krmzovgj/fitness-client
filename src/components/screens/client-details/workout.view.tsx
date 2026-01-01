@@ -38,7 +38,7 @@ import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import { useWorkoutStore } from "@/store/workout";
 import { Label } from "@radix-ui/react-dropdown-menu";
-import { Box1, RecordCircle } from "iconsax-reactjs";
+import { Box1, RecordCircle, Weight } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 
 export const WorkoutView = ({ client }: { client: User }) => {
@@ -205,7 +205,7 @@ export const WorkoutView = ({ client }: { client: User }) => {
                             <Empty>
                                 <EmptyHeader>
                                     <EmptyMedia variant="icon">
-                                        <Box1
+                                        <Weight
                                             variant="Bold"
                                             size={20}
                                             color="#fff"

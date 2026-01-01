@@ -45,7 +45,7 @@ export const Header = ({ user }: { user?: User }) => {
     const now = new Date();
 
     return (
-        <div className="border-b-2 border-foreground/5 py-3 md:py-5 md:px-10 px-5 flex justify-between items-center">
+        <div className="py-3 md:py-5 md:px-10 px-5 flex justify-between items-center">
             <div className="flex items-center gap-x-3">
                 {user && (
                     <div className="md:hidden flex">
@@ -53,12 +53,12 @@ export const Header = ({ user }: { user?: User }) => {
                     </div>
                 )}
 
-                <div className="hidden md:flex  items-end text-xl md:text-2xl font-semibold md:font-bold">
+                <div className="hidden md:flex  items-end md:text-2xl md:font-bold">
                     {tenant?.subdomain}
                 </div>
             </div>
 
-            <div className="flex md:hidden items-center gap-x-2 text-xl md:text-2xl font-semibold md:font-bold">
+            <div className="flex md:hidden items-center gap-x-2 text-xl font-medium">
                 {tenant?.subdomain}
             </div>
 

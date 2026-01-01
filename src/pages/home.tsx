@@ -33,7 +33,6 @@ export const Home = () => {
                 const res = await getMe(token, tenant?.id);
                 setUser(res.data);
             } catch (err) {
-                console.warn("Invalid or expired token");
                 clearToken();
                 clearUser();
             } finally {

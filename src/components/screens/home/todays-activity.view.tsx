@@ -34,8 +34,7 @@ export const TodaysActivityView = () => {
 
             setWorkouts(user.id, workoutRes.data);
             setMealDays(user.id, dietRes.data);
-        } catch (err) {
-            console.error(err);
+        } catch {
         } finally {
             setloadingActivity(false);
         }

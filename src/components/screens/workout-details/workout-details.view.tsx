@@ -90,6 +90,10 @@ export const WorkoutDetailsView = ({
     const [selectedExercise, setselectedExercise] =
         useState<WorkoutExercise | null>(null);
 
+        const filteredOptions = exerciseOptions.filter((exercise) =>
+        exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    
     const getWorkout = async () => {
         if (!token) return;
 
@@ -130,9 +134,6 @@ export const WorkoutDetailsView = ({
         return () => clearTimeout(delay);
     }, [searchQuery, exerciseListOpen, token]);
 
-    const filteredOptions = exerciseOptions.filter((exercise) =>
-        exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
 
     const handleCreateExercise = async () => {
         if (!token) return;
@@ -212,11 +213,6 @@ export const WorkoutDetailsView = ({
         setselectedOptionExercise(selectedExercise.exercise);
         setnote(selectedExercise?.note!);
     }, [selectedExercise]);
-
-    // useEffect(() => {
-    //     if (!token) return;
-    //     getWorkout(false);
-    // }, [workoutId, token]);
 
     return (
         <Dialog

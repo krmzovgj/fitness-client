@@ -53,13 +53,13 @@ export function DataTable<T>({
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
                                     <TableHead
-                                        className="h-14 py-2 px-4 bg-background  whitespace-nowrap"
+                                        className="h-14 py-2 px-4 bg-secondary  whitespace-nowrap"
                                         key={header.id}
                                     >
                                         {header.isPlaceholder ? null : header.column.getCanSort() &&
                                           enableSorting ? (
                                             <button
-                                                className="cursor-pointer bg-background flex items-center gap-x-2 text-foreground hover:bg-background"
+                                                className="cursor-pointer bg-secondary flex items-center gap-x-2 text-foreground"
                                                 onClick={() =>
                                                     header.column.toggleSorting(
                                                         header.column.getIsSorted() ===
@@ -92,11 +92,7 @@ export function DataTable<T>({
                                 <motion.tr
                                     layout
                                     key={row.id}
-                                    className={
-                                        row.index % 2 === 0
-                                            ? "bg-secondary"
-                                            : "bg-background"
-                                    }
+                                    className={"border-b"}
                                     style={{ originY: 0 }}
                                 >
                                     {row.getVisibleCells().map((cell) => (
