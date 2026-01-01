@@ -6,11 +6,15 @@ export const Meals = () => {
     const { id } = useParams();
     const { state } = useLocation();
 
-    const dayMatch = dayColors.find((day) => day.day === state.day);
+    const dayMatch = dayColors.find((day) => day.day === state.diet.day);
 
     return (
         <div className="h-full md:h-screen flex flex-col">
-            <DietDetailsView dietId={id!} dayMatch={dayMatch!} diet={state} />
+            <DietDetailsView
+                dietId={id!}
+                dayMatch={dayMatch!}
+                diet={state.diet}
+            />
         </div>
     );
 };

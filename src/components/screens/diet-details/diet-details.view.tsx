@@ -55,7 +55,7 @@ export const DietDetailsView = ({
     const navigate = useNavigate();
 
     const [meals, setMeals] = useState<Meal[]>([]);
-
+    
     const [name, setname] = useState("");
     const [description, setdescription] = useState("");
     const [cal, setcal] = useState<number>(0);
