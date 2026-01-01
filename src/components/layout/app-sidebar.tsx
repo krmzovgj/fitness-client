@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import type { UserRole } from "@/model/user";
 import { useTenantStore } from "@/store/tenant";
 import { useUserStore } from "@/store/user";
-import { Bookmark2, Home2, Lifebuoy, Profile } from "iconsax-reactjs";
+import { Bookmark2, Home2, Lifebuoy, Profile, Weight } from "iconsax-reactjs";
 import { Link, useLocation } from "react-router-dom";
 
 type MenuItem = {
@@ -70,17 +70,15 @@ export function AppSidebar() {
             <SidebarContent className="py-2 md:py-6 md:px-3 flex bg-background flex-col flex-1 w-full ">
                 <SidebarHeader>
                     <div className="flex items-center gap-x-2.5">
-                        <img
-                            src="/logo.png"
-                            className="w-10 h-10 rounded-xl border"
-                            alt=""
-                        />
+                        <div className="flex justify-center items-center w-10 h-10 squircle-round bg-foreground">
+                            <Weight variant="Bulk" size={25} color="#fff" className="-rotate-45" />
+                        </div>
                         <div>
                             <h3 className="leading-4 text-md font-bold text-foreground">
                                 {tenant?.subdomain}
                             </h3>
                             <h4 className="leading-4 text-sm font-semibold text-muted-foreground">
-                                Basic Plan
+                                mycoach.mk
                             </h4>
                         </div>
                     </div>
