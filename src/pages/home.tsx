@@ -1,7 +1,8 @@
 import { getMe } from "@/api/user";
-import { DietView } from "@/components/screens/client-details/diet.view";
-import { WorkoutView } from "@/components/screens/client-details/workout.view";
 import { ClientsView } from "@/components/screens/home/clients.view";
+import {
+    TodaysActivityView
+} from "@/components/screens/home/todays-activity.view";
 import { Spinner } from "@/components/ui/spinner";
 import { formatDate } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth";
@@ -67,11 +68,11 @@ export const Home = () => {
                             Hello {user ? user.firstName : "User"},
                         </h1>
                         {user?.role === UserRole.TRAINER ? (
-                            <h3 className="text-lg font-medium text-muted-foreground flex items-center gap-x-1 mt-0 ml-0.5">
+                            <h3 className="text-md font-medium text-muted-foreground flex items-center gap-x-1 mt-1 ml-0.5">
                                 Track your clients and their plans
                             </h3>
                         ) : (
-                            <h3 className="text-lg font-medium text-muted-foreground flex items-center gap-x-1 mt-0 ml-0.5">
+                            <h3 className="text-md font-medium text-muted-foreground flex items-center gap-x-1 mt-1 ml-0.5">
                                 Track your daily workout and diet plan
                             </h3>
                         )}
@@ -84,8 +85,9 @@ export const Home = () => {
                     <ClientsView />
                 ) : (
                     <div>
-                        <WorkoutView client={user!} />
-                        <DietView client={user!} />
+                        <TodaysActivityView />
+                        {/* <WorkoutView client={user!} /> */}
+                        {/* <DietView client={user!} /> */}
                     </div>
                 )}
             </div>

@@ -1,30 +1,20 @@
 import {
     createExercise,
-    getExercisesByWorkout,
     searchExercises,
     updateExercise,
 } from "@/api/exercise";
-import { cn } from "@/lib/utils";
-import type { Day } from "@/model/day";
-import type { Exercise } from "@/model/exercise";
-import { UserRole } from "@/model/user";
-import type { WorkoutExercise } from "@/model/workout-exercise";
-import { useAuthStore } from "@/store/auth";
-import { useUserStore } from "@/store/user";
-import { Dialog } from "@radix-ui/react-dialog";
-import {
-    ArrowLeft,
-    ArrowSwapVertical,
-    RecordCircle,
-    TickCircle,
-    Weight,
-} from "iconsax-reactjs";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import type { Workout } from "@/model/workout";
 import { getWorkoutById, updateWorkout } from "@/api/workout";
+import { ExerciseColumns } from "@/components/columns/exercise-columns";
+import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from "@/components/ui/command";
 import {
     DialogContent,
     DialogDescription,
@@ -39,23 +29,32 @@ import {
     EmptyMedia,
     EmptyTitle,
 } from "@/components/ui/empty";
-import { DataTable } from "@/components/data-table";
-import { ExerciseColumns } from "@/components/columns/exercise-columns";
+import { Input } from "@/components/ui/input";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/components/ui/command";
-import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
+import type { Day } from "@/model/day";
+import type { Exercise } from "@/model/exercise";
+import { UserRole } from "@/model/user";
+import type { Workout } from "@/model/workout";
+import type { WorkoutExercise } from "@/model/workout-exercise";
+import { useAuthStore } from "@/store/auth";
+import { useUserStore } from "@/store/user";
+import { Dialog } from "@radix-ui/react-dialog";
+import {
+    ArrowLeft,
+    ArrowSwapVertical,
+    RecordCircle,
+    TickCircle,
+    Weight,
+} from "iconsax-reactjs";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { WorkoutNote } from "./workout-note";
 
 export const WorkoutDetailsView = ({
@@ -71,8 +70,8 @@ export const WorkoutDetailsView = ({
     const { token } = useAuthStore();
     const navigate = useNavigate();
 
-    const [exercises, setexercises] = useState<WorkoutExercise[]>([]);
-    const [workout, setworkout] = useState<Workout | null>(null);
+    const [workout, setWorkout] = useState(state?.workout ?? null);
+    const [loadingWorkout, setloadingWorkout] = useState(false);
 
     const [sets, setsets] = useState<number>(0);
     const [reps, setreps] = useState<string>("");
@@ -90,17 +89,22 @@ export const WorkoutDetailsView = ({
     const [creatingExercise, setcreatingExercise] = useState(false);
     const [selectedExercise, setselectedExercise] =
         useState<WorkoutExercise | null>(null);
-    const [loadingExercises, setloadingExercises] = useState(true);
 
     const getWorkout = async () => {
         if (!token) return;
 
         try {
+            setloadingWorkout(true);
             const response = await getWorkoutById(token, workoutId);
             const data = response.data;
 
-            setworkout(data);
-        } catch (error) {}
+            setWorkout({
+                ...data,
+                exercises: data.workoutExercises ?? [],
+            });
+        } finally {
+            setloadingWorkout(false);
+        }
     };
 
     const handleSearchExercises = async (query: string) => {
@@ -130,17 +134,6 @@ export const WorkoutDetailsView = ({
         exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const handleGetExercisesByWorkout = async () => {
-        if (!token) return;
-        try {
-            const response = await getExercisesByWorkout(token, workoutId);
-            setexercises(response.data);
-        } catch (error) {
-        } finally {
-            setloadingExercises(false);
-        }
-    };
-
     const handleCreateExercise = async () => {
         if (!token) return;
         try {
@@ -159,7 +152,7 @@ export const WorkoutDetailsView = ({
 
             if (response.status === 201) {
                 setdialogOpen(false);
-                handleGetExercisesByWorkout();
+                await getWorkout();
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -195,7 +188,7 @@ export const WorkoutDetailsView = ({
 
             if (response.status === 200) {
                 setdialogOpen(false);
-                handleGetExercisesByWorkout();
+                await getWorkout();
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -220,13 +213,10 @@ export const WorkoutDetailsView = ({
         setnote(selectedExercise?.note!);
     }, [selectedExercise]);
 
-    useEffect(() => {
-        if (!token) return;
-        const fetchWorkoutAndExercises = async () => {
-            await Promise.all([getWorkout(), handleGetExercisesByWorkout()]);
-        };
-        fetchWorkoutAndExercises();
-    }, [workoutId, token]);
+    // useEffect(() => {
+    //     if (!token) return;
+    //     getWorkout(false);
+    // }, [workoutId, token]);
 
     return (
         <Dialog
@@ -262,8 +252,8 @@ export const WorkoutDetailsView = ({
                     </div>
 
                     <div className="flex mt-5  items-center gap-x-3">
-                        <div className="flex w-14 h-14  bg-[#FF8C00]/10 items-center justify-center squircle-round">
-                            <Weight variant="Bold" size={28} color="#FF8C00" />
+                        <div className="flex w-14 h-14  bg-[#FF8C00] items-center justify-center squircle-round">
+                            <Weight variant="Bold" size={28} color="#fff" />
                         </div>
                         <div>
                             <div>
@@ -276,7 +266,7 @@ export const WorkoutDetailsView = ({
                                     </p>
                                 </h3>
                                 <h1 className="text-3xl leading-7 font-medium">
-                                    {state.name}
+                                    {workout?.name}
                                 </h1>
                             </div>
                         </div>
@@ -288,7 +278,7 @@ export const WorkoutDetailsView = ({
                 <h1 className="text-xl md:text-2xl flex items-center gap-x-1 md:gap-x-2">
                     <RecordCircle variant="Bold" size={20} color="#000" />
                     Exercises
-                    {loadingExercises && <Spinner className="size-5" />}
+                    {loadingWorkout && <Spinner className="size-5" />}
                 </h1>
 
                 {user?.role === UserRole.TRAINER && (
@@ -300,7 +290,7 @@ export const WorkoutDetailsView = ({
 
             <div className="mt-5 flex flex-col ">
                 <div className="flex flex-col">
-                    {exercises.length === 0 && !loadingExercises ? (
+                    {workout?.exercises?.length === 0 ? (
                         <Empty className="">
                             <EmptyHeader>
                                 <EmptyMedia variant="icon">
@@ -320,12 +310,12 @@ export const WorkoutDetailsView = ({
                         </Empty>
                     ) : (
                         <DataTable
-                            enableSorting={true}
-                            data={exercises}
+                            enableSorting
+                            data={workout?.exercises ?? []}
                             columns={ExerciseColumns(
                                 setselectedExercise,
                                 setdialogOpen,
-                                handleGetExercisesByWorkout
+                                getWorkout
                             )}
                         />
                     )}
@@ -340,8 +330,10 @@ export const WorkoutDetailsView = ({
                                 name: workout?.name,
                                 note: newNote,
                             });
-                            setworkout(
-                                (prev) => prev && { ...prev, note: newNote }
+                            // getWorkout
+                            setWorkout(
+                                (prev: Workout) =>
+                                    prev && { ...prev, note: newNote }
                             );
                         }}
                     />
@@ -490,7 +482,7 @@ export const WorkoutDetailsView = ({
                             className="self-end"
                         >
                             {creatingExercise ? (
-                                <Spinner className="size-6" />
+                                <Spinner color="#fff" className="size-6" />
                             ) : (
                                 <>
                                     {selectedExercise ? "Update" : "Add"}{" "}

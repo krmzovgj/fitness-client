@@ -170,7 +170,11 @@ export const WorkoutView = ({ client }: { client: User }) => {
                 setdialogOpen(open);
                 setselectedWorkout(null);
                 setname("");
-                setday(availableDays[0].day);
+                if (availableDays.length > 0) {
+                    setday(availableDays[0].day);
+                } else {
+                    setday(null);
+                }
                 seterror("");
             }}
         >
@@ -220,11 +224,13 @@ export const WorkoutView = ({ client }: { client: User }) => {
                                 {sortedWorkouts.map((workout) => (
                                     <DayPlanCard
                                         key={workout.id}
+                                        clientId={client.id}
                                         id={workout.id}
                                         day={workout.day}
                                         name={workout.name}
-                                        count={workout.workoutExercises?.length}
+                                        exercises={workout?.workoutExercises}
                                         variant="workout"
+                                        note={workout.note}
                                         restDay={!!workout.restDay}
                                         openEdit={() => {
                                             setselectedWorkout(workout);
@@ -255,11 +261,16 @@ export const WorkoutView = ({ client }: { client: User }) => {
                         placeholder="Name e.g. Upper Body"
                     />
                     <Select
-                        value={day!}
+                        disabled={availableDays.length === 0}
+                        value={day ?? undefined}
                         onValueChange={(value: Day) => setday(value)}
                     >
                         <SelectTrigger>
-                            <SelectValue placeholder="Day" />
+                            <SelectValue
+                                placeholder={
+                                    day === null ? "All days are filled" : "Day"
+                                }
+                            />
                         </SelectTrigger>
                         <SelectContent>
                             {availableDays.map((dayItem) => (
@@ -301,7 +312,7 @@ export const WorkoutView = ({ client }: { client: User }) => {
                 >
                     <Button className="self-end">
                         {creatingWorkout ? (
-                            <Spinner className="size-6" />
+                            <Spinner color="#fff" className="size-6" />
                         ) : (
                             <>{selectedWorkout ? "Update" : "Add"} Workout</>
                         )}

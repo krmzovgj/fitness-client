@@ -28,6 +28,7 @@ import {
     DialogTrigger,
 } from "../ui/dialog";
 import { Spinner } from "../ui/spinner";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 export const ExerciseColumns = (
     setSelectedExercise: (exercise: WorkoutExercise | null) => void,
@@ -35,7 +36,7 @@ export const ExerciseColumns = (
     handleGetExercisesByWorkout: () => void
 ): ColumnDef<WorkoutExercise>[] => [
     {
-        accessorKey: "name",
+        accessorKey: "exercise.name",
         header: "Name",
         cell: ({ row }) => (
             <span className="whitespace-nowrap">
@@ -44,7 +45,7 @@ export const ExerciseColumns = (
         ),
     },
     {
-        accessorKey: "sets",
+        accessorKey: "exercise.sets",
         header: "Sets",
         cell: ({ row }) => (
             <span className="whitespace-nowrap">
@@ -54,7 +55,7 @@ export const ExerciseColumns = (
         ),
     },
     {
-        accessorKey: "reps",
+        accessorKey: "exercise.reps",
         header: "Reps",
         cell: ({ row }) => (
             <span className="whitespace-nowrap">
@@ -64,7 +65,7 @@ export const ExerciseColumns = (
         ),
     },
     {
-        accessorKey: "note",
+        accessorKey: "exercise.note",
         header: "Note",
         cell: ({ row }) => {
             return (
@@ -88,9 +89,11 @@ export const ExerciseColumns = (
 
                     <DialogContent>
                         <DialogHeader>
-                            <div className="flex items-center gap-x-2">
-                                Note for {row.original.exercise.name}
-                            </div>
+                            <DialogTitle>
+                                <div className="flex items-center gap-x-2">
+                                    Note for {row.original.exercise.name}
+                                </div>
+                            </DialogTitle>
                         </DialogHeader>
                         <DialogDescription>
                             {row.original.note}
@@ -101,7 +104,7 @@ export const ExerciseColumns = (
         },
     },
     {
-        accessorKey: "updatedAt",
+        accessorKey: "exercise.updatedAt",
         header: "Updated At",
         cell: ({ row }) => {
             return (
@@ -194,7 +197,10 @@ export const ExerciseColumns = (
                                             onClick={handleDeleteExercise}
                                         >
                                             {deletingExercise ? (
-                                                <Spinner className="size-6" />
+                                                <Spinner
+                                                    color="#fff"
+                                                    className="size-6"
+                                                />
                                             ) : (
                                                 <h3>Delete Exercise</h3>
                                             )}

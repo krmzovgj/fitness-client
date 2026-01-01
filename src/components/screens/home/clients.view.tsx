@@ -373,7 +373,7 @@ export const ClientsView = () => {
                         variant="default"
                     >
                         {creatingClient ? (
-                            <Spinner color="#fff" />
+                            <Spinner color="#fff" className="size-6" />
                         ) : (
                             <>{!selectedClient ? "Add" : "Update"} Client</>
                         )}

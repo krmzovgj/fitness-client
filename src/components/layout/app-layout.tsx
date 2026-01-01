@@ -13,9 +13,11 @@ export function AppLayout() {
             <div className="flex min-h-screen tracking-tight w-full overflow-hidden">
                 <AppSidebar />
 
-                <main className=" flex-1 min-w-0 md:ml-70 md:py-8 md:px-10 py-5 px-5">
+                <main className="flex-1 min-w-0 md:ml-70">
                     <Header user={user!} />
-                    <Outlet />
+                    <div className="md:px-10 md:pb-8 pb-5 px-5">
+                        <Outlet />
+                    </div>
                 </main>
             </div>
         </SidebarProvider>

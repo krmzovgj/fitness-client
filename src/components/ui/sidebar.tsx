@@ -276,7 +276,7 @@ const SidebarTrigger = React.forwardRef<
             }}
             {...props}
         >
-            <HamburgerMenu variant="Linear" size={27} color="#000" />
+        <HamburgerMenu variant="Linear" size={27} color="#000" />
         </button>
     );
 });

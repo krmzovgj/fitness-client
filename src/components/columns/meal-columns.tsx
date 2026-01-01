@@ -304,7 +304,7 @@ export const MealColumns = (
                                             onClick={handleDeleteMeal}
                                         >
                                             {deletingMeal ? (
-                                                <Spinner className="size-6" />
+                                                <Spinner color="#fff" className="size-6" />
                                             ) : (
                                                 "Delete Meal"
                                             )}

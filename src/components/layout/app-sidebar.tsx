@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import type { UserRole } from "@/model/user";
 import { useTenantStore } from "@/store/tenant";
 import { useUserStore } from "@/store/user";
-import { Home2, Lifebuoy, Profile } from "iconsax-reactjs";
+import { Bookmark2, Home2, Lifebuoy, Profile } from "iconsax-reactjs";
 import { Link, useLocation } from "react-router-dom";
 
 type MenuItem = {
@@ -42,6 +42,11 @@ const MENU_BY_ROLE: Record<UserRole, MenuItem[]> = {
             title: "Dashboard",
             url: "/",
             icon: Home2,
+        },
+        {
+            title: "My Program",
+            url: "/my-program",
+            icon: Bookmark2,
         },
         {
             title: "Profile",
@@ -83,7 +88,7 @@ export function AppSidebar() {
 
                 <SidebarGroup className="flex-1 w-full">
                     <SidebarGroupLabel className="font-semibold text-sm">
-                        Menu
+                        Main
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>

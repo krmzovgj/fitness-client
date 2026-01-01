@@ -78,7 +78,7 @@ export const SignIn = () => {
                         value={email}
                         onChange={(e: any) => setemail(e.target.value)}
                     />
-                    <div className="relative">
+                    <div className="relative -mt-1">
                         <Input
                             type={showPassword ? "text" : "password"}
                             placeholder="Password"
@@ -111,7 +111,7 @@ export const SignIn = () => {
                     onClick={handleSignIn}
                 >
                     {loading ? (
-                        <Spinner />
+                        <Spinner color="#fff" className="size-6" />
                     ) : (
                         <div className="flex items-center gap-x-2">
                             <Login variant="Linear" size={18} color="#fff" />

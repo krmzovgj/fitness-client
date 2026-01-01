@@ -1,6 +1,6 @@
 import { createDiet, getDietByClient, updateDiet } from "@/api/diet";
-import { DayPlanCard } from "@/components/ui/day-plan-card";
 import { Button } from "@/components/ui/button";
+import { DayPlanCard } from "@/components/ui/day-plan-card";
 import {
     Dialog,
     DialogContent,
@@ -32,7 +32,7 @@ import { UserRole, type User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useDietStore } from "@/store/diet";
 import { useUserStore } from "@/store/user";
-import { Book, RecordCircle } from "iconsax-reactjs";
+import { Book1, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 
 export const DietView = ({ client }: { client: User }) => {
@@ -151,7 +151,11 @@ export const DietView = ({ client }: { client: User }) => {
                 setdialogOpen(open);
                 setselectedDiet(null);
                 setname("");
-                setday(availableDays[0].day);
+                if (availableDays.length > 0) {
+                    setday(availableDays[0].day);
+                } else {
+                    setday(null);
+                }
                 seterror("");
             }}
         >
@@ -182,7 +186,7 @@ export const DietView = ({ client }: { client: User }) => {
                             <Empty>
                                 <EmptyHeader>
                                     <EmptyMedia variant="icon">
-                                        <Book
+                                        <Book1
                                             variant="Bold"
                                             size={20}
                                             color="#fff"
@@ -201,6 +205,7 @@ export const DietView = ({ client }: { client: User }) => {
                                 {sortedMealDays?.map((diet) => (
                                     <DayPlanCard
                                         id={diet.id}
+                                        clientId={client.id}
                                         key={diet.id}
                                         day={diet.day}
                                         name={diet.name}
@@ -234,11 +239,16 @@ export const DietView = ({ client }: { client: User }) => {
                         placeholder="Name e.g. Muscle Gain"
                     />
                     <Select
-                        value={day!}
+                        disabled={availableDays.length === 0}
+                        value={day ?? undefined}
                         onValueChange={(value: Day) => setday(value)}
                     >
                         <SelectTrigger>
-                            <SelectValue placeholder="Day" />
+                            <SelectValue
+                                placeholder={
+                                    day === null ? "All days are filled" : "Day"
+                                }
+                            />
                         </SelectTrigger>
                         <SelectContent>
                             {availableDays.map((dayItem) => (
@@ -271,7 +281,7 @@ export const DietView = ({ client }: { client: User }) => {
                         className="self-end"
                     >
                         {creatingDiet ? (
-                            <Spinner className="size-6" />
+                            <Spinner color="#fff" className="size-6" />
                         ) : (
                             <>{selectedDiet ? "Update" : "Add"} Diet</>
                         )}

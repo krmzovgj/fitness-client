@@ -34,7 +34,7 @@ import { UserRole } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import { Dialog } from "@radix-ui/react-dialog";
-import { ArrowLeft, Book, RecordCircle } from "iconsax-reactjs";
+import { ArrowLeft, Book1, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -210,8 +210,8 @@ export const DietDetailsView = ({
                     </div>
 
                     <div className="flex mt-5  items-center gap-x-3">
-                        <div className="flex w-14 h-14  bg-[#66A786]/10 items-center justify-center squircle-round">
-                            <Book variant="Bold" size={28} color="#66A786" />
+                        <div className="flex w-14 h-14  bg-[#66A786] items-center justify-center squircle-round">
+                            <Book1 variant="Bold" size={28} color="#fff" />
                         </div>
                         <div>
                             <h3 className="flex items-center capitalize gap-x-1 font-semibold">
@@ -250,7 +250,7 @@ export const DietDetailsView = ({
                         <Empty className="">
                             <EmptyHeader>
                                 <EmptyMedia variant="icon">
-                                    <Book
+                                    <Book1
                                         variant="Bold"
                                         size={20}
                                         color="#fff"
@@ -381,7 +381,7 @@ export const DietDetailsView = ({
                             className="self-end"
                         >
                             {creatingMeal ? (
-                                <Spinner className="size-6" />
+                                <Spinner color="#fff" className="size-6" />
                             ) : (
                                 <>{selectedMeal ? "Update" : "Add"} Meal</>
                             )}

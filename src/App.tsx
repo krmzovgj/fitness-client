@@ -16,6 +16,7 @@ import { Home } from "./pages/home";
 import { useAuthStore } from "./store/auth";
 import { useTenantStore } from "./store/tenant";
 import { useUserStore } from "./store/user";
+import { MyProgram } from "./pages/my-program";
 
 function App() {
     const { setTenant, tenant } = useTenantStore();
@@ -101,6 +102,7 @@ function App() {
             <Route element={<AppLayout />}>
                 <Route
                     path="/"
+                    handle={{ breadcrumb: "Home" }}
                     element={
                         <ProtectedRoute>
                             <Home />
@@ -109,7 +111,18 @@ function App() {
                 />
 
                 <Route
+                    path="/my-program"
+                    handle={{ breadcrumb: "My Program" }}
+                    element={
+                        <ProtectedRoute>
+                            <MyProgram />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
                     path="/client/:id"
+                    handle={{ breadcrumb: "Client" }}
                     element={
                         <ProtectedRoute>
                             <Client />
@@ -119,6 +132,7 @@ function App() {
 
                 <Route
                     path="/client/:id/workout-details"
+                    handle={{ breadcrumb: "Exercises" }}
                     element={
                         <ProtectedRoute>
                             <Exercises />
@@ -128,6 +142,7 @@ function App() {
 
                 <Route
                     path="/client/:id/diet-details"
+                    handle={{ breadcrumb: "Meals" }}
                     element={
                         <ProtectedRoute>
                             <Meals />

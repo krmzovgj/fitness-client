@@ -29,8 +29,8 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "../ui/alert-dialog";
-import { SidebarTrigger } from "../ui/sidebar";
 import { Avatar } from "../ui/avatar";
+import { SidebarTrigger } from "../ui/sidebar";
 
 export const Header = ({ user }: { user?: User }) => {
     const { clearToken } = useAuthStore();
@@ -45,7 +45,7 @@ export const Header = ({ user }: { user?: User }) => {
     const now = new Date();
 
     return (
-        <div className="flex justify-between items-center">
+        <div className="border-b-2 border-foreground/5 py-3 md:py-5 md:px-10 px-5 flex justify-between items-center">
             <div className="flex items-center gap-x-3">
                 {user && (
                     <div className="md:hidden flex">

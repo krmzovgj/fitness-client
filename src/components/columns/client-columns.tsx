@@ -213,7 +213,7 @@ export const clientColumns = (
                                             onClick={handleDeleteClient}
                                         >
                                             {deletingClient ? (
-                                                <Spinner className="size-6" />
+                                                <Spinner color="#fff" className="size-6" />
                                             ) : (
                                                 "Delete Client"
                                             )}

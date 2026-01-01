@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { UserRole } from "@/model/user";
+import { useUserStore } from "@/store/user";
 import { Note1 } from "iconsax-reactjs";
 import { useState, useEffect } from "react";
 
@@ -10,9 +12,10 @@ export const WorkoutNote = ({
     note: string | null;
     onSave: (newNote: string) => void;
 }) => {
+    const { user } = useUserStore();
     const [isEditing, setIsEditing] = useState(false);
     const [note, setNote] = useState(initialNote || "");
-
+    
     useEffect(() => {
         setNote(initialNote || "");
     }, [initialNote]);
@@ -35,9 +38,14 @@ export const WorkoutNote = ({
                     Additional Note
                 </h1>
 
-                <Button variant="default" onClick={() => setIsEditing(true)}>
-                    {!initialNote ? "Add Note" : "Edit Note"}
-                </Button>
+                {user?.role === UserRole.TRAINER && (
+                    <Button
+                        variant="default"
+                        onClick={() => setIsEditing(true)}
+                    >
+                        {!initialNote ? "Add Note" : "Edit Note"}
+                    </Button>
+                )}
             </div>
 
             {isEditing ? (

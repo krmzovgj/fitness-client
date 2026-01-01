@@ -50,3 +50,8 @@ export const formatDate = (date: Date | string) => {
         month: "short",
     });
 };
+
+const now = new Date();
+export const today = now
+    .toLocaleDateString("en-US", { weekday: "long" })
+    .toUpperCase();
