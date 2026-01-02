@@ -61,7 +61,6 @@ function App() {
                 setIsBootstrapping(false);
             }
         };
-        console.log("test2");
         bootstrap();
     }, []);
 

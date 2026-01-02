@@ -1,8 +1,6 @@
 import { getMe } from "@/api/user";
 import { ClientsView } from "@/components/screens/home/clients.view";
-import {
-    TodaysActivityView
-} from "@/components/screens/home/todays-activity.view";
+import { TodaysActivityView } from "@/components/screens/home/todays-activity.view";
 import { Spinner } from "@/components/ui/spinner";
 import { formatDate } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth";
@@ -11,12 +9,14 @@ import { Calendar } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { UserRole } from "../model/user";
 import { useUserStore } from "../store/user";
+import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
     const { user, setUser, clearUser } = useUserStore();
     const { token, clearToken } = useAuthStore();
     const [isLoadingUser, setIsLoadingUser] = useState(false);
     const { tenant } = useTenantStore();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (user) return;
@@ -31,10 +31,17 @@ export const Home = () => {
             try {
                 setIsLoadingUser(true);
                 const res = await getMe(token, tenant?.id);
-                setUser(res.data);
+                if (res.status === 200) {
+                    setUser(res.data);
+                } else {
+                    clearToken();
+                    clearUser();
+                    navigate("/auth/sign-in");
+                }
             } catch (err) {
                 clearToken();
                 clearUser();
+                navigate("/auth/sign-in");
             } finally {
                 setIsLoadingUser(false);
             }
