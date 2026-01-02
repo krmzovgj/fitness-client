@@ -93,14 +93,14 @@ export const MealColumns = (
                         <div className="md:flex grid grid-cols-2 grid-rows-2 gap-2 md:grid-cols-4 md:grid-rows-1">
                             <div className="text-sm flex items-center">
                                 Calories: {row.original.cal}
-                                <span className="font-semibold text-sm text-[#FF8C00]">
+                                <span className="font-semibold text-sm text-foreground/50">
                                     kcal
                                 </span>
                             </div>
 
                             <div className="text-sm flex items-center">
                                 Protein: {row.original.protein}
-                                <span className="font-semibold text-sm text-[#FF8C00]">
+                                <span className="font-semibold text-sm text-foreground/50">
                                     g
                                 </span>
                             </div>
@@ -132,7 +132,7 @@ export const MealColumns = (
                 {row.original.cal !== null && row.original.cal !== undefined ? (
                     <span>
                         {row.original.cal}
-                        <span className="font-bold text-xs text-[#FF8C00]">
+                        <span className="font-bold text-xs text-foreground/50">
                             kcal
                         </span>
                     </span>
@@ -151,7 +151,7 @@ export const MealColumns = (
                 row.original.protein !== undefined ? (
                     <span>
                         {row.original.protein}
-                        <span className="font-bold text-xs text-[#FF8C00]">
+                        <span className="font-bold text-xs text-foreground/50">
                             g
                         </span>
                     </span>

@@ -533,7 +533,7 @@ export const WorkoutDetailsView = ({
                                         value === "" ? 0 : Number(value)
                                     );
                                 }}
-                                placeholder="Rest between sets"
+                                placeholder="Rest between sets (s)"
                             />
 
                             <InputBadge title="between sets" />
@@ -553,7 +553,7 @@ export const WorkoutDetailsView = ({
                                         value === "" ? 0 : Number(value)
                                     );
                                 }}
-                                placeholder="Rest after exercise"
+                                placeholder="Rest after exercise (s)"
                             />
                             <InputBadge title="after exercise" />
                         </div>
