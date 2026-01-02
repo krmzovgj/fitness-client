@@ -15,7 +15,7 @@ import { useTenantStore } from "@/store/tenant";
 import { useUserStore } from "@/store/user";
 import {
     Bookmark2,
-    DirectInbox,
+    Direct,
     Home2,
     Lifebuoy,
     Profile,
@@ -42,7 +42,7 @@ const MENU_BY_ROLE: Record<UserRole, MenuItem[]> = {
         {
             title: "Inbox",
             url: "/inbox",
-            icon: DirectInbox,
+            icon: Direct,
             commingSoon: true,
         },
         {
