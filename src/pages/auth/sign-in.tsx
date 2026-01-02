@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { useTenantStore } from "@/store/tenant";
-import { Eye, EyeSlash, Login } from "iconsax-reactjs";
+import { Eye, EyeSlash, Login, Weight } from "iconsax-reactjs";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn } from "../../api/auth";
@@ -49,12 +49,15 @@ export const SignIn = () => {
         <div className="w-screen p-10 flex-col h-screen flex justify-center items-center">
             <div className="md:w-1/4 w-full flex self-center justify-center  flex-col">
                 <div className="mb-6 flex flex-col items-center">
-                    <div className="mb-6">
-                        <img
-                            src="/logo.png"
-                            className="w-24 h-24 rounded-3xl border"
-                            alt=""
-                        />
+                    <div className="">
+                        <div className="flex mb-6 justify-center items-center w-24 h-24 squircle-round bg-foreground">
+                            <Weight
+                                variant="Bold"
+                                size={52}
+                                color="#fff"
+                                className="-rotate-45"
+                            />
+                        </div>
                     </div>
                     <h1 className="text-3xl text-center">
                         Sign In <span className="text-muted-foreground">@</span>{" "}
