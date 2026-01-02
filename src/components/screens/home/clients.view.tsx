@@ -18,6 +18,7 @@ import {
     EmptyTitle,
 } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
+import { InputBadge } from "@/components/ui/input-badge";
 import {
     Select,
     SelectContent,
@@ -264,33 +265,45 @@ export const ClientsView = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-                    <Input
-                        placeholder="Weight (kg)"
-                        type="number"
-                        value={weight === 0 ? "" : weight}
-                        onChange={(e) => {
-                            const value = e.target.value;
-                            setWeight(value === "" ? 0 : Number(value));
-                        }}
-                    />
-                    <Input
-                        placeholder="Height (cm)"
-                        type="number"
-                        value={height === 0 ? "" : height}
-                        onChange={(e) => {
-                            const value = e.target.value;
-                            setHeight(value === "" ? 0 : Number(value));
-                        }}
-                    />
-                    <Input
-                        placeholder="Age"
-                        type="number"
-                        value={age === 0 ? "" : age}
-                        onChange={(e) => {
-                            const value = e.target.value;
-                            setAge(value === "" ? 0 : Number(value));
-                        }}
-                    />
+
+                    <div className="flex items-center relative">
+                        <Input
+                            placeholder="Weight (kg)"
+                            type="number"
+                            value={weight === 0 ? "" : weight}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setWeight(value === "" ? 0 : Number(value));
+                            }}
+                        />
+                        <InputBadge title="weight" />
+                    </div>
+
+                    <div className="flex items-center relative">
+                        <Input
+                            placeholder="Height (cm)"
+                            type="number"
+                            value={height === 0 ? "" : height}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setHeight(value === "" ? 0 : Number(value));
+                            }}
+                        />
+                        <InputBadge title="height" />
+                    </div>
+
+                    <div className="flex items-center relative">
+                        <Input
+                            placeholder="Age"
+                            type="number"
+                            value={age === 0 ? "" : age}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setAge(value === "" ? 0 : Number(value));
+                            }}
+                        />
+                        <InputBadge title="age" />
+                    </div>
 
                     <Select onValueChange={setGender} value={gender}>
                         <SelectTrigger>

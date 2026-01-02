@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/popover";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
+import { capitalizeWords, cn } from "@/lib/utils";
 import type { Day } from "@/model/day";
 import type { Exercise } from "@/model/exercise";
 import { UserRole } from "@/model/user";
@@ -441,9 +441,9 @@ export const WorkoutDetailsView = ({
                                                                         <span className="text-muted-foreground mr-1">
                                                                             Add
                                                                         </span>
-                                                                        {
+                                                                        {capitalizeWords(
                                                                             searchQuery
-                                                                        }
+                                                                        )}
                                                                     </Button>
                                                                 )}
                                                         </>

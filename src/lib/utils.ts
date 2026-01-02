@@ -64,3 +64,7 @@ export function secondsToTime(sec: number) {
         "0"
     )}`;
 }
+
+export const capitalizeWords = (str: string) => {
+    return str.replace(/\b\w/g, (char) => char.toUpperCase());
+};
