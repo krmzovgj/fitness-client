@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { getTenantBySubdomain } from "./api/tenant";
 import { getMe } from "./api/user";
 import { AppLayout } from "./components/layout/app-layout";
@@ -10,13 +10,13 @@ import { Button } from "./components/ui/button";
 import { Spinner } from "./components/ui/spinner";
 import { SignIn } from "./pages/auth/sign-in";
 import { Client } from "./pages/client/[id]";
-import { Exercises } from "./pages/client/workout-details";
 import { Meals } from "./pages/client/diet-details";
+import { Exercises } from "./pages/client/workout-details";
 import { Home } from "./pages/home";
+import { MyProgram } from "./pages/my-program";
 import { useAuthStore } from "./store/auth";
 import { useTenantStore } from "./store/tenant";
 import { useUserStore } from "./store/user";
-import { MyProgram } from "./pages/my-program";
 
 function App() {
     const { setTenant, tenant } = useTenantStore();
@@ -24,6 +24,7 @@ function App() {
     const { setUser, clearUser } = useUserStore();
     const [isBootstrapping, setIsBootstrapping] = useState(true);
     const [tenantError, setTenantError] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const bootstrap = async () => {
@@ -39,14 +40,19 @@ function App() {
                 setTenant(tenantResponse.data);
 
                 if (token && tenant) {
-
-                    
                     try {
                         const userRes = await getMe(token, tenant?.id);
-                        setUser(userRes.data);
+                        if (userRes.status === 200) {
+                            setUser(userRes.data);
+                        } else {
+                            clearToken();
+                            clearUser();
+                            navigate("/auth/sign-in");
+                        }
                     } catch {
                         clearToken();
                         clearUser();
+                        navigate("/auth/sign-in");
                     }
                 }
             } catch (err) {
@@ -55,7 +61,7 @@ function App() {
                 setIsBootstrapping(false);
             }
         };
-
+        console.log("test2");
         bootstrap();
     }, []);
 
