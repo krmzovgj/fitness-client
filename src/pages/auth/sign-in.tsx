@@ -51,7 +51,7 @@ export const SignIn = () => {
                 <div className="mb-6 flex flex-col items-center">
                     <div className="">
                         <img
-                            src="/public/favicon.png"
+                            src="/favicon.png"
                             className="w-24 squircle-round h-24 mb-6 "
                             alt=""
                         />
