@@ -19,8 +19,6 @@ export const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user) return;
-
         const loadUser = async () => {
             if (!token || !tenant) {
                 clearUser();
