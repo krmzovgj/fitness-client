@@ -19,6 +19,8 @@ import {
     EmptyTitle,
 } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
+import { InputBadge } from "@/components/ui/input-badge";
+import { MandatoryWrapper } from "@/components/ui/mandatory-input-wrapper";
 import {
     Select,
     SelectContent,
@@ -287,84 +289,106 @@ export const DietDetailsView = ({
                     </DialogDescription>
 
                     <div className="flex flex-col gap-y-2 mt-2">
-                        <Input
-                            value={name}
-                            onChange={(e) => setname(e.target.value)}
-                            placeholder="Name e.g. Oat Meal"
-                        />
+                        <MandatoryWrapper>
+                            <Input
+                                value={name}
+                                onChange={(e) => setname(e.target.value)}
+                                placeholder="Name e.g. Oat Meal"
+                            />
+                        </MandatoryWrapper>
 
-                        <Textarea
-                            rows={5}
-                            className="resize-none"
-                            value={description}
-                            onChange={(e) => setdescription(e.target.value)}
-                            placeholder="Description"
-                        />
+                        <MandatoryWrapper>
+                            <Textarea
+                                rows={5}
+                                className="resize-none"
+                                value={description}
+                                onChange={(e) => setdescription(e.target.value)}
+                                placeholder="Description"
+                            />
+                        </MandatoryWrapper>
 
-                        <Input
-                            value={cal === 0 ? "" : cal}
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setcal(value === "" ? 0 : Number(value));
-                            }}
-                            placeholder="Calories (kcal)"
-                            type="number"
-                        />
+                        <div className="flex items-center relative">
+                            <Input
+                                value={cal === 0 ? "" : cal}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setcal(value === "" ? 0 : Number(value));
+                                }}
+                                placeholder="Calories (kcal)"
+                                type="number"
+                            />
+                            <InputBadge title="kcal" />
+                        </div>
 
-                        <Input
-                            value={protein === 0 ? "" : protein}
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setprotein(value === "" ? 0 : Number(value));
-                            }}
-                            placeholder="Protein (g)"
-                            type="number"
-                        />
+                        <div className="flex items-center relative">
+                            <Input
+                                value={protein === 0 ? "" : protein}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setprotein(
+                                        value === "" ? 0 : Number(value)
+                                    );
+                                }}
+                                placeholder="Protein (g)"
+                                type="number"
+                            />
+                            <InputBadge title="protein" />
+                        </div>
 
-                        <Input
-                            value={carbs === 0 ? "" : carbs}
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setcarbs(value === "" ? 0 : Number(value));
-                            }}
-                            placeholder="Carbs (g)"
-                            type="number"
-                        />
+                        <div className="flex items-center relative">
+                            <Input
+                                value={carbs === 0 ? "" : carbs}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setcarbs(value === "" ? 0 : Number(value));
+                                }}
+                                placeholder="Carbs (g)"
+                                type="number"
+                            />
+                            <InputBadge title="carbs" />
+                        </div>
 
-                        <Input
-                            value={fats === 0 ? "" : fats}
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setfats(value === "" ? 0 : Number(value));
-                            }}
-                            placeholder="Fats (g)"
-                            type="number"
-                        />
+                        <div className="flex items-center relative">
+                            <Input
+                                value={fats === 0 ? "" : fats}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setfats(value === "" ? 0 : Number(value));
+                                }}
+                                placeholder="Fats (g)"
+                                type="number"
+                            />
+                            <InputBadge title="fats" />
+                        </div>
 
-                        <Select
-                            value={type}
-                            onValueChange={(value: MealType) => settype(value)}
-                        >
-                            <SelectTrigger>
-                                <SelectValue placeholder="Day" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {mealTypes.map((mealTypeItem) => (
-                                    <SelectItem value={mealTypeItem.type}>
-                                        <div className="flex items-center gap-x-2">
-                                            <div
-                                                className="w-2 h-2 rounded-full"
-                                                style={{
-                                                    backgroundColor:
-                                                        mealTypeItem.color,
-                                                }}
-                                            ></div>
-                                            <h2>{mealTypeItem.type}</h2>
-                                        </div>
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                        <MandatoryWrapper>
+                            <Select
+                                value={type}
+                                onValueChange={(value: MealType) =>
+                                    settype(value)
+                                }
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Day" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {mealTypes.map((mealTypeItem) => (
+                                        <SelectItem value={mealTypeItem.type}>
+                                            <div className="flex items-center gap-x-2">
+                                                <div
+                                                    className="w-2 h-2 rounded-full"
+                                                    style={{
+                                                        backgroundColor:
+                                                            mealTypeItem.color,
+                                                    }}
+                                                ></div>
+                                                <h2>{mealTypeItem.type}</h2>
+                                            </div>
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </MandatoryWrapper>
 
                         {error !== "" && (
                             <div className="text-red-500 mt-2 text-sm">

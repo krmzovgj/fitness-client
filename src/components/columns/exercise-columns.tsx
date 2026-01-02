@@ -1,13 +1,19 @@
 "use client";
 
-import { deleteExercise } from "@/api/exercise";
-import { formatDate } from "@/lib/utils";
+import { deleteWorkoutExercise } from "@/api/workout-exercise";
+import { secondsToTime } from "@/lib/utils";
 import { UserRole } from "@/model/user";
 import type { WorkoutExercise } from "@/model/workout-exercise";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Edit, Maximize4, Trash } from "iconsax-reactjs";
+import {
+    ArrowForward,
+    Edit,
+    Maximize4,
+    Timer1,
+    Trash
+} from "iconsax-reactjs";
 import { useState } from "react";
 import {
     AlertDialog,
@@ -104,12 +110,45 @@ export const ExerciseColumns = (
         },
     },
     {
-        accessorKey: "exercise.updatedAt",
-        header: "Updated At",
+        accessorKey: "exercise.restBetweenSets",
+        header: "Rest Between Sets",
         cell: ({ row }) => {
             return (
                 <span className="whitespace-nowrap">
-                    {formatDate(row.original.updatedAt)}
+                    {row.original.restBetweenSets ? (
+                        <span className="flex items-center gap-x-2">
+                            {" "}
+                            {secondsToTime(row.original.restBetweenSets!)}
+                            <Timer1 variant="Bold" size={17} color="#000" />
+                        </span>
+                    ) : (
+                        "N/A"
+                    )}
+                </span>
+            );
+        },
+    },
+
+    {
+        accessorKey: "exercise.restAfterExercise",
+        header: "Rest After Exercise",
+        cell: ({ row }) => {
+            return (
+                <span className="whitespace-nowrap">
+                    {row.original.restAfterExercise ? (
+                        <span className="flex items-center gap-x-2">
+                            {" "}
+                            {secondsToTime(row.original.restAfterExercise!)}
+                            <ArrowForward
+                                className="rotate-180"
+                                variant="Bold"
+                                size={17}
+                                color="#000"
+                            />
+                        </span>
+                    ) : (
+                        "N/A"
+                    )}
                 </span>
             );
         },
@@ -134,7 +173,7 @@ export const ExerciseColumns = (
                 try {
                     setDeletingExercise(true);
 
-                    const response = await deleteExercise(
+                    const response = await deleteWorkoutExercise(
                         row.original.id,
                         token!
                     );

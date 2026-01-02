@@ -1,9 +1,4 @@
-import {
-    createGlobalExercise,
-    createWorkoutExercise,
-    searchExercises,
-    updateExercise,
-} from "@/api/exercise";
+import { createGlobalExercise, searchExercises } from "@/api/exercise";
 import { getWorkoutById, updateWorkout } from "@/api/workout";
 import { ExerciseColumns } from "@/components/columns/exercise-columns";
 import { DataTable } from "@/components/data-table";
@@ -57,6 +52,12 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { WorkoutNote } from "./workout-note";
+import {
+    createWorkoutExercise,
+    updateWorkoutExercise,
+} from "@/api/workout-exercise";
+import { MandatoryWrapper } from "@/components/ui/mandatory-input-wrapper";
+import { InputBadge } from "@/components/ui/input-badge";
 
 export const WorkoutDetailsView = ({
     workoutId,
@@ -77,6 +78,8 @@ export const WorkoutDetailsView = ({
     const [sets, setsets] = useState<number>(0);
     const [reps, setreps] = useState<string>("");
     const [note, setnote] = useState<string>("");
+    const [restBetweenSets, setrestBetweenSets] = useState<number>(0);
+    const [restAfterExercise, setrestAfterExercise] = useState<number>(0);
 
     const [searchQuery, setsearchQuery] = useState("");
     const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -147,6 +150,8 @@ export const WorkoutDetailsView = ({
                     reps,
                     sets,
                     note,
+                    restBetweenSets,
+                    restAfterExercise,
                     exerciseId: selectedOptionExercise?.id!,
                 },
                 token,
@@ -177,13 +182,15 @@ export const WorkoutDetailsView = ({
             sets,
             reps,
             note,
+            restBetweenSets,
+            restAfterExercise,
             exerciseId: selectedOptionExercise?.id!,
         };
 
         try {
             setcreatingExercise(true);
 
-            const response = await updateExercise(
+            const response = await updateWorkoutExercise(
                 selectedExercise?.id!,
                 payload,
                 token
@@ -211,6 +218,8 @@ export const WorkoutDetailsView = ({
 
         setsets(selectedExercise?.sets!);
         setreps(selectedExercise?.reps!);
+        setrestBetweenSets(selectedExercise?.restBetweenSets!);
+        setrestAfterExercise(selectedExercise?.restAfterExercise!);
         setsearchQuery(selectedExercise.exercise.name);
         setselectedOptionExercise(selectedExercise.exercise);
         setnote(selectedExercise?.note!);
@@ -353,8 +362,11 @@ export const WorkoutDetailsView = ({
                             <PopoverTrigger asChild>
                                 <Button
                                     variant="outline"
-                                    className="justify-between px-3 h-10"
+                                    className="relative justify-between px-3 h-10"
                                 >
+                                    <span className="absolute text-red-500 left-0 -top-2 text-2xl">
+                                        *
+                                    </span>
                                     {selectedOptionExercise ? (
                                         <p className="text-foreground">
                                             {selectedOptionExercise.name}
@@ -400,7 +412,8 @@ export const WorkoutDetailsView = ({
                                                     ) : (
                                                         <>
                                                             <h3 className="text-sm text-center">
-                                                                Not listed? Add your exercise
+                                                                Not listed? Add
+                                                                your exercise
                                                             </h3>
 
                                                             {debouncedQuery !==
@@ -480,21 +493,70 @@ export const WorkoutDetailsView = ({
                             </PopoverContent>
                         </Popover>
 
-                        <Input
-                            value={sets === 0 ? "" : sets}
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                setsets(value === "" ? 0 : Number(value));
-                            }}
-                            placeholder="Sets"
-                            type="number"
-                        />
+                        <MandatoryWrapper>
+                            <div className="flex items-center relative">
+                                <Input
+                                    value={sets === 0 ? "" : sets}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        setsets(
+                                            value === "" ? 0 : Number(value)
+                                        );
+                                    }}
+                                    placeholder="Sets"
+                                    type="number"
+                                />
+                                <InputBadge title="sets" />
+                            </div>
+                        </MandatoryWrapper>
 
-                        <Input
-                            value={reps}
-                            onChange={(e) => setreps(e.target.value)}
-                            placeholder="Reps"
-                        />
+                        <MandatoryWrapper>
+                            <div className="flex items-center relative">
+                                <Input
+                                    value={reps}
+                                    onChange={(e) => setreps(e.target.value)}
+                                    placeholder="Reps"
+                                />
+                                <InputBadge title="reps" />
+                            </div>
+                        </MandatoryWrapper>
+
+                        <div className="flex items-center relative">
+                            <Input
+                                type="number"
+                                value={
+                                    restBetweenSets === 0 ? "" : restBetweenSets
+                                }
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setrestBetweenSets(
+                                        value === "" ? 0 : Number(value)
+                                    );
+                                }}
+                                placeholder="Rest between sets"
+                            />
+
+                            <InputBadge title="seconds between sets" />
+                        </div>
+
+                        <div className="flex items-center relative">
+                            <Input
+                                type="number"
+                                value={
+                                    restAfterExercise === 0
+                                        ? ""
+                                        : restAfterExercise
+                                }
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setrestAfterExercise(
+                                        value === "" ? 0 : Number(value)
+                                    );
+                                }}
+                                placeholder="Rest after exercise"
+                            />
+                            <InputBadge title="seconds after exercise" />
+                        </div>
 
                         <Textarea
                             rows={5}
