@@ -536,7 +536,7 @@ export const WorkoutDetailsView = ({
                                 placeholder="Rest between sets"
                             />
 
-                            <InputBadge title="seconds between sets" />
+                            <InputBadge title="between sets" />
                         </div>
 
                         <div className="flex items-center relative">
@@ -555,7 +555,7 @@ export const WorkoutDetailsView = ({
                                 }}
                                 placeholder="Rest after exercise"
                             />
-                            <InputBadge title="seconds after exercise" />
+                            <InputBadge title="after exercise" />
                         </div>
 
                         <Textarea
