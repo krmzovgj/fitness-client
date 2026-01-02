@@ -39,6 +39,8 @@ function App() {
                 setTenant(tenantResponse.data);
 
                 if (token && tenant) {
+
+                    
                     try {
                         const userRes = await getMe(token, tenant?.id);
                         setUser(userRes.data);

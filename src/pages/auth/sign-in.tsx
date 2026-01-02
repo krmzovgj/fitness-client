@@ -50,14 +50,11 @@ export const SignIn = () => {
             <div className="md:w-1/4 w-full flex self-center justify-center  flex-col">
                 <div className="mb-6 flex flex-col items-center">
                     <div className="">
-                        <div className="flex mb-6 justify-center items-center w-24 h-24 squircle-round bg-foreground">
-                            <Weight
-                                variant="Bold"
-                                size={52}
-                                color="#fff"
-                                className="-rotate-45"
-                            />
-                        </div>
+                        <img
+                            src="/public/favicon.png"
+                            className="w-24 squircle-round h-24 mb-6 "
+                            alt=""
+                        />
                     </div>
                     <h1 className="text-3xl text-center">
                         Sign In <span className="text-muted-foreground">@</span>{" "}
