@@ -33,20 +33,23 @@ function App() {
                 setIsBootstrapping(true);
                 setTenantError(false);
 
-                const subdomain =
-                    import.meta.env.VITE_TENANT_SUBDOMAIN ||
-                    window.location.hostname.split(".")[0];
+                const hostname = window.location.hostname;
+                const parts = hostname.split(".");
 
-                if (
-                    !subdomain ||
-                    subdomain === "www" ||
-                    subdomain === "localhost"
-                ) {
+                const isLocalhost = hostname === "localhost";
+
+                let subdomain: string | null = null;
+
+                if (!isLocalhost && parts.length > 2) {
+                    subdomain = parts[0];
+                }
+
+                if (!subdomain || subdomain === "mycoach") {
                     setIsBootstrapping(false);
                     return;
                 }
 
-                const tenantResponse = await getTenantBySubdomain(subdomain);
+                const tenantResponse = await getTenantBySubdomain(subdomain!);
                 setTenant(tenantResponse.data);
 
                 if (token && tenant) {
