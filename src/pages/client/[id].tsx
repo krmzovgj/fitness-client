@@ -38,7 +38,7 @@ export const Client = () => {
             {!loadingClient && !client ? (
                 <div className="flex justify-center flex-col items-center h-screen">
                     <h3 className="text-2xl mb-3">Client not found</h3>
-                    <Button onClick={() => navigate("/")} variant="secondary">
+                    <Button onClick={() => navigate(-1)} variant="secondary">
                         Go Back
                     </Button>
                 </div>
@@ -52,7 +52,7 @@ export const Client = () => {
                         <div>
                             <div className="flex flex-col mt-10 items-start justify-between gap-x-20">
                                 <Button
-                                    onClick={() => navigate("/")}
+                                    onClick={() => navigate(-1)}
                                     variant="secondary"
                                 >
                                     <ArrowLeft

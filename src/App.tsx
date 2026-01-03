@@ -17,6 +17,7 @@ import { MyProgram } from "./pages/my-program";
 import { useAuthStore } from "./store/auth";
 import { useTenantStore } from "./store/tenant";
 import { useUserStore } from "./store/user";
+import { LandingPage } from "./components/landing-page";
 
 function App() {
     const { setTenant, tenant } = useTenantStore();
@@ -35,6 +36,15 @@ function App() {
                 const subdomain =
                     import.meta.env.VITE_TENANT_SUBDOMAIN ||
                     window.location.hostname.split(".")[0];
+
+                if (
+                    !subdomain ||
+                    subdomain === "www" ||
+                    subdomain === "localhost"
+                ) {
+                    setIsBootstrapping(false);
+                    return;
+                }
 
                 const tenantResponse = await getTenantBySubdomain(subdomain);
                 setTenant(tenantResponse.data);
@@ -72,7 +82,7 @@ function App() {
         );
     }
 
-    if (tenantError || !tenant) {
+    if (tenantError) {
         return (
             <div className="flex flex-col items-center justify-center w-full min-h-screen gap-6 p-6 text-center">
                 <div>
@@ -92,6 +102,10 @@ function App() {
         );
     }
 
+    if (!tenant) {
+        return <LandingPage />;
+    }
+
     return (
         <Routes>
             <Route element={<AuthLayout />}>
@@ -107,7 +121,7 @@ function App() {
 
             <Route element={<AppLayout />}>
                 <Route
-                    path="/"
+                    path="/dashboard"
                     handle={{ breadcrumb: "Home" }}
                     element={
                         <ProtectedRoute>

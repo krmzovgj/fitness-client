@@ -101,7 +101,7 @@ export function DayPlanCard({
                     <div className="flex items-center gap-3">
                         <div
                             style={{
-                                backgroundColor: "#181818",
+                                backgroundColor: isRestDay ? "#fff" : "#181818",
                             }}
                             className="flex h-10 w-10 items-center justify-center squircle-round"
                         >
@@ -117,7 +117,7 @@ export function DayPlanCard({
                                         <BatteryCharging
                                             variant="Bold"
                                             size={21}
-                                            color="#fff"
+                                            color="#000"
                                         />
                                     ) : (
                                         <Weight
@@ -162,13 +162,7 @@ export function DayPlanCard({
                         <p className="text-sm flex items-center gap-x-1 text-muted-foreground">
                             <Timer1 variant="Bulk" size={21} color="#181818" />
                             <span className="flex items-center gap-x-1">
-                                Rest day{" "}
-                                <RecordCircle
-                                    variant="Bulk"
-                                    size={7}
-                                    color="#000"
-                                />{" "}
-                                Recovery
+                                Rest day
                             </span>
                         </p>
                     ) : (
@@ -180,8 +174,8 @@ export function DayPlanCard({
                                         : exercises?.length}
                                 </span>{" "}
                                 {isWorkout
-                                    ? "Exercises planned"
-                                    : "Meals planned"}
+                                    ? "Exercises"
+                                    : "Meals"}
                             </p>
 
                             {variant === "diet" && (

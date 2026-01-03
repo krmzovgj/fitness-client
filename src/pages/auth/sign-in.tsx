@@ -31,7 +31,7 @@ export const SignIn = () => {
             );
             useAuthStore.getState().setToken(response.token);
 
-            navigate("/");
+            navigate("/dashboard");
         } catch (error: any) {
             const msg = error?.response?.data?.message;
 
