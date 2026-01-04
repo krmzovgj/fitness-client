@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import type { UserRole } from "@/model/user";
+import { useAuthStore } from "@/store/auth";
 import { useTenantStore } from "@/store/tenant";
 import { useUserStore } from "@/store/user";
 import {
@@ -18,9 +19,21 @@ import {
     Direct,
     Home2,
     Lifebuoy,
-    Profile
+    LogoutCurve,
+    Profile,
 } from "iconsax-reactjs";
 import { Link, useLocation } from "react-router-dom";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "../ui/alert-dialog";
 
 type MenuItem = {
     title: string;
@@ -78,9 +91,16 @@ export function AppSidebar() {
     const currentPathName = location.pathname;
     const year = new Date().getFullYear();
     const { tenant } = useTenantStore();
-
+    const { clearToken } = useAuthStore();
+    const { clearUser } = useUserStore();
     const { user } = useUserStore();
+
     const menuItems = MENU_BY_ROLE[user?.role!] || [];
+
+    const signOut = () => {
+        clearToken();
+        clearUser();
+    };
 
     return (
         <Sidebar className="w-70 flex bg-background border-r-2 border-foreground/5">
@@ -219,14 +239,46 @@ export function AppSidebar() {
                 <SidebarGroupLabel className="font-medium md:font-semibold text-sm">
                     Other
                 </SidebarGroupLabel>
-                <a
-                    href="https://www.instagram.com/mycoach.mk/"
-                    target="_blank"
-                    className="px-3.5 -mt-2 bg-secondary py-2.5 gap-x-2.5 flex items-center rounded-2xl transition-colors"
-                >
-                    <Lifebuoy variant="Bulk" size={20} color="#000" />
-                    Help Center
-                </a>
+
+                <AlertDialog>
+                    <div className="flex flex-col gap-y-4">
+                        <a
+                            href="https://www.instagram.com/mycoach.mk/"
+                            target="_blank"
+                            className="px-3.5 text-[15px] -mt-2 bg-secondary py-2.5 gap-x-2.5 flex items-center rounded-2xl transition-colors"
+                        >
+                            <Lifebuoy variant="Bulk" size={20} color="#000" />
+                            Help Center
+                        </a>
+
+                        <AlertDialogTrigger>
+                            <div className="cursor-pointer px-3.5 text-[15px] -mt-2 bg-secondary py-2.5 gap-x-2.5 flex items-center rounded-2xl transition-colors">
+                                <LogoutCurve
+                                    variant="Bulk"
+                                    size={20}
+                                    color="red"
+                                />{" "}
+                                Sign Out
+                            </div>
+                        </AlertDialogTrigger>
+                    </div>
+
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Sign Out?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                Are you sure you want to sign out?
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={signOut}>
+                                Yes, Sign Out
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
 
                 <h3 className="mt-5 text-sm text-muted-foreground text-center">
                     mycoach {year} v1.0.1

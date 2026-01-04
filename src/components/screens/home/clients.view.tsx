@@ -33,7 +33,13 @@ import { useClientStore } from "@/store/client";
 import { useTenantStore } from "@/store/tenant";
 import { useUserStore } from "@/store/user";
 import { motion } from "framer-motion";
-import { ArchiveBox, Eye, EyeSlash, RecordCircle } from "iconsax-reactjs";
+import {
+    AddCircle,
+    ArchiveBox,
+    Eye,
+    EyeSlash,
+    RecordCircle,
+} from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 
 export const ClientsView = () => {
@@ -196,7 +202,14 @@ export const ClientsView = () => {
                                 )}
                             </h2>
                             <DialogTrigger asChild className="rounded-xl">
-                                <Button variant="default">Add Client</Button>
+                                <Button variant="default">
+                                    <AddCircle
+                                        variant="Bold"
+                                        size={20}
+                                        color="#fff"
+                                    />{" "}
+                                    Client
+                                </Button>
                             </DialogTrigger>
                         </div>
 

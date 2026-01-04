@@ -39,7 +39,7 @@ import { useUserStore } from "@/store/user";
 import { useWorkoutStore } from "@/store/workout";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { motion } from "framer-motion";
-import { ArchiveBox, RecordCircle } from "iconsax-reactjs";
+import { AddCircle, ArchiveBox, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 
 export const WorkoutView = ({ client }: { client: User }) => {
@@ -195,7 +195,7 @@ export const WorkoutView = ({ client }: { client: User }) => {
 
                     {user?.role === UserRole.TRAINER && (
                         <DialogTrigger asChild>
-                            <Button variant="default">Add Workout Day</Button>
+                            <Button variant="default"><AddCircle variant="Bold" size={20} color="#fff" />Workout</Button>
                         </DialogTrigger>
                     )}
                 </div>

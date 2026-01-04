@@ -32,8 +32,8 @@ import { UserRole, type User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useDietStore } from "@/store/diet";
 import { useUserStore } from "@/store/user";
-import { motion } from 'framer-motion';
-import { ArchiveBox, RecordCircle } from "iconsax-reactjs";
+import { motion } from "framer-motion";
+import { AddCircle, ArchiveBox, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 
 export const DietView = ({ client }: { client: User }) => {
@@ -176,7 +176,14 @@ export const DietView = ({ client }: { client: User }) => {
 
                     {user?.role === UserRole.TRAINER && (
                         <DialogTrigger asChild>
-                            <Button variant="default">Add Diet Day</Button>
+                            <Button variant="default">
+                                <AddCircle
+                                    variant="Bold"
+                                    size={20}
+                                    color="#fff"
+                                />{" "}
+                                Diet
+                            </Button>
                         </DialogTrigger>
                     )}
                 </div>

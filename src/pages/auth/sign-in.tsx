@@ -86,7 +86,7 @@ export const SignIn = () => {
                             onChange={(e: any) => setpassword(e.target.value)}
                             className="pr-10"
                         />
-
+                        
                         <button
                             type="button"
                             onClick={() => setshowPassword(!showPassword)}
@@ -106,7 +106,7 @@ export const SignIn = () => {
                 </div>
 
                 <Button
-                    className="self-end"
+                    className="w-full"
                     variant="default"
                     onClick={handleSignIn}
                 >

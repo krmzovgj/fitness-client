@@ -45,10 +45,17 @@ export const Header = ({ user }: { user?: User }) => {
     const now = new Date();
 
     return (
-        <div className="py-3 md:py-5 md:px-10 px-5 flex justify-between items-center">
+        <div className="pt-5 md:py-5 md:px-10 px-5 flex justify-between items-center">
+
+            <img src="/favicon.png" className="w-9 h-9" alt="" />
+            
+            <div className="flex md:hidden items-center gap-x-2 text-xl font-bold">
+                kalapocev
+            </div>
+
             <div className="flex items-center gap-x-3">
                 {user && (
-                    <div className="w-11 md:hidden flex">
+                    <div className="w-10 md:hidden flex">
                         <SidebarTrigger />
                     </div>
                 )}
@@ -58,17 +65,13 @@ export const Header = ({ user }: { user?: User }) => {
                 </div>
             </div>
 
-            <div className="flex md:hidden items-center gap-x-2 text-xl font-bold">
-                {tenant?.subdomain}
-            </div>
-
             <h3 className="hidden md:flex py-3 px-4 rounded-2xl border items-center gap-x-1 text-sm md:text-md text-foreground">
                 <Calendar variant="Bulk" size={20} color="#000" />
                 {formatDate(now)}
             </h3>
 
             <AlertDialog>
-                <div className="flex items-center gap-x-5">
+                <div className="hidden md:flex items-center gap-x-5">
                     {user && (
                         <div className="flex items-center gap-x-3">
                             <DropdownMenu>

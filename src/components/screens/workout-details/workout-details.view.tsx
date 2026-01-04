@@ -55,6 +55,7 @@ import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import { motion } from "framer-motion";
 import {
+    AddCircle,
     ArchiveBox,
     ArrowLeft,
     ArrowSwapVertical,
@@ -310,9 +311,6 @@ export const WorkoutDetailsView = ({
                             />
                             Back
                         </Button>
-                        <h3 className="text-foreground">
-                            {state?.firstName} {state?.lastName}
-                        </h3>
                     </div>
 
                     <div className="flex mt-5  items-center gap-x-3">
@@ -325,10 +323,18 @@ export const WorkoutDetailsView = ({
                         </div>
                         <div>
                             <div>
-                                <h3 className="flex ml-0.5 items-center capitalize gap-x-1 font-medium">
+                                <h3 className="flex ml-0.5 items-center capitalize gap-x-2 font-medium">
                                     <p className="text-foreground">
                                         {dayMatch?.day.toLowerCase()}
-                                    </p>{" "}
+                                    </p>
+                                    <RecordCircle
+                                        variant="Bold"
+                                        size={8}
+                                        color="#000"
+                                    />
+                                    <p className="text-foreground">
+                                        {state?.firstName} {state?.lastName}
+                                    </p>
                                 </h3>
                                 <h1 className="text-3xl leading-7 font-medium">
                                     {workout?.name}
@@ -364,6 +370,17 @@ export const WorkoutDetailsView = ({
                                 <Button
                                     className="px-2"
                                     variant="outline"
+                                    onClick={handleCancelOrders}
+                                >
+                                    <CloseCircle
+                                        variant="Bold"
+                                        size={20}
+                                        color="red"
+                                    />
+                                </Button>
+                                <Button
+                                    className="px-2"
+                                    variant="outline"
                                     onClick={handleSaveOrders}
                                 >
                                     {savingOrder ? (
@@ -376,22 +393,18 @@ export const WorkoutDetailsView = ({
                                         />
                                     )}
                                 </Button>
-                                <Button
-                                    className="px-2"
-                                    variant="outline"
-                                    onClick={handleCancelOrders}
-                                >
-                                    <CloseCircle
-                                        variant="Bold"
-                                        size={20}
-                                        color="red"
-                                    />
-                                </Button>
                             </>
                         )}
 
                         <DialogTrigger asChild>
-                            <Button>Add Exercise</Button>
+                            <Button>
+                                <AddCircle
+                                    variant="Bold"
+                                    size={20}
+                                    color="#fff"
+                                />{" "}
+                                Exercise
+                            </Button>
                         </DialogTrigger>
                     </div>
                 )}

@@ -39,7 +39,13 @@ import { UserRole } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import { motion } from "framer-motion";
-import { ArchiveBox, ArrowLeft, Book1, RecordCircle } from "iconsax-reactjs";
+import {
+    AddCircle,
+    ArchiveBox,
+    ArrowLeft,
+    Book1,
+    RecordCircle,
+} from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -225,10 +231,6 @@ export const DietDetailsView = ({
                             />
                             Back
                         </Button>
-
-                        <h3 className="text-foreground">
-                            {state?.firstName} {state?.lastName}
-                        </h3>
                     </div>
 
                     <div className="flex mt-5  items-center gap-x-3">
@@ -236,9 +238,17 @@ export const DietDetailsView = ({
                             <Book1 variant="Bold" size={28} color="#66A786" />
                         </div>
                         <div>
-                            <h3 className="ml-0.5 flex items-center capitalize gap-x-1 font-medium">
+                            <h3 className="ml-0.5 flex items-center capitalize gap-x-2 font-medium">
                                 <p className="text-foreground">
                                     {dayMatch?.day.toLowerCase()}
+                                </p>
+                                <RecordCircle
+                                    variant="Bold"
+                                    size={8}
+                                    color="#000"
+                                />
+                                <p className="text-foreground">
+                                    {state?.firstName} {state?.lastName}
                                 </p>
                             </h3>
                             <h1 className="text-3xl leading-7 font-medium">
@@ -258,7 +268,10 @@ export const DietDetailsView = ({
 
                 {user?.role === UserRole.TRAINER && (
                     <DialogTrigger asChild>
-                        <Button>Add Meal</Button>
+                        <Button>
+                            <AddCircle variant="Bold" size={20} color="#fff" />{" "}
+                            Meal
+                        </Button>
                     </DialogTrigger>
                 )}
             </div>
