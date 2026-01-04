@@ -462,6 +462,7 @@ export const WorkoutDetailsView = ({
                         >
                             <PopoverTrigger className=" w-full" asChild>
                                 <Button
+                                    animate={false}
                                     variant="outline"
                                     className="relative justify-between px-3 h-10"
                                 >
