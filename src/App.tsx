@@ -36,7 +36,7 @@ function App() {
                 const hostname = window.location.hostname;
                 const parts = hostname.split(".");
 
-                const envSubdomain = import.meta.env.VITE_TENANT_SUBDOMAIN
+                // const envSubdomain = import.meta.env.VITE_TENANT_SUBDOMAIN
                 const isLocalhost = hostname === "localhost";
 
                 let subdomain: string | null = null;
@@ -45,12 +45,12 @@ function App() {
                     subdomain = parts[0];
                 }
 
-                // if (!subdomain || subdomain === "mycoach") {
-                //     setIsBootstrapping(false);
-                //     return;
-                // }
+                if (!subdomain || subdomain === "mycoach") {
+                    setIsBootstrapping(false);
+                    return;
+                }
 
-                const tenantResponse = await getTenantBySubdomain(envSubdomain);
+                const tenantResponse = await getTenantBySubdomain(subdomain!);
                 setTenant(tenantResponse.data);
 
                 if (token && tenant) {
@@ -92,7 +92,8 @@ function App() {
                 <div>
                     <h2 className="text-2xl font-bold">App Not Available</h2>
                     <p className="text-muted-foreground mt-2">
-                        Could not load configuration for <br />subdomain:{" "}
+                        Could not load configuration for <br />
+                        subdomain:{" "}
                         <strong>
                             {import.meta.env.VITE_TENANT_SUBDOMAIN ||
                                 window.location.hostname.split(".")[0]}

@@ -29,9 +29,16 @@ export const LandingPage = () => {
                         <p className="cursor-pointer">Contact</p>
                     </div>
 
-                    <Button className="">Get Started</Button>
+                    <Button asChild className="">
+                        <a
+                            href="https://www.instagram.com/mycoach.mk/"
+                            target="_blank"
+                        >
+                            Get Started
+                        </a>
+                    </Button>
                 </div>
-                <div className="mt-40 z-50 md:mt-50">
+                <div className="mt-32 z-50 md:mt-36">
                     <div className="flex justify-center items-center flex-col text-center">
                         <Badge title="mycoach.mk" className="" />
 
@@ -51,7 +58,7 @@ export const LandingPage = () => {
                         >
                             Manage Clients, <br className="flex md:hidden" />
                             Workouts & <br className="hidden md:flex" />
-                            Nutrition <br className="borderblock md:hidden" />-
+                            Meals <br className="borderblock md:hidden" />-
                             All in One Place
                         </motion.h1>
                         <motion.h3
@@ -77,13 +84,18 @@ export const LandingPage = () => {
                             without spreadsheets or chaos.
                         </motion.h3>
 
-                        <Button className="mt-5 w-full ">
-                            Get Started{" "}
-                            <ArrowRight
-                                variant="Linear"
-                                size={20}
-                                color="#FF8C00"
-                            />
+                        <Button asChild className="mt-5 w-full ">
+                            <a
+                                href="https://www.instagram.com/mycoach.mk/"
+                                target="_blank"
+                            >
+                                Get Started{" "}
+                                <ArrowRight
+                                    variant="Linear"
+                                    size={20}
+                                    color="#FF8C00"
+                                />
+                            </a>
                         </Button>
                     </div>
 
@@ -98,13 +110,13 @@ export const LandingPage = () => {
                     >
                         <img
                             src="/platform-hero.png"
-                            className="rounded-[20px] shadow-sm"
+                            className="rounded-[10px] md:rounded-[20px] shadow-sm"
                             alt=""
                         />
                     </motion.div>
                 </div>
 
-                <div className="mt-40 relative flex justify-center items-center flex-col md:mt-50">
+                <div className="mt-32 relative flex justify-center items-center flex-col md:mt-36">
                     <Badge title="Features" />
                     <h1 className="text-3xl leading-7 md:leading-none tracking-tighter mt-5 text-center md:text-5xl font-medium">
                         {" "}
@@ -120,7 +132,7 @@ export const LandingPage = () => {
                     <div className="mt-15 w-full md:w-1/2">
                         <div className="relative rounded-xl bg-secondary p-1 md:p-1.5  md:rounded-3xl">
                             <img
-                                className="rounded-[20px] shadow-sm"
+                                className="rounded-[10px] md:rounded-[20px] shadow-sm"
                                 src="/diet-details.png"
                                 alt=""
                             />
@@ -141,10 +153,8 @@ export const LandingPage = () => {
                                     </div>
                                     <h3 className="text-muted-foreground ">
                                         Know where everyone stands, see your
-                                        clients and their{" "}
-                                        <br className="hidden md:flex" />{" "}
-                                        programs without digging through
-                                        messages or files.
+                                        clients and their programs without
+                                        digging through messages or files.
                                     </h3>
                                 </div>
 
@@ -161,10 +171,8 @@ export const LandingPage = () => {
                                     </div>
                                     <h3 className="text-muted-foreground ">
                                         Create workouts that make sense add
-                                        exercises,{" "}
-                                        <br className="hidden md:flex" /> sets,
-                                        reps, and notes. Change things as
-                                        clients progress.
+                                        exercises, sets, reps, and notes. Change
+                                        things as clients progress.
                                     </h3>
                                 </div>
                             </div>
@@ -183,10 +191,8 @@ export const LandingPage = () => {
                                     </div>
                                     <h3 className="text-muted-foreground ">
                                         Talk where the work is, communicate with
-                                        all your{" "}
-                                        <br className="hidden md:flex" />{" "}
-                                        clients in one place without switching
-                                        apps.
+                                        all your clients in one place without
+                                        switching apps.
                                     </h3>
                                 </div>
 
@@ -203,10 +209,8 @@ export const LandingPage = () => {
                                     </div>
                                     <h3 className="text-muted-foreground ">
                                         Plan meals by day, add custom recepies,
-                                        macros, meal types
-                                        <br className="hidden md:flex" /> and
-                                        change things as needed - just like
-                                        workouts.
+                                        macros, meal types and change things as
+                                        needed - just like workouts.
                                     </h3>
                                 </div>
                             </div>
