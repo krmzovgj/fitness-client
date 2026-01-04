@@ -356,6 +356,7 @@ export const WorkoutDetailsView = ({
                     <div className="flex items-center gap-x-2">
                         {!editOrder ? (
                             <Button
+                                disabled={workout?.exercises?.length === 0}
                                 variant="outline"
                                 onClick={handleEditOrders}
                             >
