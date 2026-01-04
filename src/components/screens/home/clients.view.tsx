@@ -32,9 +32,9 @@ import { useAuthStore } from "@/store/auth";
 import { useClientStore } from "@/store/client";
 import { useTenantStore } from "@/store/tenant";
 import { useUserStore } from "@/store/user";
-import { Eye, EyeSlash, Profile2User, RecordCircle } from "iconsax-reactjs";
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { ArchiveBox, Eye, EyeSlash, RecordCircle } from "iconsax-reactjs";
+import { useEffect, useState } from "react";
 
 export const ClientsView = () => {
     const { user } = useUserStore();
@@ -206,8 +206,8 @@ export const ClientsView = () => {
                                     <Empty>
                                         <EmptyHeader>
                                             <EmptyMedia variant="icon">
-                                                <Profile2User
-                                                    variant="Bold"
+                                                <ArchiveBox
+                                                    variant="Bulk"
                                                     size={20}
                                                     color="#fff"
                                                 />

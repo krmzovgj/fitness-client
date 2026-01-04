@@ -1,13 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import {
-    ArrowRight,
-    Book,
-    Messages2,
-    Profile2User,
-    Weight,
-} from "iconsax-reactjs";
+import { ArrowRight, Book, Messages2, Profile2User } from "iconsax-reactjs";
 import { Button } from "../components/ui/button";
 import { GridPattern } from "./ui/shadcn-io/grid-pattern";
 
@@ -157,10 +151,10 @@ export const LandingPage = () => {
                                 <div className="flex flex-col gap-y-4 gap-x-10  md:w-1/2">
                                     <div className="flex items-center text-lg gap-x-2">
                                         <div className="w-8 h-8  rounded-lg flex justify-center items-center bg-background border">
-                                            <Weight
-                                                variant="Bulk"
-                                                size={20}
-                                                color="#000"
+                                            <img
+                                                src="/weight.svg"
+                                                className="w-5 h-5"
+                                                alt=""
                                             />
                                         </div>
                                         Workouts

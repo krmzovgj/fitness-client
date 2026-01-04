@@ -1,5 +1,9 @@
 import { createGlobalExercise, searchExercises } from "@/api/exercise";
 import { getWorkoutById, updateWorkout } from "@/api/workout";
+import {
+    createWorkoutExercise,
+    updateWorkoutExercise,
+} from "@/api/workout-exercise";
 import { ExerciseColumns } from "@/components/columns/exercise-columns";
 import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
@@ -27,6 +31,8 @@ import {
     EmptyTitle,
 } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
+import { InputBadge } from "@/components/ui/input-badge";
+import { MandatoryWrapper } from "@/components/ui/mandatory-input-wrapper";
 import {
     Popover,
     PopoverContent,
@@ -42,23 +48,17 @@ import type { Workout } from "@/model/workout";
 import type { WorkoutExercise } from "@/model/workout-exercise";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
+import { motion } from "framer-motion";
 import {
+    ArchiveBox,
     ArrowLeft,
     ArrowSwapVertical,
     RecordCircle,
     TickCircle,
-    Weight,
 } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { WorkoutNote } from "./workout-note";
-import {
-    createWorkoutExercise,
-    updateWorkoutExercise,
-} from "@/api/workout-exercise";
-import { MandatoryWrapper } from "@/components/ui/mandatory-input-wrapper";
-import { InputBadge } from "@/components/ui/input-badge";
-import { motion } from "framer-motion";
 
 export const WorkoutDetailsView = ({
     workoutId,
@@ -278,7 +278,11 @@ export const WorkoutDetailsView = ({
 
                     <div className="flex mt-5  items-center gap-x-3">
                         <div className="flex w-14 h-14  bg-foreground items-center justify-center squircle-round">
-                            <Weight variant="Bold" size={28} color="#FF8C00" />
+                            <img
+                                src="/weightOrange.svg"
+                                className="w-7 h-7"
+                                alt=""
+                            />
                         </div>
                         <div>
                             <div>
@@ -286,9 +290,6 @@ export const WorkoutDetailsView = ({
                                     <p className="text-foreground">
                                         {dayMatch?.day.toLowerCase()}
                                     </p>{" "}
-                                    <p className="text-muted-foreground">
-                                        Workout Day
-                                    </p>
                                 </h3>
                                 <h1 className="text-3xl leading-7 font-medium">
                                     {workout?.name}
@@ -319,8 +320,8 @@ export const WorkoutDetailsView = ({
                         <Empty className="">
                             <EmptyHeader>
                                 <EmptyMedia variant="icon">
-                                    <Weight
-                                        variant="Bold"
+                                    <ArchiveBox
+                                        variant="Bulk"
                                         size={20}
                                         color="#fff"
                                     />

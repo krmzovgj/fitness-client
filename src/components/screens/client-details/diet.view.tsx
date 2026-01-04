@@ -32,9 +32,9 @@ import { UserRole, type User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useDietStore } from "@/store/diet";
 import { useUserStore } from "@/store/user";
-import { Book1, RecordCircle } from "iconsax-reactjs";
+import { motion } from 'framer-motion';
+import { ArchiveBox, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
-import { motion } from 'framer-motion'
 
 export const DietView = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
@@ -187,8 +187,8 @@ export const DietView = ({ client }: { client: User }) => {
                             <Empty>
                                 <EmptyHeader>
                                     <EmptyMedia variant="icon">
-                                        <Book1
-                                            variant="Bold"
+                                        <ArchiveBox
+                                            variant="Bulk"
                                             size={20}
                                             color="#fff"
                                         />

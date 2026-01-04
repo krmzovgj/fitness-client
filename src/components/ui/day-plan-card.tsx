@@ -8,8 +8,7 @@ import {
     Book1,
     Edit,
     RecordCircle,
-    Timer1,
-    Weight,
+    Timer1
 } from "iconsax-reactjs";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./button";
@@ -126,10 +125,10 @@ export function DayPlanCard({
                                             color="#000"
                                         />
                                     ) : (
-                                        <Weight
-                                            variant="Bold"
-                                            size={21}
-                                            color={highlight}
+                                        <img
+                                            src="/weightOrange.svg"
+                                            className="w-[21px] h-[21px]"
+                                            alt=""
                                         />
                                     )}
                                 </>

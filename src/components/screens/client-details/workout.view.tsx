@@ -38,9 +38,9 @@ import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import { useWorkoutStore } from "@/store/workout";
 import { Label } from "@radix-ui/react-dropdown-menu";
-import { RecordCircle, Weight } from "iconsax-reactjs";
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { ArchiveBox, RecordCircle } from "iconsax-reactjs";
+import { useEffect, useState } from "react";
 
 export const WorkoutView = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
@@ -206,8 +206,8 @@ export const WorkoutView = ({ client }: { client: User }) => {
                             <Empty>
                                 <EmptyHeader>
                                     <EmptyMedia variant="icon">
-                                        <Weight
-                                            variant="Bold"
+                                        <ArchiveBox
+                                            variant="Bulk"
                                             size={20}
                                             color="#fff"
                                         />

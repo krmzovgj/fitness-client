@@ -38,10 +38,10 @@ import { MealType } from "@/model/meal-type";
 import { UserRole } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
-import { ArrowLeft, Book1, RecordCircle } from "iconsax-reactjs";
+import { motion } from "framer-motion";
+import { ArchiveBox, ArrowLeft, Book1, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 
 export const DietDetailsView = ({
     dietId,
@@ -239,9 +239,6 @@ export const DietDetailsView = ({
                             <h3 className="ml-0.5 flex items-center capitalize gap-x-1 font-medium">
                                 <p className="text-foreground">
                                     {dayMatch?.day.toLowerCase()}
-                                </p>{" "}
-                                <p className="text-muted-foreground">
-                                    Meal Day
                                 </p>
                             </h3>
                             <h1 className="text-3xl leading-7 font-medium">
@@ -272,8 +269,8 @@ export const DietDetailsView = ({
                         <Empty className="">
                             <EmptyHeader>
                                 <EmptyMedia variant="icon">
-                                    <Book1
-                                        variant="Bold"
+                                    <ArchiveBox
+                                        variant="Bulk"
                                         size={20}
                                         color="#fff"
                                     />
