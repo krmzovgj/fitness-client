@@ -48,11 +48,9 @@ export const Header = ({ user }: { user?: User }) => {
         <div className="pt-5 md:py-5 md:px-10 px-5 flex justify-between items-center">
 
             <img src="/favicon.png" className="w-9 h-9" alt="" />
-            
             <div className="flex md:hidden items-center gap-x-2 text-xl font-bold">
-                kalapocev
+                {tenant?.subdomain}
             </div>
-
             <div className="flex items-center gap-x-3">
                 {user && (
                     <div className="w-10 md:hidden flex">
