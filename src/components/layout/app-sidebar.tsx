@@ -75,7 +75,7 @@ const MENU_BY_ROLE: Record<UserRole, MenuItem[]> = {
             title: "My Program",
             url: "/my-program",
             icon: Bookmark2,
-            commingSoon: true,
+            commingSoon: false,
         },
         {
             title: "Profile",

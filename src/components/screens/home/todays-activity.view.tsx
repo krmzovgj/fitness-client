@@ -7,7 +7,7 @@ import { useAuthStore } from "@/store/auth";
 import { useDietStore } from "@/store/diet";
 import { useUserStore } from "@/store/user";
 import { useWorkoutStore } from "@/store/workout";
-import { RecordCircle } from "iconsax-reactjs";
+import { ArchiveBox, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 
 export const TodaysActivityView = () => {
@@ -57,8 +57,8 @@ export const TodaysActivityView = () => {
                 </h1>
             </div>
 
-            {todaysWorkout && todaysDiet && (
-                <div className="mt-5 flex flex-col  md:grid grid-cols-4 gap-4">
+            <div className="mt-5 flex flex-col  md:grid grid-cols-4 gap-4">
+                {todaysWorkout ? (
                     <DayPlanCard
                         firstName={user?.firstName!}
                         lastName={user?.lastName!}
@@ -71,7 +71,29 @@ export const TodaysActivityView = () => {
                         name={todaysWorkout?.name}
                         restDay={todaysWorkout?.restDay}
                     />
-
+                ) : (
+                    <div className="p-5 rounded-3xl bg-secondary border-dashed border-2">
+                        <div className="flex items-center gap-x-3">
+                            <div className="h-10 w-10 squircle-round bg-foreground flex justify-center items-center">
+                                <ArchiveBox
+                                    variant="Bulk"
+                                    size={21}
+                                    color="#fff"
+                                />
+                            </div>
+                            <div>
+                                <p className="text-sm capitalize text-muted-foreground">
+                                    {today?.toLowerCase()}
+                                </p>
+                                <h3>No Workout Yet</h3>
+                            </div>
+                        </div>
+                        <h3 className="mt-6 text-sm text-muted-foreground">
+                            Your trainer hasn't created a workout yet
+                        </h3>
+                    </div>
+                )}
+                {todaysDiet ? (
                     <DayPlanCard
                         firstName={user?.firstName!}
                         lastName={user?.lastName!}
@@ -83,34 +105,29 @@ export const TodaysActivityView = () => {
                         meals={todaysDiet?.meals}
                         name={todaysDiet?.name}
                     />
-                </div>
-                // )} : (
-                //     <div className="mt-5 flex flex-col  md:grid grid-cols-4 gap-4">
-                //         {/* {!todaysWorkout && (
-                //             <div className="relative cursor-pointer bg-secondary overflow-hidden rounded-3xl">
-                //                 <Empty>
-                //                     <EmptyContent>
-                //                         <EmptyMedia>
-                //                             <Weight
-                //                                 variant="Bold"
-                //                                 size={21}
-                //                                 color="#000"
-                //                             />
-                //                         </EmptyMedia>
-
-                //                         <EmptyTitle>
-                //                             No workout for today
-                //                         </EmptyTitle>
-                //                         <EmptyDescription>
-                //                             Your trainer hasn't created a workout
-                //                             for {today.toLowerCase()} yet.
-                //                         </EmptyDescription>
-                //                     </EmptyContent>
-                //                 </Empty>
-                //             </div>
-                //         )} */}
-                //     </div>
-            )}
+                ) : (
+                    <div className="p-5 rounded-3xl bg-secondary border-dashed border-2">
+                        <div className="flex items-center gap-x-3">
+                            <div className="h-10 w-10 squircle-round bg-foreground flex justify-center items-center">
+                                <ArchiveBox
+                                    variant="Bulk"
+                                    size={21}
+                                    color="#fff"
+                                />
+                            </div>
+                            <div>
+                                <p className="text-sm capitalize text-muted-foreground">
+                                    {today?.toLowerCase()}
+                                </p>
+                                <h3>No Diet Yet</h3>
+                            </div>
+                        </div>
+                        <h3 className="mt-6 text-sm text-muted-foreground">
+                            Your trainer hasn't created a diet yet
+                        </h3>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

@@ -6,7 +6,9 @@ export const MyProgram = () => {
     const { user } = useUserStore();
 
     return (
-        <div>
+        <div className="mt-10">
+            <h1 className="text-3xl">{user?.firstName}'s Program</h1>
+
             <WorkoutView client={user!} />
             <DietView client={user!} />
         </div>
