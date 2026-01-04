@@ -53,7 +53,7 @@ export function DataTable<T>({
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
                                     <TableHead
-                                        className="h-14 py-2 px-4 bg-secondary  whitespace-nowrap"
+                                        className="h-14 py-2 px-4 bg-secondary opacity-100  whitespace-nowrap"
                                         key={header.id}
                                     >
                                         {header.isPlaceholder ? null : header.column.getCanSort() &&
@@ -92,7 +92,7 @@ export function DataTable<T>({
                                 <motion.tr
                                     layout
                                     key={row.id}
-                                    className={"border-b hover:bg-secondary transition-all"}
+                                    className={"border-b hover:bg-secondary bg-background transition-all"}
                                     style={{ originY: 0 }}
                                 >
                                     {row.getVisibleCells().map((cell) => (

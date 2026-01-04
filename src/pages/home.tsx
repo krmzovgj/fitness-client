@@ -64,11 +64,10 @@ export const Home = () => {
                 <div className="flex md:mb-0 items-center justify-between w-full md:w-auto">
                     <div>
                         <h3 className="flex md:hidden w-fit items-center gap-x-1.5 text-sm md:text-md text-foreground">
-                            <Calendar variant="Bulk" size={17} color="#000" />
                             {formatDate(now)}
                         </h3>
 
-                        <h1 className="text-4xl font-bold mt-3">
+                        <h1 className="text-4xl font-bold mt-2">
                             Hello {user ? user.firstName : "User"},
                         </h1>
                         {user?.role === UserRole.TRAINER ? (

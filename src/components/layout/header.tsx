@@ -63,8 +63,7 @@ export const Header = ({ user }: { user?: User }) => {
                 </div>
             </div>
 
-            <h3 className="hidden md:flex py-2 px-3 rounded-xl border items-center gap-x-1.5 text-sm md:text-md text-foreground">
-                <Calendar variant="Bulk" size={16} color="#000" />
+            <h3 className="hidden md:flex items-center text-sm md:text-md text-foreground">
                 {formatDate(now)}
             </h3>
 
