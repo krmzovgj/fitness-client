@@ -121,7 +121,11 @@ export const WorkoutDetailsView = ({
         if (!token) return;
         setloadingOptions(true);
         try {
-            const response = await searchExercises(token, query);
+            const response = await searchExercises(
+                user?.tenantId!,
+                token,
+                query
+            );
             setexerciseOptions(response.data);
         } finally {
             setloadingOptions(false);
@@ -447,6 +451,7 @@ export const WorkoutDetailsView = ({
                                                                             )
                                                                                 return;
                                                                             await createGlobalExercise(
+                                                                                user?.tenantId!,
                                                                                 token,
                                                                                 searchQuery
                                                                             );

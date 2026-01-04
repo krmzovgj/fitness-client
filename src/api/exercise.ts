@@ -1,12 +1,14 @@
 import type { Exercise } from "@/model/exercise";
 import { api } from "./axios";
 
-
-
-export const createGlobalExercise = async (token: string, name: string) => {
+export const createGlobalExercise = async (
+    tenantId: string,
+    token: string,
+    name: string
+) => {
     const response = await api.post(
         "/exercise",
-        { name },
+        { name, tenantId },
         {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -17,13 +19,17 @@ export const createGlobalExercise = async (token: string, name: string) => {
     return response;
 };
 
-export const searchExercises = async (token: string, search?: string) => {
+export const searchExercises = async (
+    tenantId: string,
+    token: string,
+    search?: string
+) => {
     const response = await api.get<Exercise[]>(`/exercise?search=${search}`, {
         headers: {
+            tenantId: tenantId,
             Authorization: `Bearer ${token}`,
         },
     });
 
     return response;
 };
-
