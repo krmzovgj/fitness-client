@@ -5,11 +5,10 @@ import { Spinner } from "@/components/ui/spinner";
 import { formatDate } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth";
 import { useTenantStore } from "@/store/tenant";
-import { Calendar } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserRole } from "../model/user";
 import { useUserStore } from "../store/user";
-import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
     const { user, setUser, clearUser } = useUserStore();

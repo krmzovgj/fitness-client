@@ -13,10 +13,9 @@ import { useTenantStore } from "@/store/tenant";
 import { useUserStore } from "@/store/user";
 import {
     ArrowDown2,
-    Calendar,
     Lifebuoy,
     LogoutCurve,
-    Profile,
+    Profile
 } from "iconsax-reactjs";
 import {
     AlertDialog,
