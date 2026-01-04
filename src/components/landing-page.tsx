@@ -24,7 +24,7 @@ export const LandingPage = () => {
 
                     <div className="hidden md:flex items-center gap-x-5">
                         <p className="cursor-pointer">Home</p>
-                        <p className="cursor-pointer">Featues</p>
+                        <p className="cursor-pointer">Features</p>
                         <p className="cursor-pointer">FAQ</p>
                         <p className="cursor-pointer">Contact</p>
                     </div>
