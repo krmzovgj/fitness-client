@@ -60,6 +60,8 @@ export const TodaysActivityView = () => {
             {todaysWorkout && todaysDiet && (
                 <div className="mt-5 flex flex-col  md:grid grid-cols-4 gap-4">
                     <DayPlanCard
+                        firstName={user?.firstName!}
+                        lastName={user?.lastName!}
                         day={todaysWorkout?.day!}
                         id={todaysWorkout?.id!}
                         clientId={user?.id!}
@@ -71,6 +73,8 @@ export const TodaysActivityView = () => {
                     />
 
                     <DayPlanCard
+                        firstName={user?.firstName!}
+                        lastName={user?.lastName!}
                         day={todaysDiet?.day!}
                         id={todaysDiet?.id!}
                         clientId={user?.id!}
