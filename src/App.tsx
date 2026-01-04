@@ -36,7 +36,7 @@ function App() {
                 const hostname = window.location.hostname;
                 const parts = hostname.split(".");
 
-                const envSubdomain = import.meta.env.VITE_TENANT_SUBDOMAIN
+                // const envSubdomain = import.meta.env.VITE_TENANT_SUBDOMAIN;
                 const isLocalhost = hostname === "localhost";
 
                 let subdomain: string | null = null;
@@ -45,12 +45,12 @@ function App() {
                     subdomain = parts[0];
                 }
 
-                // if (!subdomain || subdomain === "mycoach") {
-                //     setIsBootstrapping(false);
-                //     return;
-                // }
+                if (!subdomain || subdomain === "mycoach") {
+                    setIsBootstrapping(false);
+                    return;
+                }
 
-                const tenantResponse = await getTenantBySubdomain(envSubdomain);
+                const tenantResponse = await getTenantBySubdomain(subdomain!);
                 setTenant(tenantResponse.data);
 
                 if (token && tenant) {
