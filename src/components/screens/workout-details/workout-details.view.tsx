@@ -486,7 +486,7 @@ export const WorkoutDetailsView = ({
                                 </Button>
                             </PopoverTrigger>
 
-                            <PopoverContent className="p-0">
+                            <PopoverContent side="bottom" className="p-0">
                                 <Command>
                                     <CommandInput
                                         placeholder="Search exercise e.g. Bench Press"
