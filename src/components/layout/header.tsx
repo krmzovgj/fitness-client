@@ -47,7 +47,7 @@ export const Header = ({ user }: { user?: User }) => {
     return (
         <div className="pt-5 md:py-5 md:px-10 px-5 flex justify-between items-center">
 
-            <img src="/favicon.png" className="w-9 h-9" alt="" />
+            <img src="/favicon.png" className="flex md:hidden w-9 h-9" alt="" />
             <div className="flex md:hidden items-center gap-x-2 text-xl font-bold">
                 {tenant?.subdomain}
             </div>
@@ -63,8 +63,8 @@ export const Header = ({ user }: { user?: User }) => {
                 </div>
             </div>
 
-            <h3 className="hidden md:flex py-3 px-4 rounded-2xl border items-center gap-x-1 text-sm md:text-md text-foreground">
-                <Calendar variant="Bulk" size={20} color="#000" />
+            <h3 className="hidden md:flex py-2 px-3 rounded-xl border items-center gap-x-1.5 text-sm md:text-md text-foreground">
+                <Calendar variant="Bulk" size={16} color="#000" />
                 {formatDate(now)}
             </h3>
 
