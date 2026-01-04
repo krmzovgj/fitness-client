@@ -40,6 +40,7 @@ import { useWorkoutStore } from "@/store/workout";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { RecordCircle, Weight } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 export const WorkoutView = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
@@ -222,22 +223,41 @@ export const WorkoutView = ({ client }: { client: User }) => {
                         ) : (
                             <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
                                 {sortedWorkouts.map((workout) => (
-                                    <DayPlanCard
-                                        key={workout.id}
-                                        clientId={client.id}
-                                        id={workout.id}
-                                        day={workout.day}
-                                        name={workout.name}
-                                        exercises={workout?.workoutExercises}
-                                        variant="workout"
-                                        note={workout.note}
-                                        restDay={!!workout.restDay}
-                                        openEdit={() => {
-                                            setselectedWorkout(workout);
-                                            setdialogOpen(true);
+                                    <motion.div
+                                        initial={{
+                                            opacity: 0,
+                                            filter: "blur(20px)",
                                         }}
-                                        user={user!}
-                                    />
+                                        animate={{
+                                            opacity: 1,
+                                            filter: "blur(0px)",
+                                        }}
+                                        transition={{
+                                            duration: 0.5,
+                                            type: "spring",
+                                        }}
+                                    >
+                                        <DayPlanCard
+                                            key={workout.id}
+                                            firstName={client.firstName}
+                                            lastName={client.lastName}
+                                            clientId={client.id}
+                                            id={workout.id}
+                                            day={workout.day}
+                                            name={workout.name}
+                                            exercises={
+                                                workout?.workoutExercises
+                                            }
+                                            variant="workout"
+                                            note={workout.note}
+                                            restDay={!!workout.restDay}
+                                            openEdit={() => {
+                                                setselectedWorkout(workout);
+                                                setdialogOpen(true);
+                                            }}
+                                            user={user!}
+                                        />
+                                    </motion.div>
                                 ))}
                             </div>
                         )}

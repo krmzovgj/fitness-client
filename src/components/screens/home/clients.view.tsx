@@ -34,6 +34,7 @@ import { useTenantStore } from "@/store/tenant";
 import { useUserStore } from "@/store/user";
 import { Eye, EyeSlash, Profile2User, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 export const ClientsView = () => {
     const { user } = useUserStore();
@@ -222,15 +223,30 @@ export const ClientsView = () => {
                                         </EmptyHeader>
                                     </Empty>
                                 ) : (
-                                    <DataTable<User>
-                                        enableSorting={true}
-                                        columns={clientColumns(
-                                            setselectedClient,
-                                            setOpen,
-                                            handleGetClients
-                                        )}
-                                        data={clients || []}
-                                    />
+                                    <motion.div
+                                        initial={{
+                                            opacity: 0,
+                                            filter: "blur(20px)",
+                                        }}
+                                        animate={{
+                                            opacity: 1,
+                                            filter: "blur(0px)",
+                                        }}
+                                        transition={{
+                                            duration: 0.5,
+                                            type: "spring",
+                                        }}
+                                    >
+                                        <DataTable<User>
+                                            enableSorting={true}
+                                            columns={clientColumns(
+                                                setselectedClient,
+                                                setOpen,
+                                                handleGetClients
+                                            )}
+                                            data={clients || []}
+                                        />
+                                    </motion.div>
                                 )}
                             </div>
                         )}

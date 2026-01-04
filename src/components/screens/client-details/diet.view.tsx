@@ -34,6 +34,7 @@ import { useDietStore } from "@/store/diet";
 import { useUserStore } from "@/store/user";
 import { Book1, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
+import { motion } from 'framer-motion'
 
 export const DietView = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
@@ -203,20 +204,37 @@ export const DietView = ({ client }: { client: User }) => {
                         ) : (
                             <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
                                 {sortedMealDays?.map((diet) => (
-                                    <DayPlanCard
-                                        id={diet.id}
-                                        clientId={client.id}
-                                        key={diet.id}
-                                        day={diet.day}
-                                        name={diet.name}
-                                        meals={diet.meals}
-                                        variant="diet"
-                                        openEdit={() => {
-                                            setselectedDiet(diet);
-                                            setdialogOpen(true);
+                                    <motion.div
+                                        initial={{
+                                            opacity: 0,
+                                            filter: "blur(20px)",
                                         }}
-                                        user={user!}
-                                    />
+                                        animate={{
+                                            opacity: 1,
+                                            filter: "blur(0px)",
+                                        }}
+                                        transition={{
+                                            duration: 0.5,
+                                            type: "spring",
+                                        }}
+                                    >
+                                        <DayPlanCard
+                                            id={diet.id}
+                                            firstName={client.firstName}
+                                            lastName={client.lastName}
+                                            clientId={client.id}
+                                            key={diet.id}
+                                            day={diet.day}
+                                            name={diet.name}
+                                            meals={diet.meals}
+                                            variant="diet"
+                                            openEdit={() => {
+                                                setselectedDiet(diet);
+                                                setdialogOpen(true);
+                                            }}
+                                            user={user!}
+                                        />
+                                    </motion.div>
                                 ))}
                             </div>
                         )}

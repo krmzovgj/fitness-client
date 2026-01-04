@@ -58,6 +58,7 @@ import {
 } from "@/api/workout-exercise";
 import { MandatoryWrapper } from "@/components/ui/mandatory-input-wrapper";
 import { InputBadge } from "@/components/ui/input-badge";
+import { motion } from "framer-motion";
 
 export const WorkoutDetailsView = ({
     workoutId,
@@ -240,7 +241,21 @@ export const WorkoutDetailsView = ({
                 seterror("");
             }}
         >
-            <div className="flex items-end justify-between">
+            <motion.div
+                initial={{
+                    opacity: 0,
+                    filter: "blur(20px)",
+                }}
+                animate={{
+                    opacity: 1,
+                    filter: "blur(0px)",
+                }}
+                transition={{
+                    duration: 0.5,
+                    type: "spring",
+                }}
+                className="flex items-end justify-between"
+            >
                 <div className="mt-10">
                     <div className="flex items-center gap-x-3">
                         <Button
@@ -256,6 +271,9 @@ export const WorkoutDetailsView = ({
                             />
                             Back
                         </Button>
+                        <h3 className="text-foreground">
+                            {state?.firstName} {state?.lastName}
+                        </h3>
                     </div>
 
                     <div className="flex mt-5  items-center gap-x-3">
@@ -279,7 +297,7 @@ export const WorkoutDetailsView = ({
                         </div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
 
             <div className="flex mt-10 items-center justify-between">
                 <h1 className="text-xl md:text-2xl flex items-center gap-x-1 md:gap-x-2">
@@ -359,7 +377,7 @@ export const WorkoutDetailsView = ({
                             open={exerciseListOpen}
                             onOpenChange={setexerciseListOpen}
                         >
-                            <PopoverTrigger asChild>
+                            <PopoverTrigger className=" w-full" asChild>
                                 <Button
                                     variant="outline"
                                     className="relative justify-between px-3 h-10"

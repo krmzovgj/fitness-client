@@ -41,6 +41,7 @@ import { useUserStore } from "@/store/user";
 import { ArrowLeft, Book1, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export const DietDetailsView = ({
     dietId,
@@ -194,7 +195,21 @@ export const DietDetailsView = ({
                 seterror("");
             }}
         >
-            <div className="flex items-end  justify-between">
+            <motion.div
+                initial={{
+                    opacity: 0,
+                    filter: "blur(20px)",
+                }}
+                animate={{
+                    opacity: 1,
+                    filter: "blur(0px)",
+                }}
+                transition={{
+                    duration: 0.5,
+                    type: "spring",
+                }}
+                className="flex items-end  justify-between"
+            >
                 <div className="mt-10">
                     <div className="flex items-center gap-x-3">
                         <Button
@@ -210,6 +225,10 @@ export const DietDetailsView = ({
                             />
                             Back
                         </Button>
+
+                        <h3 className="text-foreground">
+                            {state?.firstName} {state?.lastName}
+                        </h3>
                     </div>
 
                     <div className="flex mt-5  items-center gap-x-3">
@@ -231,7 +250,7 @@ export const DietDetailsView = ({
                         </div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
 
             <div className="flex mt-10 items-center justify-between">
                 <h1 className="text-xl md:text-2xl flex items-center gap-x-1 md:gap-x-2">
@@ -247,7 +266,7 @@ export const DietDetailsView = ({
                 )}
             </div>
 
-            <div className="mt-5 flex flex-col  ">
+            <motion.div className="mt-5 flex flex-col  ">
                 <div className="flex flex-col ">
                     {diet?.meals?.length === 0 ? (
                         <Empty className="">
@@ -373,7 +392,10 @@ export const DietDetailsView = ({
                                 </SelectTrigger>
                                 <SelectContent>
                                     {mealTypes.map((mealTypeItem) => (
-                                        <SelectItem value={mealTypeItem.type}>
+                                        <SelectItem
+                                            key={mealTypeItem.type}
+                                            value={mealTypeItem.type}
+                                        >
                                             <div className="flex items-center gap-x-2">
                                                 <div
                                                     className="w-2 h-2 rounded-full"
@@ -413,7 +435,7 @@ export const DietDetailsView = ({
                         </Button>
                     </DialogFooter>
                 </DialogContent>
-            </div>
+            </motion.div>
         </Dialog>
     );
 };

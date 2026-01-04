@@ -49,14 +49,14 @@ function Button({
     return (
         <motion.span
             whileHover={{
-                scale: 1.08,
+                scale: 1.04,
             }}
             transition={{
                 type: "spring",
-                duration: 0.7,
+                duration: 0.5,
             }}
             whileTap={{
-                scale: 0.95,
+                scale: 0.98,
             }}
         >
             <Comp

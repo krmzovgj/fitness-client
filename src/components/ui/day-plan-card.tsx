@@ -18,6 +18,8 @@ type Variant = "workout" | "diet";
 
 type Props = {
     id: string;
+    firstName: string;
+    lastName: string;
     clientId: number;
     day: Day;
     name?: string | null;
@@ -32,6 +34,8 @@ type Props = {
 
 export function DayPlanCard({
     id,
+    firstName,
+    lastName,
     clientId,
     day,
     name,
@@ -68,6 +72,8 @@ export function DayPlanCard({
                 : `/client/${id}/diet-details`,
             {
                 state: {
+                    firstName,
+                    lastName,
                     workout: isWorkout
                         ? { id, name, day, note, exercises, restDay, clientId }
                         : null,
@@ -173,9 +179,7 @@ export function DayPlanCard({
                                         ? meals?.length
                                         : exercises?.length}
                                 </span>{" "}
-                                {isWorkout
-                                    ? "Exercises"
-                                    : "Meals"}
+                                {isWorkout ? "Exercises" : "Meals"}
                             </p>
 
                             {variant === "diet" && (
