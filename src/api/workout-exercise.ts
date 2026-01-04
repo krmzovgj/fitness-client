@@ -35,6 +35,23 @@ export const getExercisesByWorkout = async (
     return response;
 };
 
+export const reorderWorkoutExercise = async (
+    token: string,
+    workoutId: string,
+    body: { items: { id: string; orderNumber: number }[] }
+) => {
+    const response = await api.patch(
+        `/workout-exercise/${workoutId}/reorder`,
+        body,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+    return response;
+};
+
 export const createWorkoutExercise = async (
     dto: CreateWorkoutExerciseDto,
     token: string,

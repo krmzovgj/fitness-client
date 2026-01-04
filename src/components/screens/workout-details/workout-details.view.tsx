@@ -2,9 +2,14 @@ import { createGlobalExercise, searchExercises } from "@/api/exercise";
 import { getWorkoutById, updateWorkout } from "@/api/workout";
 import {
     createWorkoutExercise,
+    reorderWorkoutExercise,
     updateWorkoutExercise,
 } from "@/api/workout-exercise";
-import { ExerciseColumns } from "@/components/columns/exercise-columns";
+import {
+    ExerciseColumns,
+    getAllOrderValues,
+    toggleEditOrders,
+} from "@/components/columns/exercise-columns";
 import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import {
@@ -53,6 +58,7 @@ import {
     ArchiveBox,
     ArrowLeft,
     ArrowSwapVertical,
+    CloseCircle,
     RecordCircle,
     TickCircle,
 } from "iconsax-reactjs";
@@ -90,6 +96,8 @@ export const WorkoutDetailsView = ({
     const [selectedOptionExercise, setselectedOptionExercise] =
         useState<Exercise | null>(null);
 
+    const [savingOrder, setsavingOrder] = useState(false);
+    const [editOrder, seteditOrder] = useState(false);
     const [dialogOpen, setdialogOpen] = useState(false);
     const [error, seterror] = useState("");
     const [creatingExercise, setcreatingExercise] = useState(false);
@@ -99,6 +107,33 @@ export const WorkoutDetailsView = ({
     const filteredOptions = exerciseOptions.filter((exercise) =>
         exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    const handleEditOrders = () => {
+        toggleEditOrders?.();
+        seteditOrder(true);
+    };
+
+    const handleSaveOrders = async () => {
+        if (!token || !getAllOrderValues) return;
+
+        const items = getAllOrderValues();
+
+        try {
+            setsavingOrder(true);
+            await reorderWorkoutExercise(token, workoutId, { items });
+        } finally {
+            setsavingOrder(false);
+            seteditOrder(false);
+            toggleEditOrders?.();
+        }
+
+        await getWorkout();
+    };
+
+    const handleCancelOrders = () => {
+        seteditOrder(false);
+        toggleEditOrders?.();
+    };
 
     const getWorkout = async () => {
         if (!token) return;
@@ -110,7 +145,7 @@ export const WorkoutDetailsView = ({
 
             setWorkout({
                 ...data,
-                exercises: data.workoutExercises ?? [],
+                exercises: data?.workoutExercises ?? [],
             });
         } finally {
             setloadingWorkout(false);
@@ -312,9 +347,53 @@ export const WorkoutDetailsView = ({
                 </h1>
 
                 {user?.role === UserRole.TRAINER && (
-                    <DialogTrigger asChild>
-                        <Button>Add Exercise</Button>
-                    </DialogTrigger>
+                    <div className="flex items-center gap-x-2">
+                        {!editOrder ? (
+                            <Button
+                                variant="outline"
+                                onClick={handleEditOrders}
+                            >
+                                <ArrowSwapVertical
+                                    variant="Linear"
+                                    size={20}
+                                    color="#000"
+                                />
+                            </Button>
+                        ) : (
+                            <>
+                                <Button
+                                    className="px-2"
+                                    variant="outline"
+                                    onClick={handleSaveOrders}
+                                >
+                                    {savingOrder ? (
+                                        <Spinner className="size-5" />
+                                    ) : (
+                                        <TickCircle
+                                            variant="Bold"
+                                            size={20}
+                                            color="#000"
+                                        />
+                                    )}
+                                </Button>
+                                <Button
+                                    className="px-2"
+                                    variant="outline"
+                                    onClick={handleCancelOrders}
+                                >
+                                    <CloseCircle
+                                        variant="Bold"
+                                        size={20}
+                                        color="red"
+                                    />
+                                </Button>
+                            </>
+                        )}
+
+                        <DialogTrigger asChild>
+                            <Button>Add Exercise</Button>
+                        </DialogTrigger>
+                    </div>
                 )}
             </div>
 
@@ -340,7 +419,6 @@ export const WorkoutDetailsView = ({
                         </Empty>
                     ) : (
                         <DataTable
-                            enableSorting
                             data={workout?.exercises ?? []}
                             columns={ExerciseColumns(
                                 setselectedExercise,

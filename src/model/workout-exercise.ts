@@ -8,6 +8,7 @@ export interface WorkoutExercise {
     restBetweenSets?: number;
     restAfterExercise?: number;
     exercise: Exercise;
+    orderNumber: number;
     workoutId: string;
     exerciseId: string;
     updatedAt: string;

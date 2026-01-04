@@ -21,22 +21,22 @@
     font-family: onest;
     font-weight: 500;
     color: #181818;
-    background-color: #FAFAFA;
+    background-color: #fafafa;
 
     --radius: 0.625rem;
 
     /* Light mode palette */
-    --background: #FAFAFA;
+    --background: #fafafa;
     --foreground: #181818;
 
-    --card: #FAFAFA;
+    --card: #fafafa;
     --card-foreground: #181818;
 
-    --popover: #FAFAFA;
+    --popover: #fafafa;
     --popover-foreground: #181818;
 
     --primary: oklch(0.205 0 0);
-    --primary-foreground: #FAFAFA;
+    --primary-foreground: #fafafa;
 
     --secondary: oklch(0.97 0 0);
     --secondary-foreground: #181818;
@@ -59,14 +59,23 @@
     --chart-4: oklch(0.828 0.189 84.429);
     --chart-5: oklch(0.769 0.188 70.08);
 
-    --sidebar: #FAFAFA;
+    --sidebar: #fafafa;
     --sidebar-foreground: #181818;
     --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: #FAFAFA;
+    --sidebar-primary-foreground: #fafafa;
     --sidebar-accent: oklch(0.97 0 0);
     --sidebar-accent-foreground: #181818;
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+}
+
+.no-arrows::-webkit-outer-spin-button,
+.no-arrows::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.no-arrows {
+    -moz-appearance: textfield;
 }
 
 /* ------------------------------------------
@@ -74,10 +83,10 @@
 ------------------------------------------ */
 .dark {
     --background: #181818;
-    --foreground: #FAFAFA;
+    --foreground: #fafafa;
 
     --card: #181818;
-    --card-foreground: #FAFAFA;
+    --card-foreground: #fafafa;
 
     --popover: #181818;
     --popover-foreground: #fefefe;
@@ -122,7 +131,7 @@
 
 ::selection {
     background-color: #292929; /* New background color (e.g., a shade of red) */
-    color: #FAFAFA; /* New foreground/text color (e.g., white) */
+    color: #fafafa; /* New foreground/text color (e.g., white) */
 }
 
 /* ------------------------------------------
