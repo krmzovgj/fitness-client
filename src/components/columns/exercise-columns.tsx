@@ -7,7 +7,7 @@ import type { WorkoutExercise } from "@/model/workout-exercise";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowForward, Edit, Maximize4, Timer1, Trash } from "iconsax-reactjs";
+import { Edit, Maximize4, Timer1, Trash } from "iconsax-reactjs";
 import { useState } from "react";
 import {
     AlertDialog,
