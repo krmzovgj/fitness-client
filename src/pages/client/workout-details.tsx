@@ -7,7 +7,10 @@ export const WorkoutDetails = () => {
 
     return (
         <div className="h-full md:h-screen flex flex-col ">
-            <WorkoutDetailsView workoutId={id!} clientName={state?.clientName} />
+            <WorkoutDetailsView
+                workoutId={id!}
+                clientName={state?.clientName}
+            />
         </div>
     );
 };

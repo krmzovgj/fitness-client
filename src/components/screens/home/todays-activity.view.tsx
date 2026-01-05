@@ -67,7 +67,7 @@ export const TodaysActivityView = () => {
                         clientId={user?.id!}
                         user={user!}
                         variant="workout"
-                        exercises={todaysWorkout?.workoutExercises}
+                        exerciseCount={todaysWorkout?._count.workoutExercises}
                         name={todaysWorkout?.name}
                         restDay={todaysWorkout?.restDay}
                     />
@@ -102,7 +102,7 @@ export const TodaysActivityView = () => {
                         clientId={user?.id!}
                         user={user!}
                         variant="diet"
-                        meals={todaysDiet?.meals}
+                        mealsCount={todaysDiet?._count.meals}
                         name={todaysDiet?.name}
                     />
                 ) : (
