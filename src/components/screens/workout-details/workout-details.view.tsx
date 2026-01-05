@@ -218,11 +218,8 @@ export const WorkoutDetailsView = ({
             setcreatingExercise(true);
 
             const lastOrder =
-                workoutExercises &&
-                workoutExercises?.length > 0
-                    ? workoutExercises[
-                          workoutExercises?.length - 1
-                      ]?.orderNumber
+                workoutExercises && workoutExercises.length > 0
+                    ? workoutExercises[workoutExercises.length - 1].orderNumber
                     : 0;
 
             const response = await createWorkoutExercise(
@@ -240,12 +237,12 @@ export const WorkoutDetailsView = ({
             );
 
             if (response.status === 201) {
+                const createdExercise = response.data as WorkoutExercise;
+                setworkoutExercises((prev) => [...prev, createdExercise]);
                 setdialogOpen(false);
-                await getWorkoutData(false);
             }
         } catch (error: any) {
-            const msg = error.response.data.message;
-
+            const msg = error.response?.data?.message;
             if (Array.isArray(msg)) {
                 seterror(msg[0]);
             } else {
@@ -278,8 +275,13 @@ export const WorkoutDetailsView = ({
             );
 
             if (response.status === 200) {
+                const updatedExercise = response.data as WorkoutExercise;
+                setworkoutExercises((prev) =>
+                    prev.map((ex) =>
+                        ex.id === updatedExercise.id ? updatedExercise : ex
+                    )
+                );
                 setdialogOpen(false);
-                await getWorkoutData(false);
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -406,9 +408,7 @@ export const WorkoutDetailsView = ({
                     <div className="flex items-center gap-x-2">
                         {!editOrder ? (
                             <Button
-                                disabled={
-                                    workoutExercises?.length === 0
-                                }
+                                disabled={workoutExercises?.length === 0}
                                 variant="outline"
                                 onClick={handleEditOrders}
                             >
@@ -465,8 +465,7 @@ export const WorkoutDetailsView = ({
 
             <div className="mt-5 flex flex-col ">
                 <div className="flex flex-col">
-                    {workoutExercises?.length === 0 &&
-                    !loadingExercises ? (
+                    {workoutExercises?.length === 0 && !loadingExercises ? (
                         <Empty className="">
                             <EmptyHeader>
                                 <EmptyMedia variant="icon">
@@ -490,7 +489,7 @@ export const WorkoutDetailsView = ({
                             columns={ExerciseColumns(
                                 setselectedExercise,
                                 setdialogOpen,
-                                getWorkoutData,
+                                setworkoutExercises,
                                 editOrders,
                                 orderValues,
                                 setOrderValues

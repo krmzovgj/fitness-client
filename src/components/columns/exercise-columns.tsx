@@ -46,7 +46,7 @@ function ActionsCell({
 }: {
     row: WorkoutExercise;
     onEdit: (ex: WorkoutExercise) => void;
-    onDeleted: () => void;
+    onDeleted: (id: string) => void;
 }) {
     const { user } = useUserStore();
     const { token } = useAuthStore();
@@ -60,7 +60,7 @@ function ActionsCell({
             setDeletingExercise(true);
             const response = await deleteWorkoutExercise(row.id, token!);
             if (response.status === 200) {
-                onDeleted();
+                onDeleted(row.id);
                 setopenAlertDialog(false);
             }
         } finally {
@@ -118,7 +118,9 @@ function ActionsCell({
 export const ExerciseColumns = (
     setSelectedExercise: (exercise: WorkoutExercise | null) => void,
     setopen: (open: boolean) => void,
-    getWorkoutData: (showPageLoader: boolean) => void,
+    setworkoutExercises: React.Dispatch<
+        React.SetStateAction<WorkoutExercise[]>
+    >,
     editOrders: boolean,
     orderValues: Record<string, number>,
     setOrderValues: React.Dispatch<React.SetStateAction<Record<string, number>>>
@@ -230,7 +232,11 @@ export const ExerciseColumns = (
                     setopen(true);
                     setSelectedExercise(ex);
                 }}
-                onDeleted={() => getWorkoutData(false)}
+                onDeleted={(id) =>
+                    setworkoutExercises((prev) =>
+                        prev.filter((ex) => ex.id !== id)
+                    )
+                }
             />
         ),
     },
