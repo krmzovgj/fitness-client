@@ -212,6 +212,7 @@ export const DietView = ({ client }: { client: User }) => {
                             <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
                                 {sortedMealDays?.map((diet) => (
                                     <motion.div
+                                        key={diet?.id}
                                         initial={{
                                             opacity: 0,
                                             filter: "blur(20px)",
@@ -278,7 +279,10 @@ export const DietView = ({ client }: { client: User }) => {
                         </SelectTrigger>
                         <SelectContent>
                             {availableDays.map((dayItem) => (
-                                <SelectItem value={dayItem.day}>
+                                <SelectItem
+                                    key={dayItem.day}
+                                    value={dayItem.day}
+                                >
                                     <div className="flex items-center gap-x-2">
                                         <div
                                             className="w-2 h-2 rounded-full"

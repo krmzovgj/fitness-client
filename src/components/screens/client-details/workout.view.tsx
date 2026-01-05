@@ -195,7 +195,14 @@ export const WorkoutView = ({ client }: { client: User }) => {
 
                     {user?.role === UserRole.TRAINER && (
                         <DialogTrigger asChild>
-                            <Button variant="default"><AddCircle variant="Bold" size={20} color="#fff" />Workout</Button>
+                            <Button variant="default">
+                                <AddCircle
+                                    variant="Bold"
+                                    size={20}
+                                    color="#fff"
+                                />
+                                Workout
+                            </Button>
                         </DialogTrigger>
                     )}
                 </div>
@@ -224,6 +231,7 @@ export const WorkoutView = ({ client }: { client: User }) => {
                             <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
                                 {sortedWorkouts.map((workout) => (
                                     <motion.div
+                                        key={workout?.id}
                                         initial={{
                                             opacity: 0,
                                             filter: "blur(20px)",

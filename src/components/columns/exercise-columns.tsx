@@ -66,7 +66,11 @@ export const ExerciseColumns = (
                 const rowId = row.original.id;
 
                 if (!editOrders || user?.role === UserRole.CLIENT) {
-                    return <span>{row.original.orderNumber}</span>;
+                    return (
+                        <span className="text-muted-foreground">
+                            {row.original.orderNumber}
+                        </span>
+                    );
                 }
 
                 return (
@@ -174,31 +178,30 @@ export const ExerciseColumns = (
                 );
             },
         },
-
-        {
-            accessorKey: "exercise.restAfterExercise",
-            header: "Rest After Exercise",
-            cell: ({ row }) => {
-                return (
-                    <span className="whitespace-nowrap">
-                        {row.original.restAfterExercise ? (
-                            <span className="flex items-center gap-x-2">
-                                {" "}
-                                {secondsToTime(row.original.restAfterExercise!)}
-                                <ArrowForward
-                                    className="rotate-180"
-                                    variant="Bold"
-                                    size={17}
-                                    color="#000"
-                                />
-                            </span>
-                        ) : (
-                            "N/A"
-                        )}
-                    </span>
-                );
-            },
-        },
+        // {
+        //     accessorKey: "exercise.restAfterExercise",
+        //     header: "Rest After Exercise",
+        //     cell: ({ row }) => {
+        //         return (
+        //             <span className="whitespace-nowrap">
+        //                 {row.original.restAfterExercise ? (
+        //                     <span className="flex items-center gap-x-2">
+        //                         {" "}
+        //                         {secondsToTime(row.original.restAfterExercise!)}
+        //                         <ArrowForward
+        //                             className="rotate-180"
+        //                             variant="Bold"
+        //                             size={17}
+        //                             color="#000"
+        //                         />
+        //                     </span>
+        //                 ) : (
+        //                     "N/A"
+        //                 )}
+        //             </span>
+        //         );
+        //     },
+        // },
         {
             id: "actions",
             header: "",
