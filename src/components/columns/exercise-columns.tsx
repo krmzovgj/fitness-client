@@ -1,7 +1,6 @@
 "use client";
 
 import { deleteWorkoutExercise } from "@/api/workout-exercise";
-import { secondsToTime } from "@/lib/utils";
 import { UserRole } from "@/model/user";
 import type { WorkoutExercise } from "@/model/workout-exercise";
 import { useAuthStore } from "@/store/auth";
@@ -29,283 +28,210 @@ import {
     DialogTrigger,
 } from "../ui/dialog";
 import { Spinner } from "../ui/spinner";
+import { secondsToTime } from "@/lib/utils";
+
+/* ---------------- EXPORTED HELPERS (unchanged) ---------------- */
 
 export let toggleEditOrders: (() => void) | null = null;
 export let getAllOrderValues:
     | (() => { id: string; orderNumber: number }[])
     | null = null;
 
-export const ExerciseColumns = (
-    setSelectedExercise: (exercise: WorkoutExercise | null) => void,
-    setopen: (open: boolean) => void,
-    handleGetExercisesByWorkout: () => void
-): ColumnDef<WorkoutExercise>[] => {
-    const [editOrders, setEditOrders] = useState(false);
-    const [orderValues, setOrderValues] = useState<Record<string, number>>({});
+/* ---------------- ACTION CELL COMPONENT ---------------- */
 
-    toggleEditOrders = () => {
-        setEditOrders((prev) => !prev);
+function ActionsCell({
+    row,
+    onEdit,
+    onDeleted,
+}: {
+    row: WorkoutExercise;
+    onEdit: (ex: WorkoutExercise) => void;
+    onDeleted: () => void;
+}) {
+    const { user } = useUserStore();
+    const { token } = useAuthStore();
+    const [openAlertDialog, setopenAlertDialog] = useState(false);
+    const [deletingExercise, setDeletingExercise] = useState(false);
 
-        if (!editOrders) {
-            setOrderValues(() => ({}));
+    if (user?.role === UserRole.CLIENT) return null;
+
+    const handleDeleteExercise = async () => {
+        try {
+            setDeletingExercise(true);
+            const response = await deleteWorkoutExercise(row.id, token!);
+            if (response.status === 200) {
+                onDeleted();
+                setopenAlertDialog(false);
+            }
+        } finally {
+            setDeletingExercise(false);
         }
     };
 
-    getAllOrderValues = () =>
-        Object.entries(orderValues).map(([id, orderNumber]) => ({
-            id,
-            orderNumber,
-        }));
+    return (
+        <div className="flex items-center gap-x-2 whitespace-nowrap">
+            <Button onClick={() => onEdit(row)} variant="outline">
+                <Edit variant="Bold" size={18} color="#292929" />
+                Edit
+            </Button>
 
-    return [
-        {
-            accessorKey: "orderNumber",
-            header: "Order",
-            cell: ({ row }) => {
-                const { user } = useUserStore();
-                const rowId = row.original.id;
+            <AlertDialog
+                open={openAlertDialog}
+                onOpenChange={setopenAlertDialog}
+            >
+                <AlertDialogTrigger asChild>
+                    <Button variant="outline">
+                        <Trash variant="Bold" size={18} color="red" />
+                        Delete
+                    </Button>
+                </AlertDialogTrigger>
 
-                if (!editOrders || user?.role === UserRole.CLIENT) {
-                    return (
-                        <span className="text-muted-foreground">
-                            {row.original.orderNumber}
-                        </span>
-                    );
-                }
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Delete exercise</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Are you sure you want to delete this exercise? This
+                            action is irreversible.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
 
-                return (
-                    <input
-                        type="number"
-                        min={0}
-                        className="w-14 text-center rounded-md border relative no-arrows"
-                        value={orderValues[rowId] ?? row.original.orderNumber}
-                        onChange={(e) => {
-                            const val = e.target.value;
-                            setOrderValues((prev) => ({
-                                ...prev,
-                                [rowId]: val === "" ? 0 : Number(val),
-                            }));
-                        }}
-                        onFocus={(e) => e.target.select()}
-                    />
-                );
-            },
-        },
-        {
-            accessorKey: "exercise.name",
-            header: "Name",
-            cell: ({ row }) => (
-                <span className="whitespace-nowrap">
-                    {row.original.exercise.name}
-                </span>
-            ),
-        },
-        {
-            accessorKey: "exercise.sets",
-            header: "Sets",
-            cell: ({ row }) => (
-                <span className="whitespace-nowrap">
-                    <span className="font-bold text-xs text-[#FF8C00]">x</span>
-                    {row.original.sets}
-                </span>
-            ),
-        },
-        {
-            accessorKey: "exercise.reps",
-            header: "Reps",
-            cell: ({ row }) => (
-                <span className="whitespace-nowrap">
-                    <span className="font-bold text-xs text-[#FF8C00]">x</span>
-                    {row.original.reps}
-                </span>
-            ),
-        },
-        {
-            accessorKey: "exercise.note",
-            header: "Note",
-            cell: ({ row }) => {
-                return (
-                    <Dialog>
-                        <span className="whitespace-nowrap">
-                            {row.original.note ? (
-                                <DialogTrigger className="flex items-center gap-x-1 cursor-pointer">
-                                    {row.original.note.slice(0, 15) + "..."}
-                                    {row.original.note ? (
-                                        <Maximize4
-                                            variant="Bold"
-                                            size={15}
-                                            color="#000"
-                                        />
-                                    ) : null}
-                                </DialogTrigger>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <Button
+                            className="w-full"
+                            variant="destructive"
+                            onClick={handleDeleteExercise}
+                        >
+                            {deletingExercise ? (
+                                <Spinner color="#fff" className="size-6" />
                             ) : (
-                                "N/A"
+                                "Delete Exercise"
                             )}
-                        </span>
+                        </Button>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        </div>
+    );
+}
 
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>
-                                    <div className="flex items-center gap-x-2">
-                                        Note for {row.original.exercise.name}
-                                    </div>
-                                </DialogTitle>
-                            </DialogHeader>
-                            <DialogDescription>
-                                {row.original.note}
-                            </DialogDescription>
-                        </DialogContent>
-                    </Dialog>
-                );
-            },
-        },
-        {
-            accessorKey: "exercise.restBetweenSets",
-            header: "Rest Between Sets",
-            cell: ({ row }) => {
+export const ExerciseColumns = (
+    setSelectedExercise: (exercise: WorkoutExercise | null) => void,
+    setopen: (open: boolean) => void,
+    getWorkoutData: (showPageLoader: boolean) => void,
+    editOrders: boolean,
+    orderValues: Record<string, number>,
+    setOrderValues: React.Dispatch<React.SetStateAction<Record<string, number>>>
+): ColumnDef<WorkoutExercise>[] => [
+    {
+        accessorKey: "orderNumber",
+        header: "Order",
+        cell: ({ row }) => {
+            const { user } = useUserStore();
+            const rowId = row.original.id;
+
+            if (!editOrders || user?.role === UserRole.CLIENT) {
                 return (
-                    <span className="whitespace-nowrap">
-                        {row.original.restBetweenSets ? (
-                            <span className="flex items-center gap-x-2">
-                                {" "}
-                                {secondsToTime(row.original.restBetweenSets!)}
-                                <Timer1 variant="Bold" size={17} color="#000" />
-                            </span>
-                        ) : (
-                            "N/A"
-                        )}
+                    <span className="text-muted-foreground">
+                        {row.original.orderNumber}
                     </span>
                 );
-            },
+            }
+
+            return (
+                <input
+                    type="number"
+                    min={0}
+                    className="w-14 text-center rounded-md border relative no-arrows"
+                    value={orderValues[rowId] ?? row.original.orderNumber}
+                    onChange={(e) => {
+                        const val = e.target.value;
+                        setOrderValues((prev) => ({
+                            ...prev,
+                            [rowId]: val === "" ? 0 : Number(val),
+                        }));
+                    }}
+                    onFocus={(e) => e.target.select()}
+                />
+            );
         },
-        // {
-        //     accessorKey: "exercise.restAfterExercise",
-        //     header: "Rest After Exercise",
-        //     cell: ({ row }) => {
-        //         return (
-        //             <span className="whitespace-nowrap">
-        //                 {row.original.restAfterExercise ? (
-        //                     <span className="flex items-center gap-x-2">
-        //                         {" "}
-        //                         {secondsToTime(row.original.restAfterExercise!)}
-        //                         <ArrowForward
-        //                             className="rotate-180"
-        //                             variant="Bold"
-        //                             size={17}
-        //                             color="#000"
-        //                         />
-        //                     </span>
-        //                 ) : (
-        //                     "N/A"
-        //                 )}
-        //             </span>
-        //         );
-        //     },
-        // },
-        {
-            id: "actions",
-            header: "",
-            cell: ({ row }) => {
-                const { user } = useUserStore();
-                const { token } = useAuthStore();
-                const [openAlertDialog, setopenAlertDialog] = useState(false);
-                const [deletingExercise, setDeletingExercise] = useState(false);
-
-                if (user?.role === UserRole.CLIENT) return null;
-
-                const handleOpenEdit = () => {
+    },
+    {
+        accessorKey: "exercise.name",
+        header: "Name",
+        cell: ({ row }) => (
+            <span className="whitespace-nowrap">
+                {row.original.exercise.name}
+            </span>
+        ),
+    },
+    {
+        accessorKey: "exercise.sets",
+        header: "Sets",
+        cell: ({ row }) => (
+            <>
+                <span className="font-bold text-xs text-[#FF8C00]">x</span>
+                {row.original.sets}
+            </>
+        ),
+    },
+    {
+        accessorKey: "exercise.reps",
+        header: "Reps",
+        cell: ({ row }) => (
+            <>
+                <span className="font-bold text-xs text-[#FF8C00]">x</span>
+                {row.original.reps}
+            </>
+        ),
+    },
+    {
+        accessorKey: "exercise.note",
+        header: "Note",
+        cell: ({ row }) =>
+            row.original.note ? (
+                <Dialog>
+                    <DialogTrigger className="flex whitespace-nowrap gap-x-1 cursor-pointer">
+                        {row.original.note.slice(0, 15)}...
+                        <Maximize4 variant="Bold" size={15} />
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle className="text-left">
+                                Note for {row.original.exercise.name}
+                            </DialogTitle>
+                        </DialogHeader>
+                        <DialogDescription>
+                            {row.original.note}
+                        </DialogDescription>
+                    </DialogContent>
+                </Dialog>
+            ) : (
+                "N/A"
+            ),
+    },
+    {
+        accessorKey: "restBetweenSets",
+        header: "Rest Between Sets",
+        cell: ({ row }) => (
+            <div className="whitespace-nowrap flex items-center gap-x-1">
+                {secondsToTime(row.original.restBetweenSets!)}
+                <Timer1 variant="Bold" size={15} />
+            </div>
+        ),
+    },
+    {
+        id: "actions",
+        header: "",
+        cell: ({ row }) => (
+            <ActionsCell
+                row={row.original}
+                onEdit={(ex) => {
                     setopen(true);
-                    setSelectedExercise(row.original);
-                };
-
-                const handleDeleteExercise = async () => {
-                    try {
-                        setDeletingExercise(true);
-
-                        const response = await deleteWorkoutExercise(
-                            row.original.id,
-                            token!
-                        );
-                        if (response.status === 200) {
-                            handleGetExercisesByWorkout();
-                            setopenAlertDialog(false);
-                        }
-                    } catch (error) {
-                    } finally {
-                        setDeletingExercise(false);
-                    }
-                };
-
-                return (
-                    <div className="flex items-center gap-x-2 whitespace-nowrap">
-                        {user?.role === UserRole.TRAINER && (
-                            <div className="flex items-center gap-x-2">
-                                <Button
-                                    onClick={handleOpenEdit}
-                                    variant="outline"
-                                >
-                                    <Edit
-                                        variant="Bold"
-                                        size={18}
-                                        color="#292929"
-                                    />
-                                    Edit
-                                </Button>
-
-                                <AlertDialog
-                                    open={openAlertDialog}
-                                    onOpenChange={setopenAlertDialog}
-                                >
-                                    <AlertDialogTrigger asChild>
-                                        <Button variant="outline">
-                                            <Trash
-                                                variant="Bold"
-                                                size={18}
-                                                color="red"
-                                            />
-                                            Delete
-                                        </Button>
-                                    </AlertDialogTrigger>
-
-                                    <AlertDialogContent>
-                                        <AlertDialogHeader>
-                                            <AlertDialogTitle>
-                                                Delete exercise
-                                            </AlertDialogTitle>
-                                            <AlertDialogDescription>
-                                                Are you sure you want to delete
-                                                this exercise? This action is
-                                                irreversible.
-                                            </AlertDialogDescription>
-                                        </AlertDialogHeader>
-
-                                        <AlertDialogFooter>
-                                            <AlertDialogCancel>
-                                                Cancel
-                                            </AlertDialogCancel>
-
-                                            <Button
-                                                className="w-full"
-                                                variant="destructive"
-                                                onClick={handleDeleteExercise}
-                                            >
-                                                {deletingExercise ? (
-                                                    <Spinner
-                                                        color="#fff"
-                                                        className="size-6"
-                                                    />
-                                                ) : (
-                                                    <h3>Delete Exercise</h3>
-                                                )}
-                                            </Button>
-                                        </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                </AlertDialog>
-                            </div>
-                        )}
-                    </div>
-                );
-            },
-        },
-    ];
-};
+                    setSelectedExercise(ex);
+                }}
+                onDeleted={() => getWorkoutData(false)}
+            />
+        ),
+    },
+];

@@ -1,13 +1,10 @@
 import { cn, today } from "@/lib/utils";
 import { Day } from "@/model/day";
-import type { Meal } from "@/model/meal";
 import { UserRole, type User } from "@/model/user";
-import type { WorkoutExercise } from "@/model/workout-exercise";
 import {
     BatteryCharging,
     Book1,
     Edit,
-    RecordCircle,
     Timer1
 } from "iconsax-reactjs";
 import { useNavigate } from "react-router-dom";
@@ -22,8 +19,8 @@ type Props = {
     clientId: number;
     day: Day;
     name?: string | null;
-    exercises?: WorkoutExercise[];
-    meals?: Meal[];
+    exerciseCount?: number;
+    mealsCount?: number;
     restDay?: boolean;
     variant: Variant;
     note?: string;
@@ -35,14 +32,12 @@ export function DayPlanCard({
     id,
     firstName,
     lastName,
-    clientId,
     day,
     name,
-    exercises,
-    meals,
+    exerciseCount,
+    mealsCount,
     restDay,
     variant,
-    note,
     openEdit,
     user,
 }: Props) {
@@ -53,16 +48,6 @@ export function DayPlanCard({
 
     const highlight = variant === "diet" ? "#66A786" : "#FF8C00";
 
-    const totalCalories = meals?.reduce(
-        (sum, meal) => sum + (meal.cal ?? 0),
-        0
-    );
-
-    const totalProtein = meals?.reduce(
-        (sum, meal) => sum + (meal.protein ?? 0),
-        0
-    );
-
     const openDetails = () => {
         if (isRestDay) return;
         navigate(
@@ -71,20 +56,7 @@ export function DayPlanCard({
                 : `/client/${id}/diet-details`,
             {
                 state: {
-                    firstName,
-                    lastName,
-                    workout: isWorkout
-                        ? { id, name, day, note, exercises, restDay, clientId }
-                        : null,
-                    diet: !isWorkout
-                        ? {
-                              id,
-                              name,
-                              clientId,
-                              day,
-                              meals,
-                          }
-                        : null,
+                    clientName: firstName + " " + lastName,
                 },
             }
         );
@@ -175,34 +147,11 @@ export function DayPlanCard({
                             <p className="text-sm text-muted-foreground">
                                 <span className="text-foreground">
                                     {variant === "diet"
-                                        ? meals?.length
-                                        : exercises?.length}
+                                        ? mealsCount
+                                        : exerciseCount}
                                 </span>{" "}
                                 {isWorkout ? "Exercises" : "Meals"}
                             </p>
-
-                            {variant === "diet" && (
-                                <div className="flex items-center gap-x-1.5">
-                                    <p className="text-sm text-muted-foreground">
-                                        <span className="text-foreground">
-                                            {totalCalories}
-                                        </span>
-                                        kcal
-                                    </p>
-                                    <RecordCircle
-                                        variant="Bulk"
-                                        size={7}
-                                        color="#000"
-                                    />
-
-                                    <p className="text-sm text-muted-foreground">
-                                        <span className="text-foreground">
-                                            {totalProtein}
-                                        </span>
-                                        g protein
-                                    </p>
-                                </div>
-                            )}
                         </div>
                     )}
 

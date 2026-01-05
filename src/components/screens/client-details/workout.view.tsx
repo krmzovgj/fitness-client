@@ -251,10 +251,10 @@ export const WorkoutView = ({ client }: { client: User }) => {
                                             lastName={client.lastName}
                                             clientId={client.id}
                                             id={workout.id}
-                                            day={workout.day}
+                                            day={workout?.day}
                                             name={workout.name}
-                                            exercises={
-                                                workout?.workoutExercises
+                                            exerciseCount={
+                                                workout?._count.workoutExercises
                                             }
                                             variant="workout"
                                             note={workout.note}
@@ -303,7 +303,10 @@ export const WorkoutView = ({ client }: { client: User }) => {
                         </SelectTrigger>
                         <SelectContent>
                             {availableDays.map((dayItem) => (
-                                <SelectItem value={dayItem.day}>
+                                <SelectItem
+                                    key={dayItem.day}
+                                    value={dayItem.day}
+                                >
                                     <div className="flex items-center gap-x-2">
                                         <div
                                             className="w-2 h-2 rounded-full"

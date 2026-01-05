@@ -234,7 +234,7 @@ export const DietView = ({ client }: { client: User }) => {
                                             key={diet.id}
                                             day={diet.day}
                                             name={diet.name}
-                                            meals={diet.meals}
+                                            mealsCount={diet?._count.meals}
                                             variant="diet"
                                             openEdit={() => {
                                                 setselectedDiet(diet);

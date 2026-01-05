@@ -2,14 +2,16 @@ import { createGlobalExercise, searchExercises } from "@/api/exercise";
 import { getWorkoutById, updateWorkout } from "@/api/workout";
 import {
     createWorkoutExercise,
+    getExercisesByWorkout,
     reorderWorkoutExercise,
     updateWorkoutExercise,
 } from "@/api/workout-exercise";
-import {
-    ExerciseColumns,
-    getAllOrderValues,
-    toggleEditOrders,
-} from "@/components/columns/exercise-columns";
+// import {
+//     ExerciseColumns,
+//     getAllOrderValues,
+//     toggleEditOrders,
+// } from "@/components/columns/exercise-columns";
+import { ExerciseColumns } from "@/components/columns/exercise-columns";
 import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import {
@@ -46,7 +48,6 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { capitalizeWords, cn } from "@/lib/utils";
-import type { Day } from "@/model/day";
 import type { Exercise } from "@/model/exercise";
 import { UserRole } from "@/model/user";
 import type { Workout } from "@/model/workout";
@@ -68,20 +69,22 @@ import { useNavigate } from "react-router-dom";
 import { WorkoutNote } from "./workout-note";
 
 export const WorkoutDetailsView = ({
+    clientName,
     workoutId,
-    dayMatch,
-    state,
 }: {
+    clientName: string;
     workoutId: string;
-    dayMatch: { day: Day; color: string };
-    state: any;
 }) => {
     const { user } = useUserStore();
     const { token } = useAuthStore();
     const navigate = useNavigate();
 
-    const [workout, setWorkout] = useState(state?.workout ?? null);
+    const [workout, setWorkout] = useState<Workout | null>(null);
+    const [workoutExercises, setworkoutExercises] = useState<WorkoutExercise[]>(
+        []
+    );
     const [loadingWorkout, setloadingWorkout] = useState(false);
+    const [loadingExercises, setloadingExercises] = useState(false);
 
     const [sets, setsets] = useState<number>(0);
     const [reps, setreps] = useState<string>("");
@@ -109,6 +112,51 @@ export const WorkoutDetailsView = ({
         exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const [editOrders, setEditOrders] = useState(false);
+    const [orderValues, setOrderValues] = useState<Record<string, number>>({});
+
+    const getWorkoutData = async (showPageLoader = false) => {
+        if (!token) return;
+
+        if (showPageLoader) setloadingWorkout(true);
+        else setloadingExercises(true);
+
+        try {
+            const workoutResponse = await getWorkoutById(token, workoutId);
+            setWorkout(workoutResponse.data);
+
+            const exercisesResponse = await getExercisesByWorkout(
+                token,
+                workoutId
+            );
+            setworkoutExercises(exercisesResponse.data);
+        } catch (err) {
+            console.error("Error fetching workout:", err);
+        } finally {
+            if (showPageLoader) setloadingWorkout(false);
+            else setloadingExercises(false);
+        }
+    };
+
+    useEffect(() => {
+        if (!token) return;
+        getWorkoutData(true);
+    }, [token, workoutId]);
+
+    const toggleEditOrders = () => {
+        setEditOrders((prev) => {
+            const newEdit = !prev;
+            if (newEdit) setOrderValues({});
+            return newEdit;
+        });
+    };
+
+    const getAllOrderValues = () =>
+        Object.entries(orderValues).map(([id, orderNumber]) => ({
+            id,
+            orderNumber,
+        }));
+
     const handleEditOrders = () => {
         toggleEditOrders?.();
         seteditOrder(true);
@@ -121,36 +169,19 @@ export const WorkoutDetailsView = ({
 
         try {
             setsavingOrder(true);
-            await reorderWorkoutExercise(token, workoutId, { items });
+            await reorderWorkoutExercise(token, workout?.id!, { items });
         } finally {
             setsavingOrder(false);
             seteditOrder(false);
             toggleEditOrders?.();
         }
 
-        await getWorkout();
+        await getWorkoutData();
     };
 
     const handleCancelOrders = () => {
         seteditOrder(false);
         toggleEditOrders?.();
-    };
-
-    const getWorkout = async () => {
-        if (!token) return;
-
-        try {
-            setloadingWorkout(true);
-            const response = await getWorkoutById(token, workoutId);
-            const data = response.data;
-
-            setWorkout({
-                ...data,
-                exercises: data?.workoutExercises ?? [],
-            });
-        } finally {
-            setloadingWorkout(false);
-        }
     };
 
     const handleSearchExercises = async (query: string) => {
@@ -186,6 +217,14 @@ export const WorkoutDetailsView = ({
         try {
             setcreatingExercise(true);
 
+            const lastOrder =
+                workoutExercises &&
+                workoutExercises?.length > 0
+                    ? workoutExercises[
+                          workoutExercises?.length - 1
+                      ]?.orderNumber
+                    : 0;
+
             const response = await createWorkoutExercise(
                 {
                     reps,
@@ -193,16 +232,16 @@ export const WorkoutDetailsView = ({
                     note,
                     restBetweenSets,
                     restAfterExercise,
-                    orderNumber: workout?.exercises.at(-1).orderNumber + 1,
+                    orderNumber: lastOrder + 1,
                     exerciseId: selectedOptionExercise?.id!,
                 },
                 token,
-                workoutId
+                workout?.id!
             );
 
             if (response.status === 201) {
                 setdialogOpen(false);
-                await getWorkout();
+                await getWorkoutData(false);
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -240,7 +279,7 @@ export const WorkoutDetailsView = ({
 
             if (response.status === 200) {
                 setdialogOpen(false);
-                await getWorkout();
+                await getWorkoutData(false);
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -267,9 +306,13 @@ export const WorkoutDetailsView = ({
         setnote(selectedExercise?.note!);
     }, [selectedExercise]);
 
-    useEffect(() => {
-        getWorkout();
-    }, [user]);
+    if (loadingWorkout) {
+        return (
+            <div className="h-screen flex justify-center items-center">
+                <Spinner className="size-6" />
+            </div>
+        );
+    }
 
     return (
         <Dialog
@@ -283,6 +326,8 @@ export const WorkoutDetailsView = ({
                 setsets(0);
                 setreps("");
                 setnote("");
+                setrestAfterExercise(0);
+                setrestBetweenSets(0);
                 seterror("");
             }}
         >
@@ -330,7 +375,7 @@ export const WorkoutDetailsView = ({
                             <div>
                                 <h3 className="flex ml-0.5 items-center capitalize gap-x-2 font-medium">
                                     <p className="text-foreground">
-                                        {dayMatch?.day.toLowerCase()}
+                                        {workout?.day?.toLowerCase()}
                                     </p>
                                     <RecordCircle
                                         variant="Bold"
@@ -338,7 +383,7 @@ export const WorkoutDetailsView = ({
                                         color="#000"
                                     />
                                     <p className="text-foreground">
-                                        {state?.firstName} {state?.lastName}
+                                        {clientName}
                                     </p>
                                 </h3>
                                 <h1 className="text-3xl leading-7 font-medium">
@@ -354,14 +399,16 @@ export const WorkoutDetailsView = ({
                 <h1 className="text-xl md:text-2xl flex items-center gap-x-1 md:gap-x-2">
                     <RecordCircle variant="Bold" size={20} color="#000" />
                     Exercises
-                    {loadingWorkout && <Spinner className="size-5" />}
+                    {loadingExercises && <Spinner className="size-5" />}
                 </h1>
 
                 {user?.role === UserRole.TRAINER && (
                     <div className="flex items-center gap-x-2">
                         {!editOrder ? (
                             <Button
-                                disabled={workout?.exercises?.length === 0}
+                                disabled={
+                                    workoutExercises?.length === 0
+                                }
                                 variant="outline"
                                 onClick={handleEditOrders}
                             >
@@ -418,7 +465,8 @@ export const WorkoutDetailsView = ({
 
             <div className="mt-5 flex flex-col ">
                 <div className="flex flex-col">
-                    {workout?.exercises?.length === 0 ? (
+                    {workoutExercises?.length === 0 &&
+                    !loadingExercises ? (
                         <Empty className="">
                             <EmptyHeader>
                                 <EmptyMedia variant="icon">
@@ -438,11 +486,14 @@ export const WorkoutDetailsView = ({
                         </Empty>
                     ) : (
                         <DataTable
-                            data={workout?.exercises ?? []}
+                            data={workoutExercises ?? []}
                             columns={ExerciseColumns(
                                 setselectedExercise,
                                 setdialogOpen,
-                                getWorkout
+                                getWorkoutData,
+                                editOrders,
+                                orderValues,
+                                setOrderValues
                             )}
                         />
                     )}
@@ -457,10 +508,7 @@ export const WorkoutDetailsView = ({
                                 name: workout?.name,
                                 note: newNote,
                             });
-                            setWorkout(
-                                (prev: Workout) =>
-                                    prev && { ...prev, note: newNote }
-                            );
+                            await getWorkoutData();
                         }}
                     />
                 </div>

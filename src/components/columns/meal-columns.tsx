@@ -33,7 +33,7 @@ import { Spinner } from "../ui/spinner";
 export const MealColumns = (
     setSelectedMeal: (meal: Meal | null) => void,
     setopen: (open: boolean) => void,
-    handleGetMealsByDiet: () => void
+    getDietData: (showPageLoader: boolean) => void
 ): ColumnDef<Meal>[] => [
     {
         accessorKey: "name",
@@ -250,7 +250,7 @@ export const MealColumns = (
                     const response = await deleteMeal(row.original.id, token!);
 
                     if (response.status === 200) {
-                        handleGetMealsByDiet();
+                        getDietData(false);
                         setOpenAlertDialog(false);
                     }
                 } finally {

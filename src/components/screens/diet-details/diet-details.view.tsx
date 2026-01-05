@@ -1,5 +1,5 @@
 import { getDietById } from "@/api/diet";
-import { createMeal, updateMeal } from "@/api/meal";
+import { createMeal, getMeals, updateMeal } from "@/api/meal";
 import { MealColumns } from "@/components/columns/meal-columns";
 import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
@@ -31,7 +31,6 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { mealOrder, mealTypes } from "@/lib/utils";
-import type { Day } from "@/model/day";
 import type { Diet } from "@/model/diet";
 import type { Meal } from "@/model/meal";
 import { MealType } from "@/model/meal-type";
@@ -50,19 +49,18 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const DietDetailsView = ({
+    clientName,
     dietId,
-    dayMatch,
-    state,
 }: {
+    clientName: string;
     dietId: string;
-    dayMatch: { day: Day; color: string };
-    state: any;
 }) => {
     const { user } = useUserStore();
     const { token } = useAuthStore();
     const navigate = useNavigate();
 
-    const [diet, setDiet] = useState<Diet | null>(state.diet ?? null);
+    const [diet, setDiet] = useState<Diet | null>(null);
+    const [meals, setmeals] = useState<Meal[]>([]);
 
     const [name, setname] = useState("");
     const [description, setdescription] = useState("");
@@ -77,27 +75,36 @@ export const DietDetailsView = ({
     const [creatingMeal, setCreatingMeal] = useState(false);
     const [selectedMeal, setselectedMeal] = useState<Meal | null>(null);
     const [loadingDiet, setloadingDiet] = useState(false);
+    const [loadingMeals, setloadingMeals] = useState(false);
 
-    const sortedMeals = diet?.meals?.sort((a, b) => {
+    const sortedMeals = meals.sort((a, b) => {
         return mealOrder.indexOf(a.type) - mealOrder.indexOf(b.type);
     });
 
-    const getDiet = async () => {
+    const getDietData = async (showPageLoader = false) => {
         if (!token) return;
 
-        try {
-            setloadingDiet(true);
-            const response = await getDietById(token, dietId);
-            const data = response.data;
+        if (showPageLoader) setloadingDiet(true);
+        else setloadingMeals(true);
 
-            setDiet({
-                ...data,
-                meals: data.meals ?? [],
-            });
+        try {
+            const workoutResponse = await getDietById(token, dietId);
+            setDiet(workoutResponse.data);
+
+            const exercisesResponse = await getMeals(token, dietId);
+            setmeals(exercisesResponse.data);
+        } catch (err) {
+            console.error("Error fetching workout:", err);
         } finally {
-            setloadingDiet(false);
+            if (showPageLoader) setloadingDiet(false);
+            else setloadingMeals(false);
         }
     };
+
+    useEffect(() => {
+        if (!token) return;
+        getDietData(true);
+    }, [token, dietId]);
 
     const handleCreateMeal = async () => {
         if (!token) return;
@@ -120,7 +127,7 @@ export const DietDetailsView = ({
 
             if (response.status === 201) {
                 setdialogOpen(false);
-                getDiet();
+                getDietData(false);
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -160,7 +167,7 @@ export const DietDetailsView = ({
 
             if (response.status === 200) {
                 setdialogOpen(false);
-                getDiet();
+                getDietData(false);
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -186,6 +193,14 @@ export const DietDetailsView = ({
         setfats(selectedMeal?.fats!);
         settype(selectedMeal?.type);
     }, [selectedMeal]);
+
+    if (loadingDiet) {
+        return (
+            <div className="h-screen flex justify-center items-center">
+                <Spinner className="size-6" />
+            </div>
+        );
+    }
 
     return (
         <Dialog
@@ -240,16 +255,14 @@ export const DietDetailsView = ({
                         <div>
                             <h3 className="ml-0.5 flex items-center capitalize gap-x-2 font-medium">
                                 <p className="text-foreground">
-                                    {dayMatch?.day.toLowerCase()}
+                                    {diet?.day.toLowerCase()}
                                 </p>
                                 <RecordCircle
                                     variant="Bold"
                                     size={8}
                                     color="#000"
                                 />
-                                <p className="text-foreground">
-                                    {state?.firstName} {state?.lastName}
-                                </p>
+                                <p className="text-foreground">{clientName}</p>
                             </h3>
                             <h1 className="text-3xl leading-7 font-medium">
                                 {diet?.name}
@@ -263,7 +276,7 @@ export const DietDetailsView = ({
                 <h1 className="text-xl md:text-2xl flex items-center gap-x-1 md:gap-x-2">
                     <RecordCircle variant="Bold" size={20} color="#000" />
                     Meals
-                    {loadingDiet && <Spinner className="size-5" />}
+                    {loadingMeals && <Spinner className="size-5" />}
                 </h1>
 
                 {user?.role === UserRole.TRAINER && (
@@ -278,7 +291,7 @@ export const DietDetailsView = ({
 
             <motion.div className="mt-5 flex flex-col  ">
                 <div className="flex flex-col ">
-                    {diet?.meals?.length === 0 ? (
+                    {meals?.length === 0 && !loadingDiet ? (
                         <Empty className="">
                             <EmptyHeader>
                                 <EmptyMedia variant="icon">
@@ -302,7 +315,7 @@ export const DietDetailsView = ({
                             columns={MealColumns(
                                 setselectedMeal,
                                 setdialogOpen,
-                                getDiet
+                                getDietData
                             )}
                         />
                     )}
