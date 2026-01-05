@@ -1,11 +1,30 @@
 import { Badge } from "@/components/ui/badge";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { ArrowRight, Book, Messages2, Profile2User } from "iconsax-reactjs";
+import {
+    ArrowRight,
+    Book,
+    Messages2,
+    Profile2User
+} from "iconsax-reactjs";
 import { Button } from "../components/ui/button";
 import { GridPattern } from "./ui/shadcn-io/grid-pattern";
 
 export const LandingPage = () => {
+    const images = [
+        "/platform-clients.png",
+        "/platform-clientdetails.png",
+        "/platform-workoutdetails.png",
+        "/platform-dietdetails.png",
+    ];
+
     return (
         <>
             <GridPattern
@@ -58,8 +77,8 @@ export const LandingPage = () => {
                         >
                             Manage Clients, <br className="flex md:hidden" />
                             Workouts & <br className="hidden md:flex" />
-                            Meals <br className="borderblock md:hidden" />-
-                            All in One Place
+                            Meals <br className="borderblock md:hidden" />- All
+                            in One Place
                         </motion.h1>
                         <motion.h3
                             initial={{
@@ -99,27 +118,49 @@ export const LandingPage = () => {
                         </Button>
                     </div>
 
-                    <motion.div
-                        initial={{ opacity: 0, filter: "blur(20px)" }}
-                        animate={{ opacity: 1, filter: "blur(0px)" }}
-                        transition={{
-                            duration: 0.5,
-                            type: "spring",
-                        }}
-                        className="rounded-xl bg-secondary md:rounded-3xl p-1 md:p-1.5 overflow-hidden justify-center items-center w-full md:w-1/2 flex place-self-center mt-10"
-                    >
-                        <img
-                            src="/platform-hero.png"
-                            className="rounded-[10px] md:rounded-[20px] shadow-sm"
-                            alt=""
-                        />
-                    </motion.div>
+                    <Carousel className="w-full md:w-1/2 self-center place-self-center">
+                        <CarouselContent>
+                            {images.map((src, index) => (
+                                <CarouselItem key={index}>
+                                    <motion.div
+                                        initial={{
+                                            opacity: 0,
+                                            filter: "blur(20px)",
+                                        }}
+                                        animate={{
+                                            opacity: 1,
+                                            filter: "blur(0px)",
+                                        }}
+                                        transition={{
+                                            duration: 0.5,
+                                            type: "spring",
+                                        }}
+                                        className="mt-10 flex w-full items-center justify-center overflow-hidden rounded-xl bg-secondary p-1 md:rounded-3xl md:p-1.5"
+                                    >
+                                        <img
+                                            src={src}
+                                            className="rounded-[10px] shadow-sm md:rounded-[20px]"
+                                            alt=""
+                                        />
+                                    </motion.div>
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+
+                        <CarouselPrevious className="hidden md:flex -left-16" />
+                        <CarouselNext className="hidden md:flex -right-16" />
+
+                        {/* Mobile arrows */}
+                        <div className="mt-6 flex justify-center gap-4 md:hidden">
+                            <CarouselPrevious className="static" />
+                            <CarouselNext className="static" />
+                        </div>
+                    </Carousel>
                 </div>
 
                 <div className="mt-32 relative flex justify-center items-center flex-col md:mt-36">
                     <Badge title="Features" />
                     <h1 className="text-3xl leading-7 md:leading-none tracking-tighter mt-5 text-center md:text-5xl font-medium">
-                        {" "}
                         Built for how coaches <br />
                         actually work
                     </h1>
@@ -129,15 +170,7 @@ export const LandingPage = () => {
                         work well together - kept simple and clear.
                     </h3>
 
-                    <div className="mt-15 w-full md:w-1/2">
-                        <div className="relative rounded-xl bg-secondary p-1 md:p-1.5  md:rounded-3xl">
-                            <img
-                                className="rounded-[10px] md:rounded-[20px] shadow-sm"
-                                src="/diet-details.png"
-                                alt=""
-                            />
-                            <div className="absolute h-44 md:h-72 bottom-0 left-0 rounded-[20px] from-background via-background/50 to-transparent bg-linear-to-t w-full"></div>
-                        </div>
+                    <div className="mt-10 w-full md:w-1/2">
                         <div className="flex gap-y-10 mt-10 flex-col justify-center">
                             <div className="flex flex-col md:flex-row gap-y-10 md:gap-y-0 items-center gap-x-20">
                                 <div className="flex flex-col gap-y-4 gap-x-10  md:w-1/2">
@@ -181,24 +214,6 @@ export const LandingPage = () => {
                                 <div className="flex flex-col gap-y-4 gap-x-10  md:w-1/2">
                                     <div className="flex items-center  text-lg gap-x-2">
                                         <div className="w-8 h-8  rounded-lg flex justify-center items-center bg-background border">
-                                            <Messages2
-                                                variant="Bulk"
-                                                size={20}
-                                                color="#000"
-                                            />
-                                        </div>
-                                        Messages
-                                    </div>
-                                    <h3 className="text-muted-foreground ">
-                                        Talk where the work is, communicate with
-                                        all your clients in one place without
-                                        switching apps.
-                                    </h3>
-                                </div>
-
-                                <div className="flex flex-col gap-y-4 gap-x-10  md:w-1/2">
-                                    <div className="flex items-center  text-lg gap-x-2">
-                                        <div className="w-8 h-8  rounded-lg flex justify-center items-center bg-background border">
                                             <Book
                                                 variant="Bulk"
                                                 size={20}
@@ -211,6 +226,24 @@ export const LandingPage = () => {
                                         Plan meals by day, add custom recepies,
                                         macros, meal types and change things as
                                         needed - just like workouts.
+                                    </h3>
+                                </div>
+
+                                <div className="flex flex-col gap-y-4 gap-x-10  md:w-1/2">
+                                    <div className="flex items-center  text-lg gap-x-2">
+                                        <div className="w-8 h-8  rounded-lg flex justify-center items-center bg-background border">
+                                            <Messages2
+                                                variant="Bulk"
+                                                size={20}
+                                                color="#000"
+                                            />
+                                        </div>
+                                        Messages
+                                    </div>
+                                    <h3 className="text-muted-foreground ">
+                                        Talk where the work is, communicate with
+                                        all your clients in one place without
+                                        switching apps.
                                     </h3>
                                 </div>
                             </div>
