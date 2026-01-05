@@ -127,7 +127,8 @@ export const DietDetailsView = ({
 
             if (response.status === 201) {
                 setdialogOpen(false);
-                getDietData(false);
+                const createdMeal = response.data as Meal;
+                setmeals((prev) => [...prev, createdMeal]);
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -167,7 +168,12 @@ export const DietDetailsView = ({
 
             if (response.status === 200) {
                 setdialogOpen(false);
-                getDietData(false);
+                const updatedMeal = response.data as Meal;
+                setmeals((prev) =>
+                    prev.map((meal) =>
+                        meal.id === updatedMeal.id ? updatedMeal : meal
+                    )
+                );
             }
         } catch (error: any) {
             const msg = error.response.data.message;
@@ -315,7 +321,7 @@ export const DietDetailsView = ({
                             columns={MealColumns(
                                 setselectedMeal,
                                 setdialogOpen,
-                                getDietData
+                                setmeals
                             )}
                         />
                     )}

@@ -130,8 +130,7 @@ export const WorkoutDetailsView = ({
                 workoutId
             );
             setworkoutExercises(exercisesResponse.data);
-        } catch (err) {
-            console.error("Error fetching workout:", err);
+        } catch {
         } finally {
             if (showPageLoader) setloadingWorkout(false);
             else setloadingExercises(false);

@@ -33,7 +33,7 @@ import { Spinner } from "../ui/spinner";
 export const MealColumns = (
     setSelectedMeal: (meal: Meal | null) => void,
     setopen: (open: boolean) => void,
-    getDietData: (showPageLoader: boolean) => void
+    setmeals: React.Dispatch<React.SetStateAction<Meal[]>>
 ): ColumnDef<Meal>[] => [
     {
         accessorKey: "name",
@@ -250,8 +250,10 @@ export const MealColumns = (
                     const response = await deleteMeal(row.original.id, token!);
 
                     if (response.status === 200) {
-                        getDietData(false);
                         setOpenAlertDialog(false);
+                        setmeals((prev) =>
+                            prev.filter((meal) => meal.id !== row.original.id)
+                        );
                     }
                 } finally {
                     setDeletingMeal(false);
