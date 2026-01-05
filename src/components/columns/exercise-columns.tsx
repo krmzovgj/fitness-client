@@ -280,7 +280,9 @@ export const ExerciseColumns = (
                                             <AlertDialogCancel>
                                                 Cancel
                                             </AlertDialogCancel>
+
                                             <Button
+                                                className="w-full"
                                                 variant="destructive"
                                                 onClick={handleDeleteExercise}
                                             >

@@ -27,7 +27,7 @@ export function AppLayout() {
                             "absolute h-full w-full z-0 opacity-70 mask-[radial-gradient(1000px_circle_at_center,white,transparent)]"
                         )}
                     />
-                    <div className="md:px-10 md:pb-8 pb-5 px-5">
+                    <div className="md:px-10 relative md:pb-8 pb-5 px-5">
                         <Outlet />
                     </div>
                 </main>

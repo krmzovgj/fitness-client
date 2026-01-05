@@ -7,6 +7,7 @@ export interface CreateWorkoutExerciseDto {
     note?: string;
     restBetweenSets?: number;
     restAfterExercise?: number;
+    orderNumber: number;
     exerciseId: string;
 }
 

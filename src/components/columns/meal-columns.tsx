@@ -303,6 +303,7 @@ export const MealColumns = (
                                         </AlertDialogCancel>
 
                                         <Button
+                                            className="w-full"
                                             variant="destructive"
                                             onClick={handleDeleteMeal}
                                         >

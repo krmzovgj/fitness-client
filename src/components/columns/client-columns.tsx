@@ -209,11 +209,15 @@ export const clientColumns = (
                                         </AlertDialogCancel>
 
                                         <Button
+                                            className="w-full"
                                             variant="destructive"
                                             onClick={handleDeleteClient}
                                         >
                                             {deletingClient ? (
-                                                <Spinner color="#fff" className="size-6" />
+                                                <Spinner
+                                                    color="#fff"
+                                                    className="size-6"
+                                                />
                                             ) : (
                                                 "Delete Client"
                                             )}

@@ -193,6 +193,7 @@ export const WorkoutDetailsView = ({
                     note,
                     restBetweenSets,
                     restAfterExercise,
+                    orderNumber: workout?.exercises.at(-1).orderNumber + 1,
                     exerciseId: selectedOptionExercise?.id!,
                 },
                 token,
@@ -265,6 +266,10 @@ export const WorkoutDetailsView = ({
         setselectedOptionExercise(selectedExercise.exercise);
         setnote(selectedExercise?.note!);
     }, [selectedExercise]);
+
+    useEffect(() => {
+        getWorkout();
+    }, [user]);
 
     return (
         <Dialog
