@@ -29,6 +29,7 @@ import {
     DialogTrigger,
 } from "../ui/dialog";
 import { Spinner } from "../ui/spinner";
+import { AnimatePresence, motion } from "framer-motion";
 
 /* ---------------- EXPORTED HELPERS (unchanged) ---------------- */
 
@@ -141,26 +142,42 @@ export const ExerciseColumns = (
             }
 
             return (
-                <input
-                    type="number"
-                    min={0}
-                    className="w-14 text-center rounded-md border relative no-arrows"
-                    value={orderValues[rowId] ?? row.original.orderNumber}
-                    onChange={(e) => {
-                        const val = e.target.value;
-                        setOrderValues((prev) => ({
-                            ...prev,
-                            [rowId]: val === "" ? 0 : Number(val),
-                        }));
-                    }}
-                    onFocus={(e) => e.target.select()}
-                />
+                <AnimatePresence>
+                    <motion.div
+                        initial={{
+                            opacity: 0,
+                            filter: "blur(20px)",
+                        }}
+                        animate={{
+                            opacity: 1,
+                            filter: "blur(0px)",
+                        }}
+                        transition={{ duration: 0.7, type: "spring" }}
+                    >
+                        <input
+                            type="number"
+                            min={0}
+                            className="w-14 text-center rounded-md border relative no-arrows"
+                            value={
+                                orderValues[rowId] ?? row.original.orderNumber
+                            }
+                            onChange={(e) => {
+                                const val = e.target.value;
+                                setOrderValues((prev) => ({
+                                    ...prev,
+                                    [rowId]: val === "" ? 0 : Number(val),
+                                }));
+                            }}
+                            onFocus={(e) => e.target.select()}
+                        />
+                    </motion.div>
+                </AnimatePresence>
             );
         },
     },
     {
         accessorKey: "exercise.name",
-        header: "Name",
+        header: "Exercise",
         cell: ({ row }) => (
             <span className="whitespace-nowrap">
                 {row.original.exercise.name}
@@ -190,7 +207,7 @@ export const ExerciseColumns = (
 
     {
         accessorKey: "weight",
-        header: "Weight",
+        header: "Target Weight",
         cell: ({ row }) => (
             <>
                 {row.original.weight ? (
