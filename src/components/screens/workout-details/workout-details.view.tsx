@@ -115,7 +115,6 @@ export const WorkoutDetailsView = ({
 
     const [editOrders, setEditOrders] = useState(false);
     const [orderValues, setOrderValues] = useState<Record<string, number>>({});
-    const [ordersError, setordersError] = useState<string | null>(null);
 
     const getWorkoutData = async (showPageLoader = false) => {
         if (!token) return;
@@ -159,7 +158,12 @@ export const WorkoutDetailsView = ({
         }));
 
     const handleEditOrders = () => {
-        toggleEditOrders?.();
+        const initialOrders: Record<string, number> = {};
+        workoutExercises.forEach((ex) => {
+            initialOrders[ex.id] = ex.orderNumber;
+        });
+        setOrderValues(initialOrders); 
+        setEditOrders(true);
         seteditOrder(true);
     };
 
@@ -311,14 +315,6 @@ export const WorkoutDetailsView = ({
         setnote(selectedExercise?.note!);
     }, [selectedExercise]);
 
-    useEffect(() => {
-        if (hasDuplicateOrders(orderValues)) {
-            setordersError("Two or more exercises have the same order number");
-        } else {
-            setordersError(null);
-        }
-    }, [orderValues]);
-
     if (loadingWorkout) {
         return (
             <div className="h-screen flex justify-center items-center">
@@ -326,6 +322,10 @@ export const WorkoutDetailsView = ({
             </div>
         );
     }
+
+    const ordersError = hasDuplicateOrders(orderValues)
+        ? "Two or more exercises have the same order number"
+        : null;
 
     return (
         <Dialog

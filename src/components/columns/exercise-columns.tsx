@@ -157,9 +157,7 @@ export const ExerciseColumns = (
                             type="number"
                             min={0}
                             className="w-14 text-center rounded-md border relative no-arrows"
-                            value={
-                                orderValues[rowId] ?? row.original.orderNumber
-                            }
+                            value={orderValues[rowId]}
                             onChange={(e) => {
                                 const val = e.target.value;
                                 setOrderValues((prev) => ({
