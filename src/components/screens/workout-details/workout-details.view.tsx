@@ -328,6 +328,7 @@ export const WorkoutDetailsView = ({
                 setselectedOptionExercise(null);
                 setexerciseOptions([]);
                 setsets(0);
+                setweight(0);
                 setreps("");
                 setnote("");
                 setrestAfterExercise(0);
