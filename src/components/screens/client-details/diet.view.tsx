@@ -39,8 +39,8 @@ import { useEffect, useState } from "react";
 export const DietView = ({ client }: { client: User }) => {
     const { token } = useAuthStore();
     const { user } = useUserStore();
-    const { mealDaysByClient, setMealDays } = useDietStore();
-    const [loadingMealDays, setloadingMealDays] = useState(false);
+    const { dietDaysByClient, setDietDays } = useDietStore();
+    const [loadingdietDays, setloadingdietDays] = useState(false);
 
     const clientId = client?.id;
 
@@ -51,10 +51,10 @@ export const DietView = ({ client }: { client: User }) => {
     const [dialogOpen, setdialogOpen] = useState(false);
     const [selectedDiet, setselectedDiet] = useState<Diet | null>(null);
 
-    const mealDays = clientId ? mealDaysByClient[clientId] : undefined;
+    const dietDays = clientId ? dietDaysByClient[clientId] : undefined;
 
-    const sortedMealDays = mealDays
-        ? [...mealDays].sort(
+    const sorteddietDays = dietDays
+        ? [...dietDays].sort(
               (a, b) => dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day)
           )
         : [];
@@ -63,17 +63,16 @@ export const DietView = ({ client }: { client: User }) => {
         if (!token || !clientId) return;
 
         try {
-            setloadingMealDays(true);
+            setloadingdietDays(true);
             const response = await getDietByClient(clientId, token);
-            setMealDays(clientId, response.data);
+            setDietDays(clientId, response.data);
         } finally {
-            setloadingMealDays(false);
+            setloadingdietDays(false);
         }
     };
 
     useEffect(() => {
         if (!token || !clientId) return;
-        if (mealDays) return;
 
         handleGetDietsByClient();
     }, [clientId]);
@@ -139,7 +138,7 @@ export const DietView = ({ client }: { client: User }) => {
         }
     };
 
-    const usedDays = new Set(mealDays?.map((w) => w.day));
+    const usedDays = new Set(dietDays?.map((w) => w.day));
     const availableDays = dayColors.filter((day) => {
         if (selectedDiet && day.day === selectedDiet.day) return true;
         return !usedDays.has(day.day);
@@ -170,7 +169,7 @@ export const DietView = ({ client }: { client: User }) => {
                                 color="#000"
                             />
                             Diet Plan
-                            {loadingMealDays && <Spinner className="size-5" />}
+                            {loadingdietDays && <Spinner className="size-5" />}
                         </h1>
                     </div>
 
@@ -188,9 +187,9 @@ export const DietView = ({ client }: { client: User }) => {
                     )}
                 </div>
 
-                {!loadingMealDays && (
+                {!loadingdietDays && (
                     <div className="mt-5">
-                        {mealDays?.length === 0 && !loadingMealDays ? (
+                        {dietDays?.length === 0 && !loadingdietDays ? (
                             <Empty>
                                 <EmptyHeader>
                                     <EmptyMedia variant="icon">
@@ -210,14 +209,16 @@ export const DietView = ({ client }: { client: User }) => {
                             </Empty>
                         ) : (
                             <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
-                                {sortedMealDays?.map((diet) => (
+                                {sorteddietDays?.map((diet) => (
                                     <motion.div
                                         key={diet?.id}
                                         initial={{
+                                            y: 30,
                                             opacity: 0,
                                             filter: "blur(20px)",
                                         }}
                                         animate={{
+                                            y: 0,
                                             opacity: 1,
                                             filter: "blur(0px)",
                                         }}

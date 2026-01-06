@@ -83,7 +83,6 @@ export const WorkoutView = ({ client }: { client: User }) => {
 
     useEffect(() => {
         if (!token || !clientId) return;
-        if (workouts) return;
 
         handleGetWorkoutsByClient();
     }, [clientId]);
@@ -233,11 +232,13 @@ export const WorkoutView = ({ client }: { client: User }) => {
                                     <motion.div
                                         key={workout?.id}
                                         initial={{
+                                            y: 30,
                                             opacity: 0,
                                             filter: "blur(20px)",
                                         }}
                                         animate={{
                                             opacity: 1,
+                                            y: 0,
                                             filter: "blur(0px)",
                                         }}
                                         transition={{

@@ -2,17 +2,17 @@ import type { Diet } from "@/model/diet";
 import { create } from "zustand";
 
 type DietStore = {
-  mealDaysByClient: Record<string, Diet[]>;
-  setMealDays: (clientId: number, mealDays: Diet[]) => void;
+    dietDaysByClient: Record<string, Diet[]>;
+    setDietDays: (clientId: number, mealDays: Diet[]) => void;
 };
 
 export const useDietStore = create<DietStore>((set) => ({
-  mealDaysByClient: {},
-  setMealDays: (clientId, mealDays) =>
-    set((state) => ({
-      mealDaysByClient: {
-        ...state.mealDaysByClient,
-        [clientId]: mealDays,
-      },
-    })),
+    dietDaysByClient: {},
+    setDietDays: (clientId, mealDays) =>
+        set((state) => ({
+            dietDaysByClient: {
+                ...state.dietDaysByClient,
+                [clientId]: mealDays,
+            },
+        })),
 }));

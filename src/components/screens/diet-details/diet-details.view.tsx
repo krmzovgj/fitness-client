@@ -224,10 +224,12 @@ export const DietDetailsView = ({
         >
             <motion.div
                 initial={{
+                    y: 30,
                     opacity: 0,
                     filter: "blur(20px)",
                 }}
                 animate={{
+                    y: 0,
                     opacity: 1,
                     filter: "blur(0px)",
                 }}

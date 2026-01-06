@@ -197,6 +197,15 @@ export const ClientsView = () => {
                                     color="#000"
                                 />
                                 My Clients
+                                {clients && (
+                                    <span className="text-sm ml-2 text-medium">
+                                        {clients?.length}{" "}
+                                        <span className="text-muted-foreground">
+                                            /
+                                        </span>{" "}
+                                        {tenant?.clientLimit}
+                                    </span>
+                                )}
                                 {loadingClients && (
                                     <Spinner className="size-5" />
                                 )}
@@ -238,10 +247,12 @@ export const ClientsView = () => {
                                 ) : (
                                     <motion.div
                                         initial={{
+                                            y: 30,
                                             opacity: 0,
                                             filter: "blur(20px)",
                                         }}
                                         animate={{
+                                            y: 0,
                                             opacity: 1,
                                             filter: "blur(0px)",
                                         }}

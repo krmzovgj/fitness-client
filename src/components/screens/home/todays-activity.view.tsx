@@ -14,10 +14,10 @@ export const TodaysActivityView = () => {
     const { user } = useUserStore();
     const { token } = useAuthStore();
     const { workoutsByClient, setWorkouts } = useWorkoutStore();
-    const { mealDaysByClient, setMealDays } = useDietStore();
+    const { dietDaysByClient, setDietDays } = useDietStore();
 
     const workouts = user?.id ? workoutsByClient[user.id] : undefined;
-    const mealDays = user?.id ? mealDaysByClient[user?.id] : undefined;
+    const mealDays = user?.id ? dietDaysByClient[user?.id] : undefined;
 
     const [loadingActivity, setloadingActivity] = useState(false);
 
@@ -33,7 +33,7 @@ export const TodaysActivityView = () => {
             ]);
 
             setWorkouts(user.id, workoutRes.data);
-            setMealDays(user.id, dietRes.data);
+            setDietDays(user.id, dietRes.data);
         } catch {
         } finally {
             setloadingActivity(false);
