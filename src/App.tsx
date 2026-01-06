@@ -12,7 +12,6 @@ import { SignIn } from "./pages/auth/sign-in";
 import { Client } from "./pages/client/[id]";
 import { Meals } from "./pages/client/diet-details";
 import { Home } from "./pages/home";
-import { MyProgram } from "./pages/my-program";
 import { useAuthStore } from "./store/auth";
 import { useTenantStore } from "./store/tenant";
 import { useUserStore } from "./store/user";
@@ -30,7 +29,6 @@ function App() {
     const hostname = window.location.hostname;
     const parts = hostname.split(".");
 
-    // const envSubdomain = import.meta.env.VITE_TENANT_SUBDOMAIN;
     const isLocalhost = hostname === "localhost";
 
     let subdomain: string | null = null;
@@ -38,6 +36,8 @@ function App() {
     if (!isLocalhost && parts.length > 2) {
         subdomain = parts[0];
     }
+
+    // const envSubdomain = import.meta.env.VITE_TENANT_SUBDOMAIN;
 
     useEffect(() => {
         getTenantBySubdomain(subdomain!)
@@ -111,16 +111,6 @@ function App() {
                     element={
                         <ProtectedRoute>
                             <Home />
-                        </ProtectedRoute>
-                    }
-                />
-
-                <Route
-                    path="/my-program"
-                    handle={{ breadcrumb: "My Program" }}
-                    element={
-                        <ProtectedRoute>
-                            <MyProgram />
                         </ProtectedRoute>
                     }
                 />
