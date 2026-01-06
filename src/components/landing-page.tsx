@@ -8,12 +8,7 @@ import {
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import {
-    ArrowRight,
-    Book,
-    Messages2,
-    Profile2User
-} from "iconsax-reactjs";
+import { ArrowRight, Book, Messages2, Profile2User } from "iconsax-reactjs";
 import { Button } from "../components/ui/button";
 import { GridPattern } from "./ui/shadcn-io/grid-pattern";
 
@@ -28,15 +23,15 @@ export const LandingPage = () => {
     return (
         <>
             <GridPattern
-                width={30}
-                height={30}
-                x={-1}
-                y={-1}
-                strokeDasharray={"4 2"}
+                width={25}
+                height={25}
+                strokeDasharray="2 6"
                 className={cn(
-                    "z-0 mask-[radial-gradient(1000px_circle_at_center,white,transparent)]"
+                    "fixed inset-0 z-0 pointer-events-none",
+                    "mask-[radial-gradient(1000px_circle_at_center,white,transparent)]"
                 )}
             />
+            
             <div className="tracking-tighter w-screen md:pb-8 pb-6 px-6 relative">
                 <div className="fixed px-6 md:px-0 backdrop-blur-lg z-50 left-0 flex items-center py-5 justify-between md:justify-evenly w-full">
                     <img src="/favicon.png" className="w-10 h-10" alt="" />

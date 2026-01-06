@@ -17,16 +17,17 @@ export function AppLayout() {
 
                 <main className="flex-1 relative min-w-0 md:ml-70">
                     <Header user={user!} />
+
                     <GridPattern
-                        width={30}
-                        height={30}
-                        x={-1}
-                        y={-1}
-                        strokeDasharray={"4 2"}
+                        width={25}
+                        height={25}
+                        strokeDasharray="2 6"
                         className={cn(
-                            "absolute h-full w-full z-0 opacity-70 mask-[radial-gradient(1000px_circle_at_center,white,transparent)]"
+                            "fixed inset-0 z-0 pointer-events-none",
+                            "mask-[radial-gradient(1500px_circle_at_center,white,transparent)]"
                         )}
                     />
+
                     <div className="md:px-10 relative md:pb-8 pb-5 px-5">
                         <Outlet />
                     </div>
