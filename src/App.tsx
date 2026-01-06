@@ -27,56 +27,36 @@ function App() {
     const [tenantError, setTenantError] = useState(false);
     const navigate = useNavigate();
 
+    const hostname = window.location.hostname;
+    const parts = hostname.split(".");
+
+    const envSubdomain = import.meta.env.VITE_TENANT_SUBDOMAIN;
+    const isLocalhost = hostname === "localhost";
+
+    let subdomain: string | null = null;
+
+    if (!isLocalhost && parts.length > 2) {
+        subdomain = parts[0];
+    }
+
     useEffect(() => {
-        const bootstrap = async () => {
-            try {
-                setIsBootstrapping(true);
-                setTenantError(false);
-
-                const hostname = window.location.hostname;
-                const parts = hostname.split(".");
-
-                // const envSubdomain = import.meta.env.VITE_TENANT_SUBDOMAIN;
-                const isLocalhost = hostname === "localhost";
-
-                let subdomain: string | null = null;
-
-                if (!isLocalhost && parts.length > 2) {
-                    subdomain = parts[0];
-                }
-
-                if (!subdomain || subdomain === "mycoach") {
-                    setIsBootstrapping(false);
-                    return;
-                }
-
-                const tenantResponse = await getTenantBySubdomain(subdomain!);
-                setTenant(tenantResponse.data);
-
-                if (token && tenant) {
-                    try {
-                        const userRes = await getMe(token, tenant?.id);
-                        if (userRes.status === 200) {
-                            setUser(userRes.data);
-                        } else {
-                            clearToken();
-                            clearUser();
-                            navigate("/auth/sign-in");
-                        }
-                    } catch {
-                        clearToken();
-                        clearUser();
-                        navigate("/auth/sign-in");
-                    }
-                }
-            } catch (err) {
-                setTenantError(true);
-            } finally {
-                setIsBootstrapping(false);
-            }
-        };
-        bootstrap();
+        getTenantBySubdomain(envSubdomain)
+            .then((res) => setTenant(res.data))
+            .catch(() => setTenantError(true))
+            .finally(() => setIsBootstrapping(false));
     }, []);
+
+    useEffect(() => {
+        if (!tenant || !token) return;
+
+        getMe(token, tenant.id)
+            .then((res) => setUser(res.data))
+            .catch(() => {
+                clearToken();
+                clearUser();
+                navigate("/auth/sign-in");
+            });
+    }, [tenant, token]);
 
     if (isBootstrapping) {
         return (
@@ -93,7 +73,7 @@ function App() {
                     <h2 className="text-2xl font-bold">App Not Available</h2>
                     <p className="text-muted-foreground mt-2">
                         Could not load configuration for <br />
-                        subdomain:{" "}
+                        trainer:{" "}
                         <strong>
                             {import.meta.env.VITE_TENANT_SUBDOMAIN ||
                                 window.location.hostname.split(".")[0]}
