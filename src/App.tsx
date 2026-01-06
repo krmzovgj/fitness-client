@@ -30,7 +30,7 @@ function App() {
     const hostname = window.location.hostname;
     const parts = hostname.split(".");
 
-    const envSubdomain = import.meta.env.VITE_TENANT_SUBDOMAIN;
+    // const envSubdomain = import.meta.env.VITE_TENANT_SUBDOMAIN;
     const isLocalhost = hostname === "localhost";
 
     let subdomain: string | null = null;
@@ -40,7 +40,7 @@ function App() {
     }
 
     useEffect(() => {
-        getTenantBySubdomain(envSubdomain)
+        getTenantBySubdomain(subdomain!)
             .then((res) => setTenant(res.data))
             .catch(() => setTenantError(true))
             .finally(() => setIsBootstrapping(false));
