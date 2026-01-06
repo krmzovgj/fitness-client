@@ -15,12 +15,11 @@ import { useAuthStore } from "@/store/auth";
 import { useTenantStore } from "@/store/tenant";
 import { useUserStore } from "@/store/user";
 import {
-    Bookmark2,
     Direct,
     Home2,
     Lifebuoy,
     LogoutCurve,
-    Profile,
+    Profile
 } from "iconsax-reactjs";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -72,10 +71,10 @@ const MENU_BY_ROLE: Record<UserRole, MenuItem[]> = {
             icon: Home2,
         },
         {
-            title: "My Program",
-            url: "/my-program",
-            icon: Bookmark2,
-            commingSoon: false,
+            title: "Inbox",
+            url: "/inbox",
+            icon: Direct,
+            commingSoon: true,
         },
         {
             title: "Profile",
@@ -273,7 +272,10 @@ export function AppSidebar() {
 
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction className="w-fit" onClick={signOut}>
+                            <AlertDialogAction
+                                className="w-fit"
+                                onClick={signOut}
+                            >
                                 Yes, Sign Out
                             </AlertDialogAction>
                         </AlertDialogFooter>

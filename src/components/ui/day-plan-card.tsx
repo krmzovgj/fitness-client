@@ -1,12 +1,7 @@
 import { cn, today } from "@/lib/utils";
 import { Day } from "@/model/day";
 import { UserRole, type User } from "@/model/user";
-import {
-    BatteryCharging,
-    Book1,
-    Edit,
-    Timer1
-} from "iconsax-reactjs";
+import { BatteryCharging, Book1, Edit, Moon } from "iconsax-reactjs";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./button";
 
@@ -136,8 +131,9 @@ export function DayPlanCard({
 
                 <div className="mt-6 flex items-center justify-between">
                     {isRestDay ? (
-                        <p className="text-sm flex items-center gap-x-1 text-muted-foreground">
-                            <Timer1 variant="Bulk" size={21} color="#181818" />
+                        <p className="text-sm flex items-center gap-x-1.5 text-muted-foreground">
+                            <Moon variant="Bulk" size={16} color="#181818" />
+
                             <span className="flex items-center gap-x-1">
                                 Rest day
                             </span>
@@ -171,8 +167,6 @@ export function DayPlanCard({
                     </div>
                 </div>
             </div>
-
-            {/* <div className="mt-2 px-5 flex items-center gap-x-1.5 justify-end text-sm font-medium text-primary"></div> */}
         </div>
     );
 }

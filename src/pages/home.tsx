@@ -1,10 +1,12 @@
 import { getMe } from "@/api/user";
+import { DietView } from "@/components/screens/client-details/diet.view";
+import { WorkoutView } from "@/components/screens/client-details/workout.view";
 import { ClientsView } from "@/components/screens/home/clients.view";
-import { TodaysActivityView } from "@/components/screens/home/todays-activity.view";
 import { Spinner } from "@/components/ui/spinner";
 import { formatDate } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth";
 import { useTenantStore } from "@/store/tenant";
+import { EmojiNormal } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserRole } from "../model/user";
@@ -18,7 +20,7 @@ export const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(user) return
+        if (user) return;
 
         const loadUser = async () => {
             if (!token || !tenant) {
@@ -73,11 +75,11 @@ export const Home = () => {
                         </h1>
                         {user?.role === UserRole.TRAINER ? (
                             <h3 className="text-md font-medium text-muted-foreground flex items-center gap-x-1 mt-1 ml-0.5">
-                                Track your clients and their plans
+                            <EmojiNormal variant="Bulk" size={18} color="#181818" /> Track your clients and their plans
                             </h3>
                         ) : (
                             <h3 className="text-md font-medium text-muted-foreground flex items-center gap-x-1 mt-1 ml-0.5">
-                                Track your daily workout and diet plan
+                            <EmojiNormal variant="Bulk" size={18} color="#181818" /> Track your weekly workout and diet plan
                             </h3>
                         )}
                     </div>
@@ -89,9 +91,8 @@ export const Home = () => {
                     <ClientsView />
                 ) : (
                     <div>
-                        <TodaysActivityView />
-                        {/* <WorkoutView client={user!} /> */}
-                        {/* <DietView client={user!} /> */}
+                        <WorkoutView client={user!} />
+                        <DietView client={user!} />
                     </div>
                 )}
             </div>

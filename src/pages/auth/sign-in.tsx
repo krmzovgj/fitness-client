@@ -7,6 +7,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn } from "../../api/auth";
 import { useAuthStore } from "../../store/auth";
+import { GridPattern } from "@/components/ui/shadcn-io/grid-pattern";
+import { cn } from "@/lib/utils";
 
 export const SignIn = () => {
     const navigate = useNavigate();
@@ -47,7 +49,16 @@ export const SignIn = () => {
 
     return (
         <div className="w-screen p-10 flex-col h-screen flex justify-center items-center">
-            <div className="md:w-1/4 w-full flex self-center justify-center  flex-col">
+            <GridPattern
+                width={25}
+                height={25}
+                strokeDasharray="2 6"
+                className={cn(
+                    "fixed inset-0 z-0 pointer-events-none",
+                    "mask-[radial-gradient(1500px_circle_at_center,white,transparent)]"
+                )}
+            />
+            <div className="relative md:w-1/4 w-full flex self-center justify-center  flex-col">
                 <div className="mb-6 flex flex-col items-center">
                     <div className="">
                         <img
@@ -74,6 +85,7 @@ export const SignIn = () => {
                     )}
 
                     <Input
+                        className="bg-secondary"
                         placeholder="Email"
                         value={email}
                         onChange={(e: any) => setemail(e.target.value)}
@@ -84,9 +96,9 @@ export const SignIn = () => {
                             placeholder="Password"
                             value={password}
                             onChange={(e: any) => setpassword(e.target.value)}
-                            className="pr-10"
+                            className="pr-10 bg-secondary"
                         />
-                        
+
                         <button
                             type="button"
                             onClick={() => setshowPassword(!showPassword)}

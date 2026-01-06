@@ -162,7 +162,7 @@ export const WorkoutDetailsView = ({
         workoutExercises.forEach((ex) => {
             initialOrders[ex.id] = ex.orderNumber;
         });
-        setOrderValues(initialOrders); 
+        setOrderValues(initialOrders);
         setEditOrders(true);
         seteditOrder(true);
     };
@@ -393,14 +393,18 @@ export const WorkoutDetailsView = ({
                                     <p className="text-foreground">
                                         {workout?.day?.toLowerCase()}
                                     </p>
-                                    <RecordCircle
-                                        variant="Bold"
-                                        size={8}
-                                        color="#000"
-                                    />
-                                    <p className="text-foreground">
-                                        {clientName}
-                                    </p>
+                                    {user?.role !== UserRole.CLIENT && (
+                                        <>
+                                            <RecordCircle
+                                                variant="Bold"
+                                                size={8}
+                                                color="#000"
+                                            />
+                                            <p className="text-foreground">
+                                                {clientName}
+                                            </p>
+                                        </>
+                                    )}
                                 </h3>
                                 <h1 className="text-3xl leading-7 font-medium">
                                     {workout?.name}
