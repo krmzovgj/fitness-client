@@ -88,6 +88,7 @@ export const WorkoutDetailsView = ({
 
     const [sets, setsets] = useState<number>(0);
     const [reps, setreps] = useState<string>("");
+    const [weight, setweight] = useState<number>(0);
     const [note, setnote] = useState<string>("");
     const [restBetweenSets, setrestBetweenSets] = useState<number>(0);
     const [restAfterExercise, setrestAfterExercise] = useState<number>(0);
@@ -225,6 +226,7 @@ export const WorkoutDetailsView = ({
                 {
                     reps,
                     sets,
+                    weight,
                     note,
                     restBetweenSets,
                     restAfterExercise,
@@ -258,6 +260,7 @@ export const WorkoutDetailsView = ({
         const payload = {
             sets,
             reps,
+            weight,
             note,
             restBetweenSets,
             restAfterExercise,
@@ -690,6 +693,19 @@ export const WorkoutDetailsView = ({
                                 <InputBadge title="reps" />
                             </div>
                         </MandatoryWrapper>
+
+                        <div className="flex items-center relative">
+                            <Input
+                                value={weight === 0 ? "" : weight}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setweight(value === "" ? 0 : Number(value));
+                                }}
+                                placeholder="Weight"
+                                type="number"
+                            />
+                            <InputBadge title="weight kg" />
+                        </div>
 
                         <div className="flex items-center relative">
                             <Input

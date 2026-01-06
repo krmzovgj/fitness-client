@@ -1,12 +1,13 @@
 "use client";
 
 import { deleteWorkoutExercise } from "@/api/workout-exercise";
+import { secondsToTime } from "@/lib/utils";
 import { UserRole } from "@/model/user";
 import type { WorkoutExercise } from "@/model/workout-exercise";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Edit, Maximize4, Timer1, Trash } from "iconsax-reactjs";
+import { ArrowDown, Edit, Maximize4, Timer1, Trash } from "iconsax-reactjs";
 import { useState } from "react";
 import {
     AlertDialog,
@@ -28,7 +29,6 @@ import {
     DialogTrigger,
 } from "../ui/dialog";
 import { Spinner } from "../ui/spinner";
-import { secondsToTime } from "@/lib/utils";
 
 /* ---------------- EXPORTED HELPERS (unchanged) ---------------- */
 
@@ -187,13 +187,32 @@ export const ExerciseColumns = (
             </>
         ),
     },
+
+    {
+        accessorKey: "weight",
+        header: "Weight",
+        cell: ({ row }) => (
+            <>
+                {row.original.weight ? (
+                    <div className="">
+                        {row.original.weight}
+                        <span className="font-bold text-xs text-muted-foreground">
+                            kg
+                        </span>
+                    </div>
+                ) : (
+                    "N/A"
+                )}
+            </>
+        ),
+    },
     {
         accessorKey: "exercise.note",
         header: "Note",
         cell: ({ row }) =>
             row.original.note ? (
                 <Dialog>
-                    <DialogTrigger className="flex whitespace-nowrap gap-x-1 cursor-pointer">
+                    <DialogTrigger className="flex items-center whitespace-nowrap gap-x-1 cursor-pointer">
                         {row.original.note.slice(0, 15)}...
                         <Maximize4 variant="Bold" size={15} />
                     </DialogTrigger>
@@ -219,6 +238,17 @@ export const ExerciseColumns = (
             <div className="whitespace-nowrap flex items-center gap-x-1">
                 {secondsToTime(row.original.restBetweenSets!)}
                 <Timer1 variant="Bold" size={15} />
+            </div>
+        ),
+    },
+
+    {
+        accessorKey: "restAfterExercise",
+        header: "Rest After Exercise",
+        cell: ({ row }) => (
+            <div className="whitespace-nowrap flex items-center gap-x-1">
+                {secondsToTime(row.original.restAfterExercise!)}
+                <ArrowDown variant="Bold" size={15} />
             </div>
         ),
     },

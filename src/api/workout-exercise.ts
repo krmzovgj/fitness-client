@@ -4,6 +4,7 @@ import { api } from "./axios";
 export interface CreateWorkoutExerciseDto {
     sets: number;
     reps: string;
+    weight?: number;
     note?: string;
     restBetweenSets?: number;
     restAfterExercise?: number;
@@ -14,6 +15,7 @@ export interface CreateWorkoutExerciseDto {
 export interface UpdateWorkoutExerciseDto {
     sets: number;
     reps: string;
+    weight?: number;
     note?: string;
     restBetweenSets?: number;
     restAfterExercise?: number;

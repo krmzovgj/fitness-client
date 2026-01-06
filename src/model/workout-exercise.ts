@@ -5,6 +5,7 @@ export interface WorkoutExercise {
     sets: number;
     reps: string;
     note?: string;
+    weight?: number;
     restBetweenSets?: number;
     restAfterExercise?: number;
     exercise: Exercise;
