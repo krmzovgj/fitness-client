@@ -6,8 +6,8 @@ export interface CreateWorkoutExerciseDto {
     reps: string;
     weight?: number;
     note?: string;
-    restBetweenSets?: number;
-    restAfterExercise?: number;
+    restBetweenSets?: string;
+    restAfterExercise?: string;
     orderNumber: number;
     exerciseId: string;
 }
@@ -17,8 +17,8 @@ export interface UpdateWorkoutExerciseDto {
     reps: string;
     weight?: number;
     note?: string;
-    restBetweenSets?: number;
-    restAfterExercise?: number;
+    restBetweenSets?: string;
+    restAfterExercise?: string;
     exerciseId: string;
 }
 

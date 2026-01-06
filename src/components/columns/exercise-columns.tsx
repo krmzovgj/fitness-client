@@ -1,12 +1,12 @@
 "use client";
 
 import { deleteWorkoutExercise } from "@/api/workout-exercise";
-import { secondsToTime } from "@/lib/utils";
 import { UserRole } from "@/model/user";
 import type { WorkoutExercise } from "@/model/workout-exercise";
 import { useAuthStore } from "@/store/auth";
 import { useUserStore } from "@/store/user";
 import type { ColumnDef } from "@tanstack/react-table";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, Edit, Maximize4, Timer1, Trash } from "iconsax-reactjs";
 import { useState } from "react";
 import {
@@ -29,7 +29,6 @@ import {
     DialogTrigger,
 } from "../ui/dialog";
 import { Spinner } from "../ui/spinner";
-import { AnimatePresence, motion } from "framer-motion";
 
 /* ---------------- EXPORTED HELPERS (unchanged) ---------------- */
 
@@ -250,23 +249,35 @@ export const ExerciseColumns = (
     },
     {
         accessorKey: "restBetweenSets",
-        header: "Rest Between Sets",
+        header: "Rest BTWS",
         cell: ({ row }) => (
-            <div className="whitespace-nowrap flex items-center gap-x-1">
-                {secondsToTime(row.original.restBetweenSets!)}
-                <Timer1 variant="Bold" size={15} />
-            </div>
+            <>
+                {row.original.restBetweenSets ? (
+                    <div className="whitespace-nowrap flex items-center gap-x-1">
+                        {row.original.restBetweenSets}
+                        <Timer1 variant="Bold" size={15} />
+                    </div>
+                ) : (
+                    "N/A"
+                )}
+            </>
         ),
     },
 
     {
         accessorKey: "restAfterExercise",
-        header: "Rest After Exercise",
+        header: "Rest AFE",
         cell: ({ row }) => (
-            <div className="whitespace-nowrap flex items-center gap-x-1">
-                {secondsToTime(row.original.restAfterExercise!)}
-                <ArrowDown variant="Bold" size={15} />
-            </div>
+            <>
+                {row.original.restAfterExercise ? (
+                    <div className="whitespace-nowrap flex items-center gap-x-1">
+                        {row.original.restAfterExercise}
+                        <ArrowDown variant="Bold" size={15} />
+                    </div>
+                ) : (
+                    "N/A"
+                )}
+            </>
         ),
     },
     {

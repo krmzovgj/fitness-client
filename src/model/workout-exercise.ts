@@ -6,8 +6,8 @@ export interface WorkoutExercise {
     reps: string;
     note?: string;
     weight?: number;
-    restBetweenSets?: number;
-    restAfterExercise?: number;
+    restBetweenSets?: string;
+    restAfterExercise?: string;
     exercise: Exercise;
     orderNumber: number;
     workoutId: string;

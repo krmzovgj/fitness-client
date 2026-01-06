@@ -56,15 +56,7 @@ export const today = now
     .toLocaleDateString("en-US", { weekday: "long" })
     .toUpperCase();
 
-export function secondsToTime(sec: number) {
-    const minutes = Math.floor(sec / 60);
-    const seconds = sec % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-        2,
-        "0"
-    )}`;
+export function hasDuplicateOrders(record: Record<string, number>) {
+    const values = Object.values(record);
+    return new Set(values).size !== values.length;
 }
-
-export const capitalizeWords = (str: string) => {
-    return str.replace(/\b\w/g, (char) => char.toUpperCase());
-};

@@ -175,6 +175,7 @@ export const WorkoutView = ({ client }: { client: User }) => {
                 } else {
                     setday(null);
                 }
+                setrestDay(false)
                 seterror("");
             }}
         >

@@ -47,7 +47,7 @@ import {
 } from "@/components/ui/popover";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
-import { capitalizeWords, cn } from "@/lib/utils";
+import { cn, hasDuplicateOrders } from "@/lib/utils";
 import type { Exercise } from "@/model/exercise";
 import { UserRole } from "@/model/user";
 import type { Workout } from "@/model/workout";
@@ -90,8 +90,8 @@ export const WorkoutDetailsView = ({
     const [reps, setreps] = useState<string>("");
     const [weight, setweight] = useState<number>(0);
     const [note, setnote] = useState<string>("");
-    const [restBetweenSets, setrestBetweenSets] = useState<number>(0);
-    const [restAfterExercise, setrestAfterExercise] = useState<number>(0);
+    const [restBetweenSets, setrestBetweenSets] = useState<string>("");
+    const [restAfterExercise, setrestAfterExercise] = useState<string>("");
 
     const [searchQuery, setsearchQuery] = useState("");
     const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -115,6 +115,7 @@ export const WorkoutDetailsView = ({
 
     const [editOrders, setEditOrders] = useState(false);
     const [orderValues, setOrderValues] = useState<Record<string, number>>({});
+    const [ordersError, setordersError] = useState<string | null>(null);
 
     const getWorkoutData = async (showPageLoader = false) => {
         if (!token) return;
@@ -310,6 +311,14 @@ export const WorkoutDetailsView = ({
         setnote(selectedExercise?.note!);
     }, [selectedExercise]);
 
+    useEffect(() => {
+        if (hasDuplicateOrders(orderValues)) {
+            setordersError("Two or more exercises have the same order number");
+        } else {
+            setordersError(null);
+        }
+    }, [orderValues]);
+
     if (loadingWorkout) {
         return (
             <div className="h-screen flex justify-center items-center">
@@ -331,8 +340,8 @@ export const WorkoutDetailsView = ({
                 setweight(0);
                 setreps("");
                 setnote("");
-                setrestAfterExercise(0);
-                setrestBetweenSets(0);
+                setrestAfterExercise("");
+                setrestBetweenSets("");
                 seterror("");
             }}
         >
@@ -437,6 +446,10 @@ export const WorkoutDetailsView = ({
                                     />
                                 </Button>
                                 <Button
+                                    disabled={ordersError !== null}
+                                    animate={
+                                        ordersError !== null ? false : true
+                                    }
                                     className="px-2"
                                     variant="outline"
                                     onClick={handleSaveOrders}
@@ -502,6 +515,12 @@ export const WorkoutDetailsView = ({
                         />
                     )}
 
+                    {ordersError && (
+                        <div className="text-sm mt-5 text-red-500">
+                            {ordersError}
+                        </div>
+                    )}
+
                     <WorkoutNote
                         note={workout?.note!}
                         onSave={async (newNote) => {
@@ -561,7 +580,7 @@ export const WorkoutDetailsView = ({
                                 <Command>
                                     <CommandInput
                                         placeholder="Search exercise e.g. Bench Press"
-                                        className="h-9 capitalize"
+                                        className="h-9"
                                         value={searchQuery}
                                         onValueChange={setsearchQuery}
                                     />
@@ -615,9 +634,9 @@ export const WorkoutDetailsView = ({
                                                                         <span className="text-muted-foreground mr-1">
                                                                             Add
                                                                         </span>
-                                                                        {capitalizeWords(
+                                                                        {
                                                                             searchQuery
-                                                                        )}
+                                                                        }
                                                                     </Button>
                                                                 )}
                                                         </>
@@ -710,17 +729,11 @@ export const WorkoutDetailsView = ({
 
                         <div className="flex items-center relative">
                             <Input
-                                type="number"
-                                value={
-                                    restBetweenSets === 0 ? "" : restBetweenSets
-                                }
+                                value={restBetweenSets}
                                 onChange={(e) => {
-                                    const value = e.target.value;
-                                    setrestBetweenSets(
-                                        value === "" ? 0 : Number(value)
-                                    );
+                                    setrestBetweenSets(e.target.value);
                                 }}
-                                placeholder="Rest between sets (s)"
+                                placeholder="Rest e.g. 40s / 1min"
                             />
 
                             <InputBadge title="between sets" />
@@ -728,19 +741,11 @@ export const WorkoutDetailsView = ({
 
                         <div className="flex items-center relative">
                             <Input
-                                type="number"
-                                value={
-                                    restAfterExercise === 0
-                                        ? ""
-                                        : restAfterExercise
-                                }
+                                value={restAfterExercise}
                                 onChange={(e) => {
-                                    const value = e.target.value;
-                                    setrestAfterExercise(
-                                        value === "" ? 0 : Number(value)
-                                    );
+                                    setrestAfterExercise(e.target.value);
                                 }}
-                                placeholder="Rest after exercise (s)"
+                                placeholder="Rest e.g. 3-5min"
                             />
                             <InputBadge title="after exercise" />
                         </div>
