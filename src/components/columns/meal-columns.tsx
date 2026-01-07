@@ -37,7 +37,7 @@ export const MealColumns = (
 ): ColumnDef<Meal>[] => [
     {
         accessorKey: "name",
-        header: "Name",
+        header: "Meal",
         cell: ({ row }) => (
             <span className="whitespace-nowrap">{row.original.name}</span>
         ),

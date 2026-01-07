@@ -1,7 +1,8 @@
 import { cn, today } from "@/lib/utils";
 import { Day } from "@/model/day";
 import { UserRole, type User } from "@/model/user";
-import { BatteryCharging, Book1, Edit, Moon } from "iconsax-reactjs";
+import { motion } from "framer-motion";
+import { BatteryCharging, Book1, Edit, Moon, Timer1 } from "iconsax-reactjs";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./button";
 
@@ -58,115 +59,140 @@ export function DayPlanCard({
     };
 
     return (
-        <div
+        <motion.div
+            whileHover={isRestDay ? undefined : { scale: 1.03 }}
+            whileTap={isRestDay ? undefined : { scale: 0.99 }}
+            transition={{ type: "spring", duration: 0.4 }}
             className={cn(
-                "relative cursor-pointer bg-secondary overflow-hidden rounded-3xl",
-                isRestDay
-                    ? "cursor-default"
-                    : "cursor-pointer hover:scale-101 transition-all",
-                today === day ? "border-2 border-foreground" : "border-0"
+                "p-1 rounded-3xl bg-secondary transition-colors",
+                today === day ? "border-2 border-foreground" : "border-0",
+                isRestDay ? "cursor-default" : "cursor-pointer"
             )}
-            onClick={openDetails}
         >
-            <div className="p-5 flex-col flex">
-                <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                        <div
-                            style={{
-                                backgroundColor: isRestDay ? "#fff" : "#181818",
-                            }}
-                            className="flex h-10 w-10 items-center justify-center squircle-round"
-                        >
-                            {variant === "diet" ? (
-                                <Book1
-                                    variant="Bold"
-                                    size={21}
-                                    color={highlight}
-                                />
-                            ) : (
-                                <>
-                                    {isRestDay ? (
-                                        <BatteryCharging
-                                            variant="Bold"
-                                            size={21}
-                                            color="#000"
-                                        />
-                                    ) : (
-                                        <img
-                                            src="/weightOrange.svg"
-                                            className="w-[21px] h-[21px]"
-                                            alt=""
-                                        />
-                                    )}
-                                </>
-                            )}
+            <div
+                className={cn(
+                    "relative  bg-background overflow-hidden rounded-[20px] shadow-sm"
+                )}
+                onClick={openDetails}
+            >
+                {restDay && (
+                    <Timer1
+                        variant="Bulk"
+                        className="absolute rotate-210 -right-5 -top-7 opacity-60"
+                        size={100}
+                        color="#181818"
+                    />
+                )}
+                <div className="p-5 flex-col flex">
+                    <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3">
+                            <div
+                                style={{
+                                    backgroundColor: isRestDay
+                                        ? "oklch(0.97 0 0)"
+                                        : "#181818",
+                                }}
+                                className="flex h-10 w-10 items-center justify-center squircle-round"
+                            >
+                                {variant === "diet" ? (
+                                    <Book1
+                                        variant="Bold"
+                                        size={21}
+                                        color={highlight}
+                                    />
+                                ) : (
+                                    <>
+                                        {isRestDay ? (
+                                            <BatteryCharging
+                                                variant="Bold"
+                                                size={21}
+                                                color="#000"
+                                            />
+                                        ) : (
+                                            <img
+                                                src="/weightOrange.svg"
+                                                className="w-[21px] h-[21px]"
+                                                alt=""
+                                            />
+                                        )}
+                                    </>
+                                )}
+                            </div>
+
+                            <div>
+                                <p className="text-sm capitalize text-muted-foreground">
+                                    {day?.toLowerCase()}
+                                </p>
+                                {variant === "workout" ? (
+                                    <h3 className="leading-tight">
+                                        {isRestDay
+                                            ? "Rest Day"
+                                            : name
+                                            ? name
+                                            : "N/A"}
+                                    </h3>
+                                ) : (
+                                    <h3 className="leading-tight">
+                                        {name ? name : "N/A"}
+                                    </h3>
+                                )}
+                            </div>
                         </div>
 
-                        <div>
-                            <p className="text-sm capitalize text-muted-foreground">
-                                {day?.toLowerCase()}
-                            </p>
-                            {variant === "workout" ? (
-                                <h3 className="leading-tight">
-                                    {isRestDay
-                                        ? "Rest Day"
-                                        : name
-                                        ? name
-                                        : "N/A"}
-                                </h3>
-                            ) : (
-                                <h3 className="leading-tight">
-                                    {name ? name : "N/A"}
-                                </h3>
-                            )}
-                        </div>
+                        {day === today && (
+                            <div className="px-3 z-10 py-1 rounded-lg text-xs bg-foreground flex justify-center items-center text-background">
+                                Today's
+                            </div>
+                        )}
                     </div>
 
-                    {day === today && (
-                        <div className="px-3 py-1 rounded-lg text-xs bg-foreground flex justify-center items-center text-background">
-                            Today's
-                        </div>
-                    )}
-                </div>
+                    <div className="mt-6 flex items-center justify-between">
+                        {isRestDay ? (
+                            <p className="text-sm flex items-center gap-x-1.5 text-muted-foreground">
+                                <Moon
+                                    variant="Bulk"
+                                    size={16}
+                                    color="#181818"
+                                />
 
-                <div className="mt-6 flex items-center justify-between">
-                    {isRestDay ? (
-                        <p className="text-sm flex items-center gap-x-1.5 text-muted-foreground">
-                            <Moon variant="Bulk" size={16} color="#181818" />
-
-                            <span className="flex items-center gap-x-1">
-                                Rest day
-                            </span>
-                        </p>
-                    ) : (
-                        <div>
-                            <p className="text-sm text-muted-foreground">
-                                <span className="text-foreground">
-                                    {variant === "diet"
-                                        ? mealsCount
-                                        : exerciseCount}
-                                </span>{" "}
-                                {isWorkout ? "Exercises" : "Meals"}
+                                <span className="flex items-center gap-x-1">
+                                    Rest day
+                                </span>
                             </p>
-                        </div>
-                    )}
-
-                    <div className="flex items-center gap-x-1.5">
-                        {user.role === UserRole.TRAINER && (
-                            <Button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    openEdit?.();
-                                }}
-                                variant="outline"
-                            >
-                                Edit{" "}
-                                <Edit variant="Bulk" size={18} color="#000" />
-                            </Button>
+                        ) : (
+                            <div>
+                                <p className="text-sm text-muted-foreground">
+                                    <span className="text-foreground">
+                                        {variant === "diet"
+                                            ? mealsCount
+                                            : exerciseCount}
+                                    </span>{" "}
+                                    {isWorkout ? "Exercises" : "Meals"}
+                                </p>
+                            </div>
                         )}
+
+                        <div className="flex items-center gap-x-1.5">
+                            {user.role === UserRole.TRAINER && (
+                                <Button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        openEdit?.();
+                                    }}
+                                    variant="secondary"
+                                >
+                                    Edit{" "}
+                                    <Edit
+                                        variant="Bold"
+                                        size={18}
+                                        color="#000"
+                                    />
+                                </Button>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }

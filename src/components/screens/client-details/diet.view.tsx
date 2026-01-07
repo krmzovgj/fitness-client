@@ -253,7 +253,7 @@ export const DietView = ({ client }: { client: User }) => {
 
             <DialogContent>
                 <DialogTitle>
-                    {selectedDiet ? "Update" : "Add New"} Diet
+                    {selectedDiet ? `Update ${selectedDiet?.name}` : "Add New Diet"} 
                 </DialogTitle>
                 <DialogDescription>
                     Fill the required fields to{" "}
@@ -306,6 +306,8 @@ export const DietView = ({ client }: { client: User }) => {
                 </div>
                 <DialogFooter>
                     <Button
+                        animate={availableDays.length === 0 ? false : true}
+                        disabled={availableDays.length === 0}
                         onClick={
                             selectedDiet ? handleUpdateDiet : handleCreateDiet
                         }

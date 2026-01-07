@@ -145,13 +145,13 @@ export const ExerciseColumns = (
                     <motion.div
                         initial={{
                             opacity: 0,
-                            filter: "blur(20px)",
+                            filter: "blur(10px)",
                         }}
                         animate={{
                             opacity: 1,
                             filter: "blur(0px)",
                         }}
-                        transition={{ duration: 0.7, type: "spring" }}
+                        transition={{ duration: 0.4, type: "spring" }}
                     >
                         <input
                             type="number"

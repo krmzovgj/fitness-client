@@ -219,6 +219,8 @@ export const DietDetailsView = ({
                 setdescription("");
                 setcal(0);
                 setprotein(0);
+                setcarbs(0);
+                setfats(0);
                 seterror("");
             }}
         >

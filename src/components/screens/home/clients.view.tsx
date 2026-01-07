@@ -184,6 +184,7 @@ export const ClientsView = () => {
                 setEmail("");
                 setGender("");
                 setPassword("");
+                seterror("");
             }}
         >
             <div className="flex h-full flex-col">
@@ -203,7 +204,7 @@ export const ClientsView = () => {
                                         <span className="text-muted-foreground">
                                             /
                                         </span>{" "}
-                                        {tenant?.clientLimit}
+                                        6
                                     </span>
                                 )}
                                 {loadingClients && (
@@ -280,7 +281,9 @@ export const ClientsView = () => {
 
             <DialogContent>
                 <DialogTitle>
-                    {selectedClient ? "Update" : "Add New"} Client
+                    {selectedClient
+                        ? `Update ${selectedClient.firstName}`
+                        : "Add New Client"}
                 </DialogTitle>
                 <DialogDescription>
                     Fill the required fields to{" "}

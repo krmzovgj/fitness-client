@@ -11,12 +11,7 @@ import type { User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useTenantStore } from "@/store/tenant";
 import { useUserStore } from "@/store/user";
-import {
-    ArrowDown2,
-    Lifebuoy,
-    LogoutCurve,
-    Profile
-} from "iconsax-reactjs";
+import { ArrowDown2, Lifebuoy, LogoutCurve, Profile } from "iconsax-reactjs";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -30,6 +25,7 @@ import {
 } from "../ui/alert-dialog";
 import { Avatar } from "../ui/avatar";
 import { SidebarTrigger } from "../ui/sidebar";
+import { Link } from "react-router-dom";
 
 export const Header = ({ user }: { user?: User }) => {
     const { clearToken } = useAuthStore();
@@ -45,8 +41,14 @@ export const Header = ({ user }: { user?: User }) => {
 
     return (
         <div className="pt-5 md:py-5 md:px-10 px-5 flex justify-between items-center">
+            <Link to={"/"} className="flex md:hidden">
+                <img
+                    src="/favicon.png"
+                    className="w-9 h-9"
+                    alt=""
+                />
+            </Link>
 
-            <img src="/favicon.png" className="flex md:hidden w-9 h-9" alt="" />
             <div className="flex md:hidden items-center gap-x-2 text-xl font-bold">
                 {tenant?.subdomain}
             </div>
@@ -140,7 +142,10 @@ export const Header = ({ user }: { user?: User }) => {
                                     <AlertDialogCancel>
                                         Cancel
                                     </AlertDialogCancel>
-                                    <AlertDialogAction className="w-fit" onClick={signOut}>
+                                    <AlertDialogAction
+                                        className="w-fit"
+                                        onClick={signOut}
+                                    >
                                         Yes, Sign Out
                                     </AlertDialogAction>
                                 </AlertDialogFooter>

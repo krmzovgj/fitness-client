@@ -175,7 +175,7 @@ export const WorkoutView = ({ client }: { client: User }) => {
                 } else {
                     setday(null);
                 }
-                setrestDay(false)
+                setrestDay(false);
                 seterror("");
             }}
         >
@@ -228,7 +228,7 @@ export const WorkoutView = ({ client }: { client: User }) => {
                                 </EmptyHeader>
                             </Empty>
                         ) : (
-                            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4  gap-4">
                                 {sortedWorkouts.map((workout) => (
                                     <motion.div
                                         key={workout?.id}
@@ -277,7 +277,9 @@ export const WorkoutView = ({ client }: { client: User }) => {
 
             <DialogContent>
                 <DialogTitle>
-                    {selectedWorkout ? "Update" : "Add New"} Workout
+                    {selectedWorkout
+                        ? `Update ${selectedWorkout?.name}`
+                        : "Add New Workout"}
                 </DialogTitle>
                 <DialogDescription>
                     Fill the required fields to{" "}
@@ -337,14 +339,17 @@ export const WorkoutView = ({ client }: { client: User }) => {
                     )}
                 </div>
 
-                <DialogFooter
-                    onClick={
-                        selectedWorkout
-                            ? handleUpdateWorkout
-                            : handleCreateWorkout
-                    }
-                >
-                    <Button className="self-end">
+                <DialogFooter>
+                    <Button
+                        animate={availableDays.length === 0 ? false : true}
+                        disabled={availableDays.length === 0}
+                        onClick={
+                            selectedWorkout
+                                ? handleUpdateWorkout
+                                : handleCreateWorkout
+                        }
+                        className="self-end"
+                    >
                         {creatingWorkout ? (
                             <Spinner color="#fff" className="size-6" />
                         ) : (
