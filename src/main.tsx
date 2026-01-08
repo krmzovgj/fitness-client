@@ -14,3 +14,5 @@ createRoot(document.getElementById("root")!).render(
         </SidebarProvider>
     </BrowserRouter>
 );
+
+console.log("VITE_BACKEND_URL:", import.meta.env.VITE_BACKEND_URL);
