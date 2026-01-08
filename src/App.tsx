@@ -11,12 +11,11 @@ import { Spinner } from "./components/ui/spinner";
 import { SignIn } from "./pages/auth/sign-in";
 import { Client } from "./pages/client/[id]";
 import { Meals } from "./pages/client/diet-details";
+import { WorkoutDetails } from "./pages/client/workout-details";
 import { Home } from "./pages/home";
 import { useAuthStore } from "./store/auth";
 import { useTenantStore } from "./store/tenant";
 import { useUserStore } from "./store/user";
-import { LandingPage } from "./components/landing-page";
-import { WorkoutDetails } from "./pages/client/workout-details";
 
 function App() {
     const { setTenant, tenant } = useTenantStore();
@@ -85,10 +84,6 @@ function App() {
                 </Button>
             </div>
         );
-    }
-
-    if (!tenant) {
-        return <LandingPage />;
     }
 
     return (

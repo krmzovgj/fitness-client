@@ -2,7 +2,7 @@ import { cn, today } from "@/lib/utils";
 import { Day } from "@/model/day";
 import { UserRole, type User } from "@/model/user";
 import { motion } from "framer-motion";
-import { BatteryCharging, Book1, Edit, Moon, Timer1 } from "iconsax-reactjs";
+import { BatteryCharging, Book1, Edit, Moon } from "iconsax-reactjs";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./button";
 
@@ -64,25 +64,31 @@ export function DayPlanCard({
             whileTap={isRestDay ? undefined : { scale: 0.99 }}
             transition={{ type: "spring", duration: 0.4 }}
             className={cn(
-                "p-1 rounded-3xl bg-secondary transition-colors",
+                "p-1 relative rounded-3xl bg-secondary transition-colors",
                 today === day ? "border-2 border-foreground" : "border-0",
                 isRestDay ? "cursor-default" : "cursor-pointer"
             )}
         >
+            {day === today && (
+                <div className="px-3 py-1 absolute -top-3 border-2 shadow-sm border-background z-10  place-self-center rounded-lg text-xs bg-foreground flex justify-center items-center text-background">
+                    Today's
+                </div>
+            )}
             <div
                 className={cn(
-                    "relative  bg-background overflow-hidden rounded-[20px] shadow-sm"
+                    "relative  overflow-hidden bg-background rounded-[20px] shadow-sm"
                 )}
                 onClick={openDetails}
             >
                 {restDay && (
-                    <Timer1
+                    <BatteryCharging
                         variant="Bulk"
-                        className="absolute rotate-210 -right-5 -top-7 opacity-60"
+                        className="absolute -rotate-180 -right-4  -top-5"
                         size={100}
                         color="#181818"
                     />
                 )}
+
                 <div className="p-5 flex-col flex">
                     <div className="flex items-start justify-between">
                         <div className="flex items-center gap-3">
@@ -138,12 +144,6 @@ export function DayPlanCard({
                                 )}
                             </div>
                         </div>
-
-                        {day === today && (
-                            <div className="px-3 z-10 py-1 rounded-lg text-xs bg-foreground flex justify-center items-center text-background">
-                                Today's
-                            </div>
-                        )}
                     </div>
 
                     <div className="mt-6 flex items-center justify-between">
