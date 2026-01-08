@@ -70,7 +70,7 @@ export function DayPlanCard({
             )}
         >
             {day === today && (
-                <div className="px-3 py-1 absolute  left-[50%] translate-x-[-50%] -top-3 border-2 shadow-sm border-background z-10 rounded-lg text-xs bg-foreground flex justify-center items-center text-background">
+                <div className="px-3 py-1 absolute left-[50%] translate-x-[-50%] -top-3 border-2 shadow-sm border-background z-10 rounded-lg text-xs bg-foreground flex justify-center items-center text-background">
                     Today's
                 </div>
             )}
