@@ -24,13 +24,10 @@ export const SignIn = () => {
 
         try {
             setloading(true);
-            const response = await signIn(
-                {
-                    email,
-                    password,
-                },
-                tenant.id
-            );
+            const response = await signIn({
+                email,
+                password,
+            });
             useAuthStore.getState().setToken(response.token);
 
             navigate("/dashboard");
