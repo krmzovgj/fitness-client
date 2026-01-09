@@ -103,7 +103,7 @@ export function AppSidebar() {
 
     return (
         <Sidebar className="w-70 flex bg-background border-r-2 border-foreground/5">
-            <SidebarContent className="py-2 md:py-6 md:px-3 flex bg-background flex-col flex-1 w-full ">
+            <SidebarContent className="py-2 px-2 md:py-6 md:px-3 flex bg-background flex-col flex-1 w-full ">
                 <SidebarHeader>
                     <div className="flex items-center gap-x-2.5">
                         <div className="flex justify-center items-center w-10 h-10 squircle-round bg-foreground">
