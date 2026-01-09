@@ -43,7 +43,7 @@ export function DayPlanCard({
     const isRestDay = isWorkout && restDay;
 
     const highlight = variant === "diet" ? "#66A786" : "#FF8C00";
-    const daymatch = dayColors.find((dayColor) => day === dayColor.day);
+    
     const openDetails = () => {
         if (isRestDay) return;
         navigate(
@@ -126,19 +126,9 @@ export function DayPlanCard({
                             </div>
 
                             <div>
-                                <div className="flex items-center gap-x-1">
-                                    <div
-                                        className="w-3 h-3 rounded-full "
-                                        style={{
-                                            backgroundColor: daymatch?.color,
-                                        }}
-                                    >
-                                        {" "}
-                                    </div>
-                                    <p className="text-sm capitalize text-muted-foreground">
-                                        {day?.toLowerCase()}
-                                    </p>
-                                </div>
+                                <p className="text-sm capitalize text-muted-foreground">
+                                    {day?.toLowerCase()}
+                                </p>
                                 {variant === "workout" ? (
                                     <h3 className="leading-tight">
                                         {isRestDay
