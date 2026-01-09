@@ -273,7 +273,7 @@ export function AppSidebar() {
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                             <AlertDialogAction
-                                className="w-fit"
+                                className="w-full md:w-fit"
                                 onClick={signOut}
                             >
                                 Yes, Sign Out

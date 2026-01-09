@@ -16,7 +16,7 @@ export function AppLayout() {
                 <AppSidebar />
 
                 <main className="flex-1 relative min-w-0 md:ml-70">
-                    <Header user={user!} />
+                    {user && <Header user={user!} />}
 
                     <GridPattern
                         width={25}

@@ -206,43 +206,68 @@ const Sidebar = React.forwardRef<
         if (isMobile) {
             return (
                 <Sheet open={openMobile} onOpenChange={setOpenMobile}>
-                    <AnimatePresence>
-                        {openMobile && (
-                            <SheetContent
-                                forceMount
-                                data-sidebar="sidebar"
-                                data-mobile="true"
-                                side={side}
-                                className="bg-transparent border-0 p-0 [&>button]:hidden "
-                            >
+                    <SheetContent
+                        forceMount
+                        data-sidebar="sidebar"
+                        data-mobile="true"
+                        side={side}
+                        className="bg-transparent border-0 p-0 [&>button]:hidden"
+                    >
+                        <AnimatePresence>
+                            {openMobile && (
                                 <motion.div
-                                    initial={{
-                                        x: side === "left" ? "-100%" : "100%",
-                                    }}
-                                    animate={{ x: 0 }}
-                                    exit={{
-                                        x: side === "left" ? "-100%" : "100%",
-                                    }}
+                                    key="sidebar-container"
+                                    initial={{ scaleX: 0 }}
+                                    animate={{ scaleX: 1 }}
+                                    exit={{ scaleX: 0 }}
                                     transition={{
+                                        duration: 0.7,
                                         type: "spring",
-                                        duration: 0.45
                                     }}
-                                    className="h-full w-full bg-background  text-sidebar-foreground"
+                                    style={{
+                                        originX: side === "left" ? 0 : 1,
+                                    }}
+                                    className="h-full w-full bg-background"
                                 >
-                                    <SheetHeader className="sr-only">
-                                        <SheetTitle>Sidebar</SheetTitle>
-                                        <SheetDescription>
-                                            Displays the mobile sidebar.
-                                        </SheetDescription>
-                                    </SheetHeader>
+                                    <motion.div
+                                        key="sidebar-content"
+                                        initial={{
+                                            opacity: 0,
+                                            y: 30,
+                                            filter: "blur(20px)",
+                                        }}
+                                        animate={{
+                                            opacity: 1,
+                                            y: 0,
+                                            filter: "blur(0px)",
+                                        }}
+                                        exit={{
+                                            opacity: 0,
+                                            y: 30,
+                                            filter: "blur(20px)",
+                                        }}
+                                        transition={{
+                                            delay: 0.3,
+                                            type: "spring",
+                                            duration: 0.5,
+                                        }}
+                                        className="h-full w-full text-sidebar-foreground"
+                                    >
+                                        <SheetHeader className="sr-only">
+                                            <SheetTitle>Sidebar</SheetTitle>
+                                            <SheetDescription>
+                                                Displays the mobile sidebar.
+                                            </SheetDescription>
+                                        </SheetHeader>
 
-                                    <div className="flex h-full w-full flex-col">
-                                        {children}
-                                    </div>
+                                        <div className="flex h-full w-full flex-col">
+                                            {children}
+                                        </div>
+                                    </motion.div>
                                 </motion.div>
-                            </SheetContent>
-                        )}
-                    </AnimatePresence>
+                            )}
+                        </AnimatePresence>
+                    </SheetContent>
                 </Sheet>
             );
         }
