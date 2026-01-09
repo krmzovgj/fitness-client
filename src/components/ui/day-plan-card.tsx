@@ -1,4 +1,4 @@
-import { cn, dayColors, today } from "@/lib/utils";
+import { cn, today } from "@/lib/utils";
 import { Day } from "@/model/day";
 import { UserRole, type User } from "@/model/user";
 import { motion } from "framer-motion";
