@@ -310,6 +310,7 @@ export const WorkoutDetailsView = ({
         setreps(selectedExercise?.reps!);
         setrestBetweenSets(selectedExercise?.restBetweenSets!);
         setrestAfterExercise(selectedExercise?.restAfterExercise!);
+        setweight(selectedExercise?.weight!)
         setsearchQuery(selectedExercise.exercise.name);
         setselectedOptionExercise(selectedExercise.exercise);
         setnote(selectedExercise?.note!);
