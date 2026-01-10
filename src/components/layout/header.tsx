@@ -42,11 +42,7 @@ export const Header = ({ user }: { user?: User }) => {
     return (
         <div className="pt-5 md:py-5 md:px-10 px-5 flex justify-between items-center">
             <Link to={"/"} className="flex md:hidden">
-                <img
-                    src="/favicon.png"
-                    className="w-9 h-9"
-                    alt=""
-                />
+                <img src="/favicon.png" className="w-9 h-9" alt="" />
             </Link>
 
             <div className="flex md:hidden items-center gap-x-2 text-xl font-bold">
@@ -74,17 +70,29 @@ export const Header = ({ user }: { user?: User }) => {
                         <div className="flex items-center gap-x-3">
                             <DropdownMenu>
                                 <DropdownMenuTrigger>
-                                    <div className="relative cursor-pointer">
+                                    <div className="flex items-center gap-x-2 relative cursor-pointer">
                                         <Avatar
+                                            size={40}
                                             firstName={user.firstName}
                                             lastName={user.lastName}
                                         />
-                                        <div className="bg-white absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center">
-                                            <ArrowDown2
-                                                variant="Bold"
-                                                size={14}
-                                                color="#000"
-                                            />
+
+                                        <div className="flex items-center gap-x-1">
+                                            <div className="flex flex-col">
+                                                <div className="flex items-center">
+                                                    <h3>{user?.firstName}</h3>
+                                                    <h3>{user?.lastName}</h3>
+                                                    <ArrowDown2
+                                                    className="ml-1"
+                                                        variant="Bold"
+                                                        size={18}
+                                                        color="#000"
+                                                    />
+                                                </div>
+                                                <p className="-mt-1 text-muted-foreground text-sm">
+                                                    {user.email}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </DropdownMenuTrigger>

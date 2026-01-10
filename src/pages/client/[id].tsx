@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { type User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
-import { ArrowLeft, Information, Sms } from "iconsax-reactjs";
+import { ArrowLeft, Information, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -74,26 +74,42 @@ export const Client = () => {
                                     )}
                                     <div>
                                         <div className="flex items-center gap-x-2">
-                                            <h1 className="text-2xl md:text-3xl leading-7 font-medium">
+                                            <h1 className="text-3xl leading-7 font-bold">
                                                 {client?.firstName}{" "}
                                                 {client?.lastName}
                                             </h1>
 
-                                            <Information
-                                                className="cursor-pointer"
-                                                variant="Bold"
-                                                size={20}
-                                                color="#000"
-                                            />
+                                            <Button
+                                                variant="ghost"
+                                                className="p-0 bg-transparent"
+                                            >
+                                                <Information
+                                                    className="mt-0.5 cursor-pointer"
+                                                    variant="Bold"
+                                                    size={20}
+                                                    color="#000"
+                                                />
+                                            </Button>
                                         </div>
-                                        <h3 className="text-muted-foreground flex items-center gap-x-1">
-                                            <Sms
-                                                variant="Bold"
-                                                size={16}
-                                                color="#000"
-                                            />
-                                            {client?.email}
-                                        </h3>
+
+                                        <div className="flex items-center gap-x-1">
+                                            <h3 className=" text-muted-foreground flex items-center ml-1">
+                                                {client?.email}
+                                            </h3>
+                                            <RecordCircle variant="Bulk" color="#000" size={9}/>
+                                            <h3
+                                                style={{
+                                                    color:
+                                                        client?.gender ===
+                                                        "FEMALE"
+                                                            ? "#9B5DE5"
+                                                            : "#66A786",
+                                                }}
+                                                className="text-muted-foreground capitalize flex items-center"
+                                            >
+                                                {client?.gender.toLowerCase()}
+                                            </h3>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

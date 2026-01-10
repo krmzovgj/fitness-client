@@ -19,8 +19,8 @@ export function AppLayout() {
                     {user && <Header user={user!} />}
 
                     <GridPattern
-                        width={25}
-                        height={25}
+                        width={30}
+                        height={30}
                         strokeDasharray="2 6"
                         className={cn(
                             "fixed inset-0 z-0 pointer-events-none",

@@ -6,7 +6,7 @@ export const Meals = () => {
     const { state } = useLocation();
 
     return (
-        <div className="h-full md:h-screen flex flex-col">
+        <div className="h-full flex flex-col">
             <DietDetailsView dietId={id!} clientName={state?.clientName} />
         </div>
     );

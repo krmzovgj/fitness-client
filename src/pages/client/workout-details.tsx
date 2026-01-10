@@ -6,7 +6,7 @@ export const WorkoutDetails = () => {
     const { state } = useLocation();
 
     return (
-        <div className="h-full md:h-screen flex flex-col ">
+        <div className="h-full flex flex-col ">
             <WorkoutDetailsView
                 workoutId={id!}
                 clientName={state?.clientName}

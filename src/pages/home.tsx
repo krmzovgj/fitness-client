@@ -62,7 +62,7 @@ export const Home = () => {
     const now = new Date();
 
     return (
-        <div className="h-full  flex flex-col  md:h-screen ">
+        <div className="h-full  flex flex-col">
             <div className="mt-10 flex md:flex-row flex-col items-start md:justify-between md:items-end gap-x-20">
                 <div className="flex md:mb-0 items-center justify-between w-full md:w-auto">
                     <div>
@@ -75,11 +75,21 @@ export const Home = () => {
                         </h1>
                         {user?.role === UserRole.TRAINER ? (
                             <h3 className="text-md font-medium text-muted-foreground flex items-center gap-x-1 mt-1 ml-0.5">
-                            <EmojiNormal variant="Bulk" size={18} color="#181818" /> Track your clients and their plans
+                                <EmojiNormal
+                                    variant="Bulk"
+                                    size={18}
+                                    color="#181818"
+                                />{" "}
+                                Track your clients and their plans
                             </h3>
                         ) : (
                             <h3 className="text-md font-medium text-muted-foreground flex items-center gap-x-1 mt-1 ml-0.5">
-                            <EmojiNormal variant="Bulk" size={18} color="#181818" /> Track your weekly workout and diet plan
+                                <EmojiNormal
+                                    variant="Bulk"
+                                    size={18}
+                                    color="#181818"
+                                />{" "}
+                                Track your weekly workout and diet plan
                             </h3>
                         )}
                     </div>

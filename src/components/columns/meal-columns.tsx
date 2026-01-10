@@ -75,14 +75,16 @@ export const MealColumns = (
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle>
-                                <div className="flex items-center gap-x-2">
-                                    {row.original.name}
-                                    <span
+                                <div className="flex flex-col justify-start items-start">
+                                    <div
                                         className="font-semibold"
                                         style={{ color: match?.color }}
                                     >
                                         {row.original.type}
-                                    </span>
+                                    </div>
+                                    <div className="flex mt-2 gap-x-2">
+                                        {row.original.name}
+                                    </div>
                                 </div>
                             </DialogTitle>
                         </DialogHeader>
