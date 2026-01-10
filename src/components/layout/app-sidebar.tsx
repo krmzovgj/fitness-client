@@ -60,7 +60,7 @@ const MENU_BY_ROLE: Record<UserRole, MenuItem[]> = {
             title: "Profile",
             url: "/profile",
             icon: Profile,
-            commingSoon: true,
+            commingSoon: false,
         },
     ],
 
@@ -80,7 +80,7 @@ const MENU_BY_ROLE: Record<UserRole, MenuItem[]> = {
             title: "Profile",
             url: "/profile",
             icon: Profile,
-            commingSoon: true,
+            commingSoon: false,
         },
     ],
 };
