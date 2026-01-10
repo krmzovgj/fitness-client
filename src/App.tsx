@@ -16,6 +16,7 @@ import { Home } from "./pages/home";
 import { useAuthStore } from "./store/auth";
 import { useTenantStore } from "./store/tenant";
 import { useUserStore } from "./store/user";
+import { ProfilePage } from "./pages/profile";
 
 function App() {
     const { setTenant, tenant } = useTenantStore();
@@ -106,6 +107,16 @@ function App() {
                     element={
                         <ProtectedRoute>
                             <Home />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/profile"
+                    handle={{ breadcrumb: "Profile" }}
+                    element={
+                        <ProtectedRoute>
+                            <ProfilePage />
                         </ProtectedRoute>
                     }
                 />
