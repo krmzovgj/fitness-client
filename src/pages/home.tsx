@@ -6,11 +6,18 @@ import { Spinner } from "@/components/ui/spinner";
 import { formatDate } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth";
 import { useTenantStore } from "@/store/tenant";
-import { EmojiNormal } from "iconsax-reactjs";
+import { ArchiveBox, EmojiNormal } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserRole } from "../model/user";
 import { useUserStore } from "../store/user";
+import {
+    Empty,
+    EmptyDescription,
+    EmptyHeader,
+    EmptyMedia,
+    EmptyTitle,
+} from "@/components/ui/empty";
 
 export const Home = () => {
     const { user, setUser, clearUser } = useUserStore();
@@ -101,8 +108,32 @@ export const Home = () => {
                     <ClientsView />
                 ) : (
                     <div>
-                        <WorkoutView client={user!} />
-                        <DietView client={user!} />
+                        {user?.workoutPlan && <WorkoutView client={user!} />}
+
+                        {user?.dietPlan && <DietView client={user!} />}
+
+                        {!user?.workoutPlan && !user?.dietPlan && (
+                            <Empty className="mt-5">
+                                <EmptyHeader>
+                                    <EmptyMedia variant="icon">
+                                        <ArchiveBox
+                                            variant="Bulk"
+                                            size={20}
+                                            color="#fff"
+                                        />
+                                    </EmptyMedia>
+                                    <EmptyTitle>
+                                        No plans available yet
+                                    </EmptyTitle>
+
+                                    <EmptyDescription>
+                                        Your trainer hasn’t assigned a workout
+                                        or diet plan yet. Once a plan is added,
+                                        it will appear here.
+                                    </EmptyDescription>
+                                </EmptyHeader>
+                            </Empty>
+                        )}
                     </div>
                 )}
             </div>
