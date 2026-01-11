@@ -27,11 +27,13 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
+import { Switch } from "@/components/ui/switch";
 import { UserRole, type User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
 import { useClientStore } from "@/store/client";
 import { useTenantStore } from "@/store/tenant";
 import { useUserStore } from "@/store/user";
+import { Label } from "@radix-ui/react-dropdown-menu";
 import { motion } from "framer-motion";
 import {
     AddCircle,
@@ -57,6 +59,8 @@ export const ClientsView = () => {
     const [weight, setWeight] = useState<number>();
     const [height, setHeight] = useState<number>();
     const [age, setAge] = useState<number>();
+    const [workoutPlan, setworkoutPlan] = useState<boolean>(true);
+    const [dietPlan, setdietPlan] = useState<boolean>(true);
     const [gender, setGender] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setshowPassword] = useState(false);
@@ -94,7 +98,8 @@ export const ClientsView = () => {
                 gender,
                 weight,
                 height,
-                role: UserRole.CLIENT,
+                workoutPlan,
+                dietPlan,
                 tenantId: tenant?.id,
                 password,
             };
@@ -129,9 +134,11 @@ export const ClientsView = () => {
                 lastName,
                 email,
                 age,
-                gender,
                 weight,
                 height,
+                workoutPlan,
+                dietPlan,
+                gender,
             };
 
             const response = await updateClient(
@@ -167,6 +174,8 @@ export const ClientsView = () => {
         setAge(selectedClient.age);
         setWeight(selectedClient.weight);
         setHeight(selectedClient.height);
+        setworkoutPlan(!!selectedClient.workoutPlan!);
+        setdietPlan(!!selectedClient.dietPlan!);
         setGender(selectedClient.gender);
     }, [selectedClient]);
 
@@ -182,6 +191,8 @@ export const ClientsView = () => {
                 setHeight(0);
                 setWeight(0);
                 setEmail("");
+                setworkoutPlan(true);
+                setdietPlan(true);
                 setGender("");
                 setPassword("");
                 seterror("");
@@ -412,6 +423,26 @@ export const ClientsView = () => {
                             </button>
                         </div>
                     )}
+
+                    <div className="flex ml-0.5 mt-1 items-center space-x-2">
+                        <Switch
+                            checked={workoutPlan}
+                            onCheckedChange={(includesWorkoutPlan) =>
+                                setworkoutPlan(!!includesWorkoutPlan)
+                            }
+                        />
+                        <Label>Workout Plan</Label>
+                    </div>
+
+                    <div className="flex ml-0.5 items-center space-x-2">
+                        <Switch
+                            checked={dietPlan}
+                            onCheckedChange={(includesDietPlan) =>
+                                setdietPlan(!!includesDietPlan)
+                            }
+                        />
+                        <Label>Diet Plan</Label>
+                    </div>
 
                     {error !== "" && (
                         <div className="text-red-500 mt-2 text-sm">

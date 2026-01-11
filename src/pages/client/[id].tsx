@@ -1,14 +1,22 @@
 import { getUserById } from "@/api/user";
 import { DietView } from "@/components/screens/client-details/diet.view";
+import { EditClientView } from "@/components/screens/client-details/edit-client.view";
 import { WorkoutView } from "@/components/screens/client-details/workout.view";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { type User } from "@/model/user";
 import { useAuthStore } from "@/store/auth";
-import { ArrowLeft, Information, RecordCircle } from "iconsax-reactjs";
+import { ArchiveBox, ArrowLeft, RecordCircle } from "iconsax-reactjs";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+    Empty,
+    EmptyDescription,
+    EmptyHeader,
+    EmptyMedia,
+    EmptyTitle,
+} from "@/components/ui/empty";
 
 export const Client = () => {
     const navigate = useNavigate();
@@ -18,18 +26,20 @@ export const Client = () => {
     const [client, setClient] = useState<User | null>(null);
     const [loadingClient, setLoadingClient] = useState(false);
 
-    useEffect(() => {
+    const fetchClient = async () => {
         if (!id) return;
-        const fetchClient = async () => {
-            try {
-                setLoadingClient(true);
-                const response = await getUserById(id, token!);
-                setClient(response.data);
-            } catch (err) {
-            } finally {
-                setLoadingClient(false);
-            }
-        };
+        try {
+            setLoadingClient(true);
+            const response = await getUserById(id, token!);
+            setClient(response.data);
+        } catch (err) {
+            setClient(null);
+        } finally {
+            setLoadingClient(false);
+        }
+    };
+
+    useEffect(() => {
         fetchClient();
     }, [id, token]);
 
@@ -74,29 +84,26 @@ export const Client = () => {
                                     )}
                                     <div>
                                         <div className="flex items-center gap-x-2">
-                                            <h1 className="text-3xl leading-7 font-bold">
+                                            <h1 className="text-4xl leading-7 font-bold">
                                                 {client?.firstName}{" "}
                                                 {client?.lastName}
                                             </h1>
 
-                                            <Button
-                                                variant="ghost"
-                                                className="p-0 bg-transparent"
-                                            >
-                                                <Information
-                                                    className="mt-0.5 cursor-pointer"
-                                                    variant="Bold"
-                                                    size={20}
-                                                    color="#000"
-                                                />
-                                            </Button>
+                                            <EditClientView
+                                                client={client!}
+                                                fetchClient={fetchClient}
+                                            />
                                         </div>
 
-                                        <div className="flex items-center gap-x-1">
+                                        <div className="flex -mt-0.5 items-center gap-x-1">
                                             <h3 className=" text-muted-foreground flex items-center ml-1">
                                                 {client?.email}
                                             </h3>
-                                            <RecordCircle variant="Bulk" color="#000" size={9}/>
+                                            <RecordCircle
+                                                variant="Bulk"
+                                                color="#000"
+                                                size={9}
+                                            />
                                             <h3
                                                 style={{
                                                     color:
@@ -114,8 +121,35 @@ export const Client = () => {
                                 </div>
                             </div>
 
-                            <WorkoutView client={client!} />
-                            <DietView client={client!} />
+                            {client?.workoutPlan && (
+                                <WorkoutView client={client!} />
+                            )}
+
+                            {client?.dietPlan && <DietView client={client!} />}
+
+                            {!client?.workoutPlan && !client?.dietPlan && (
+                                <Empty className="mt-5">
+                                    <EmptyHeader>
+                                        <EmptyMedia variant="icon">
+                                            <ArchiveBox
+                                                variant="Bulk"
+                                                size={20}
+                                                color="#fff"
+                                            />
+                                        </EmptyMedia>
+                                        <EmptyTitle>
+                                            No plans assigned
+                                        </EmptyTitle>
+
+                                        <EmptyDescription>
+                                            This client does not have a workout
+                                            plan or diet plan enabled. Enable at
+                                            least one plan to start creating
+                                            content.
+                                        </EmptyDescription>
+                                    </EmptyHeader>
+                                </Empty>
+                            )}
                         </div>
                     )}
                 </>

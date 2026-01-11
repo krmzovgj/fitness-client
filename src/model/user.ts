@@ -8,10 +8,12 @@ export interface User {
     firstName: string;
     lastName: string;
     email: string;
-    age: number;
-    height: number;
-    weight: number;
+    age?: number;
+    height?: number;
+    weight?: number;
     gender: string;
+    workoutPlan?: boolean;
+    dietPlan?: boolean;
     role: UserRole;
     tenantId: string;
     createdAt: string;

@@ -1,15 +1,16 @@
-import type { User, UserRole } from "@/model/user";
+import type { User } from "@/model/user";
 import { api } from "./axios";
 
 interface CreateClientDto {
     firstName: string;
     lastName: string;
     email: string;
-    age: number | any;
-    height: number | any;
-    weight: number | any;
+    age?: number;
+    height?: number;
+    weight?: number;
+    workoutPlan?: boolean;
+    dietPlan?: boolean;
     gender: string;
-    role: UserRole;
     password: string;
 }
 
@@ -17,9 +18,11 @@ interface UpdateClientDto {
     firstName: string;
     lastName: string;
     email: string;
-    age: number | any;
-    height: number | any;
-    weight: number | any;
+    age?: number;
+    height?: number;
+    weight?: number;
+    workoutPlan?: boolean;
+    dietPlan?: boolean;
     gender: string;
 }
 

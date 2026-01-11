@@ -80,8 +80,8 @@ export const Header = ({ user }: { user?: User }) => {
                                         <div className="flex items-center gap-x-1">
                                             <div className="flex flex-col">
                                                 <div className="flex items-center">
-                                                    <h3>{user?.firstName}</h3>
-                                                    <h3>{user?.lastName}</h3>
+                                                    <h3 className="font-semibold">{user?.firstName}</h3>
+                                                    <h3 className="font-semibold ml-0.5">{user?.lastName}</h3>
                                                     <ArrowDown2
                                                     className="ml-1"
                                                         variant="Bold"
@@ -89,7 +89,7 @@ export const Header = ({ user }: { user?: User }) => {
                                                         color="#000"
                                                     />
                                                 </div>
-                                                <p className="-mt-1 text-muted-foreground text-sm">
+                                                <p className="-mt-1 text-muted-foreground font-medium text-sm">
                                                     {user.email}
                                                 </p>
                                             </div>
