@@ -1,4 +1,18 @@
-import { createDiet, getDietByClient, updateDiet } from "@/api/diet";
+import {
+    createDiet,
+    deleteDiet,
+    getDietByClient,
+    updateDiet,
+} from "@/api/diet";
+import {
+    AlertDialog,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { DayPlanCard } from "@/components/ui/day-plan-card";
 import {
@@ -50,6 +64,11 @@ export const DietView = ({ client }: { client: User }) => {
     const [creatingDiet, setcreatingDiet] = useState(false);
     const [dialogOpen, setdialogOpen] = useState(false);
     const [selectedDiet, setselectedDiet] = useState<Diet | null>(null);
+
+    const [dietIdToDelete, setDietIdToDelete] = useState<string | null>(null);
+    const [deletingDiet, setDeletingDiet] = useState(false);
+
+    const [openDeleteDialog, setopenDeleteDialog] = useState(false);
 
     const dietDays = clientId ? dietDaysByClient[clientId] : undefined;
 
@@ -135,6 +154,20 @@ export const DietView = ({ client }: { client: User }) => {
             }
         } finally {
             setcreatingDiet(false);
+        }
+    };
+
+    const handleDeleteDiet = async () => {
+        if (!dietIdToDelete) return;
+        setDeletingDiet(true);
+        try {
+            await deleteDiet(token!, dietIdToDelete!);
+
+            handleGetDietsByClient();
+            setopenDeleteDialog(false);
+        } catch (error) {
+        } finally {
+            setDeletingDiet(false);
         }
     };
 
@@ -241,6 +274,10 @@ export const DietView = ({ client }: { client: User }) => {
                                                 setselectedDiet(diet);
                                                 setdialogOpen(true);
                                             }}
+                                            openDelete={() => {
+                                                setDietIdToDelete(diet.id);
+                                                setopenDeleteDialog(true);
+                                            }}
                                             user={user!}
                                         />
                                     </motion.div>
@@ -251,9 +288,43 @@ export const DietView = ({ client }: { client: User }) => {
                 )}
             </div>
 
+            <AlertDialog
+                open={openDeleteDialog}
+                onOpenChange={setopenDeleteDialog}
+            >
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Delete Diet Day</AlertDialogTitle>
+
+                        <AlertDialogDescription>
+                            Are you sure you want to delete this workout plan?
+                            This action is irreversible.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+
+                        <Button
+                            className="w-full md:w-fit"
+                            variant="destructive"
+                            onClick={handleDeleteDiet}
+                        >
+                            {deletingDiet ? (
+                                <Spinner color="#fff" className="size-6" />
+                            ) : (
+                                <>Delete</>
+                            )}
+                        </Button>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
             <DialogContent>
                 <DialogTitle>
-                    {selectedDiet ? `Update ${selectedDiet?.name}` : "Add New Diet"} 
+                    {selectedDiet
+                        ? `Update ${selectedDiet?.name}`
+                        : "Add New Diet"}
                 </DialogTitle>
                 <DialogDescription>
                     Fill the required fields to{" "}

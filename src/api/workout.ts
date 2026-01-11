@@ -70,3 +70,13 @@ export const updateWorkout = async (
 
     return response;
 };
+
+export const deleteWorkout = async (token: string, workoutId: string) => {
+    const response = await api.delete(`/workout/${workoutId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return response;
+};

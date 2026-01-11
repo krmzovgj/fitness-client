@@ -50,3 +50,13 @@ export const updateDiet = async (
 
     return response;
 };
+
+export const deleteDiet = async (token: string, dietId: string) => {
+    const response = await api.delete(`/diet/${dietId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return response;
+};

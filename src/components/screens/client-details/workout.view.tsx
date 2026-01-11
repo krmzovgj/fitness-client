@@ -1,8 +1,18 @@
 import {
     createWorkout,
+    deleteWorkout,
     getWorkoutsByClient,
     updateWorkout,
 } from "@/api/workout";
+import {
+    AlertDialog,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { DayPlanCard } from "@/components/ui/day-plan-card";
 import {
@@ -58,6 +68,13 @@ export const WorkoutView = ({ client }: { client: User }) => {
     const [error, seterror] = useState("");
     const [creatingWorkout, setcreatingWorkout] = useState(false);
     const [dialogOpen, setdialogOpen] = useState(false);
+    const [workoutIdToDelete, setWorkoutIdToDelete] = useState<string | null>(
+        null
+    );
+    const [deletingWorkout, setdeletingWorkout] = useState(false);
+
+    const [openDeleteDialog, setopenDeleteDialog] = useState(false);
+
     const [selectedWorkout, setselectedWorkout] = useState<Workout | null>(
         null
     );
@@ -154,6 +171,20 @@ export const WorkoutView = ({ client }: { client: User }) => {
             }
         } finally {
             setcreatingWorkout(false);
+        }
+    };
+
+    const handleDeleteWorkout = async () => {
+        if (!workoutIdToDelete) return;
+        setdeletingWorkout(true);
+        try {
+            await deleteWorkout(token!, workoutIdToDelete!);
+
+            handleGetWorkoutsByClient();
+            setopenDeleteDialog(false);
+        } catch (error) {
+        } finally {
+            setdeletingWorkout(false);
         }
     };
 
@@ -265,6 +296,12 @@ export const WorkoutView = ({ client }: { client: User }) => {
                                                 setselectedWorkout(workout);
                                                 setdialogOpen(true);
                                             }}
+                                            openDelete={() => {
+                                                setWorkoutIdToDelete(
+                                                    workout.id
+                                                );
+                                                setopenDeleteDialog(true);
+                                            }}
                                             user={user!}
                                         />
                                     </motion.div>
@@ -274,6 +311,38 @@ export const WorkoutView = ({ client }: { client: User }) => {
                     </div>
                 )}
             </div>
+
+            <AlertDialog
+                open={openDeleteDialog}
+                onOpenChange={setopenDeleteDialog}
+            >
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Delete Workout Day</AlertDialogTitle>
+
+                        <AlertDialogDescription>
+                            Are you sure you want to delete this workout plan?
+                            This action is irreversible.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+
+                        <Button
+                            className="w-full md:w-fit"
+                            variant="destructive"
+                            onClick={handleDeleteWorkout}
+                        >
+                            {deletingWorkout ? (
+                                <Spinner color="#fff" className="size-6" />
+                            ) : (
+                                <>Delete</>
+                            )}
+                        </Button>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
 
             <DialogContent>
                 <DialogTitle>
@@ -347,7 +416,7 @@ export const WorkoutView = ({ client }: { client: User }) => {
                                 ? handleUpdateWorkout
                                 : handleCreateWorkout
                         }
-                        className="self-end"
+                        className="self-end w-fit"
                     >
                         {creatingWorkout ? (
                             <Spinner color="#fff" className="size-6" />

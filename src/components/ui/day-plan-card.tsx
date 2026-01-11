@@ -2,7 +2,7 @@ import { cn, today } from "@/lib/utils";
 import { Day } from "@/model/day";
 import { UserRole, type User } from "@/model/user";
 import { motion } from "framer-motion";
-import { BatteryCharging, Book1, Edit, Moon } from "iconsax-reactjs";
+import { BatteryCharging, Book1, Edit, Moon, Trash } from "iconsax-reactjs";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./button";
 
@@ -21,6 +21,7 @@ type Props = {
     variant: Variant;
     note?: string;
     openEdit?: () => void;
+    openDelete?: () => void;
     user: User;
 };
 
@@ -35,6 +36,7 @@ export function DayPlanCard({
     restDay,
     variant,
     openEdit,
+    openDelete,
     user,
 }: Props) {
     const navigate = useNavigate();
@@ -43,7 +45,7 @@ export function DayPlanCard({
     const isRestDay = isWorkout && restDay;
 
     const highlight = variant === "diet" ? "#66A786" : "#FF8C00";
-    
+
     const openDetails = () => {
         if (isRestDay) return;
         navigate(
@@ -172,8 +174,8 @@ export function DayPlanCard({
                             </div>
                         )}
 
-                        <div className="flex items-center gap-x-1.5">
-                            {user.role === UserRole.TRAINER && (
+                        {user.role === UserRole.TRAINER && (
+                            <div className="flex items-center gap-x-1.5">
                                 <Button
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -188,8 +190,23 @@ export function DayPlanCard({
                                         color="#000"
                                     />
                                 </Button>
-                            )}
-                        </div>
+
+                                <Button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        openDelete?.();
+                                    }}
+                                    variant="secondary"
+                                    className="p-3"
+                                >
+                                    <Trash
+                                        variant="Bold"
+                                        size={18}
+                                        color="red"
+                                    />
+                                </Button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
